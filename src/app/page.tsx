@@ -3,7 +3,7 @@
 import { forwardRef, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 
-const Editor = dynamic(() => import("@/components/Editor"), {
+const Editor = dynamic(() => import("@/coms/Editor"), {
   ssr: false,
 });
 

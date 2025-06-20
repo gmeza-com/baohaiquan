@@ -1,8 +1,7 @@
 import Head from "next/head";
 import type { Metadata } from "next";
-import { roboto, robotoMono } from "@/lib/font";
-
-import "../style/global.scss";
+import { roboto, robotoMono } from "@/app/font";
+import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Bảo Hải quân Việt Nam",
