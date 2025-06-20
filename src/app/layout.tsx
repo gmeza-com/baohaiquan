@@ -1,12 +1,9 @@
+"use client";
 import Head from "next/head";
-import type { Metadata } from "next";
 import { roboto, robotoMono } from "@/app/font";
+import Bootstrap from "@/coms/App/Bootstrap";
+import Toaster from "@/coms/common/Toaster";
 import "./globals.css";
-
-export const metadata: Metadata = {
-  title: "Bảo Hải quân Việt Nam",
-  description: "Chuyên Trang Báo Chính Thức Của Hải Quân Nhân Dân Việt Nam",
-};
 
 export default function RootLayout({
   children,
@@ -19,7 +16,8 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </Head>
       <body className={`${roboto.variable} ${robotoMono.variable} antialiased`}>
-        {children}
+        <Bootstrap>{children}</Bootstrap>
+        <Toaster />
       </body>
     </html>
   );
