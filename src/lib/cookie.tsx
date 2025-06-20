@@ -1,5 +1,5 @@
 import Cookies from "universal-cookie";
-import { isDev } from "./util";
+import { isDev } from "./utils";
 
 type cookieKey = "access_token" | "refresh_token";
 const domain = ".baohaiquanvietnam.vn";

@@ -4,7 +4,7 @@ import axios, {
   AxiosRequestConfig,
   AxiosResponse,
 } from "axios";
-import { isOn } from "./util";
+import { isOn } from "./utils";
 import { get } from "./cookie";
 
 const APP = process.env.NEXT_PUBLIC_APP;
