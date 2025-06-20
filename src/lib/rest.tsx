@@ -4,7 +4,7 @@ import axios, {
   AxiosRequestConfig,
   AxiosResponse,
 } from "axios";
-import { isOn, isSsr } from "./util";
+import { isOn } from "./util";
 import { get } from "./cookie";
 
 const APP = process.env.NEXT_PUBLIC_APP;
@@ -20,13 +20,6 @@ rest.interceptors.request.use(async (config) => {
   if (config?.headers) {
     if (token && !config.headers?.Authorization)
       config.headers.Authorization = `Bearer ${token}`;
-
-    if (isSsr()) {
-      // allow workspace to be set in cookie (server-side only)
-      const workspace = await get("workspace");
-      if (workspace && !config.headers["Cookie"])
-        config.headers["Cookie"] = `workspace=${workspace}`;
-    }
   }
 
   return config;
