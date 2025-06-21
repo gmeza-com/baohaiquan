@@ -1,11 +1,13 @@
 import clsx from "clsx";
 import { IconList, IconMagnifyingGlass, IconUser } from "../Icon/light";
 import { IconHome, IconNewspaper, IconTelevisionSimple } from "../Icon/fill";
-import { categoriesAPI } from "@/lib/api";
+import { CategoryTree } from "@/type/category";
 
-const Header: React.FC = async () => {
-  const categories = await categoriesAPI.getCategories();
+interface HeaderProps {
+  categories: CategoryTree[];
+}
 
+const Header: React.FC<HeaderProps> = async ({ categories }) => {
   return (
     <header className="bg-blue-700">
       <div className="lg:container lg:px-4 lg:py-2 mx-auto gap-8 flex overflow-hidden w-full">
@@ -50,7 +52,7 @@ const Header: React.FC = async () => {
               </button>
             </div>
             <div className="flex-1 overflow-x-auto flex items-center gap-2.5 lg:gap-1.5">
-              {categories.data.map((category) => (
+              {categories.map((category) => (
                 <button
                   key={category.id}
                   className="whitespace-nowrap size-full px-1 lg:px-2 lg:py-3 font-anton font-normal text-[15px] leading-[160%] tracking-[0%] align-middle text-white lg:text-lg"
