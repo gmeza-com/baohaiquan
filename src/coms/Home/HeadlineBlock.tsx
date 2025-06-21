@@ -3,8 +3,8 @@ import HighlightArticleCard from "./HighlightArtileCard";
 
 const HeadlineBlock: React.FC = () => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 xl:gap-12 @container lg:pb-10 lg:pt-7 mx-auto lg:max-w-[48rem] xl:container">
-      <div className="py-9 px-4 border-t border-stroke-light xl:p-0 xl:border-t-0 lg:ps-0 lg:pe-6">
+    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 xl:gap-12 lg:pb-10 lg:pt-7 mx-auto sm:p-2 md:p-3 sm:max-w-[30rem] md:max-w-screen-md xl:max-w-screen-xl lg:max-w-screen-lg xlg:max-w-screen-xlg xxl:max-w-screen-xxl">
+      <div className="py-9 px-4 border-t border-stroke-light xl:p-0 xl:border-t-0 md:ps-0 md:pe-6">
         <DecorTitle title="tiêu điểm" />
         <div className="flex flex-col gap-3 mt-5">
           <div className="flex items-start flex-col gap-2.5 pb-5 border-b border-stroke-light border-dashed">
@@ -39,7 +39,7 @@ const HeadlineBlock: React.FC = () => {
       <div className="row-start-1 pb-9 md:col-span-2 xl:col-span-2 xl:col-start-2">
         <HighlightArticleCard />
       </div>
-      <div className="py-9 px-4 border-t border-stroke-light xl:p-0 xl:border-t-0 lg:pe-0 lg:ps-6">
+      <div className="py-9 px-4 border-t border-stroke-light xl:p-0 xl:border-t-0 md:pe-0 md:ps-6">
         <DecorTitle title="Tin mới" />
         <div className="flex flex-col divide-y divide-stroke-light divide-dashed">
           {Array.from({ length: 6 })?.map((item, index) => (
