@@ -2,6 +2,7 @@ import { CategoryTree } from "@/type/category";
 import clsx from "clsx";
 import Link from "next/link";
 import ExpandableCategory from "./ExpandableCategory";
+import { isOn } from "@/lib/utils";
 
 const FOOTER_CONTACT_DATA = [
   {
@@ -60,33 +61,35 @@ const Footer: React.FC<FooterProps> = ({ categories }) => {
     <footer className="bg-blue-50 pt-9 xl:pt-16">
       <div className="container ">
         <ul className="flex gap-4 flex-col md:hidden">
-          {categories.map((category) => (
-            <ExpandableCategory key={category.id} category={category} />
-          ))}
+          {isOn(categories) &&
+            categories.map((category) => (
+              <ExpandableCategory key={category.id} category={category} />
+            ))}
         </ul>
         <ul className="hidden md:grid grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-6 gap-y-10 pb-16">
-          {categories.map((category) => (
-            <li key={category.id}>
-              <Link
-                href={`/danh-muc/${category.slug}`}
-                className="text-lg font-semibold text-gray-900 leading-[150%] tracking-[-1%]"
-              >
-                {category.name}
-              </Link>
-              <ul className="mt-2 flex flex-col gap-3">
-                {category?.children?.map((item) => (
-                  <li key={item.id}>
-                    <Link
-                      className="text-gray-900 text-[15px] leading-[150%] tracking-[0%] font-normal"
-                      href={`/danh-muc/${item.slug}`}
-                    >
-                      {item.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </li>
-          ))}
+          {isOn(categories) &&
+            categories.map((category) => (
+              <li key={category.id}>
+                <Link
+                  href={`/danh-muc/${category.slug}`}
+                  className="text-lg font-semibold text-gray-900 leading-[150%] tracking-[-1%]"
+                >
+                  {category.name}
+                </Link>
+                <ul className="mt-2 flex flex-col gap-3">
+                  {category?.children?.map((item) => (
+                    <li key={item.id}>
+                      <Link
+                        className="text-gray-900 text-[15px] leading-[150%] tracking-[0%] font-normal"
+                        href={`/danh-muc/${item.slug}`}
+                      >
+                        {item.name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </li>
+            ))}
         </ul>
         <div className="pt-7 pb-7 md:border-t border-blue-200">
           <Link href="/">
@@ -115,11 +118,7 @@ const Footer: React.FC<FooterProps> = ({ categories }) => {
 
           <div className="md:grid grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 lg:grid-rows-2 pt-7 gap-4 hidden">
             <Link href="/" className="hidden xl:block row-span-2">
-              <img
-                src="/red-logo.svg"
-                alt="Logo"
-                className="w-[212px]"
-              />
+              <img src="/red-logo.svg" alt="Logo" className="w-[212px]" />
             </Link>
 
             {FOOTER_CONTACT_DATA?.map((item) => (
