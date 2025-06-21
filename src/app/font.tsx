@@ -1,4 +1,4 @@
-import { Roboto, Roboto_Mono, Anton } from "next/font/google";
+import { Roboto, Roboto_Mono, Anton, Playfair_Display } from "next/font/google";
 
 export const roboto = Roboto({
   weight: ["300", "400", "500", "600", "700", "900"],
@@ -15,5 +15,11 @@ export const robotoMono = Roboto_Mono({
 export const anton = Anton({
   weight: ["400"],
   variable: "--font-anton",
+  subsets: ["latin", "vietnamese"],
+});
+
+export const playfairDisplay = Playfair_Display({
+  weight: ["900", "400"],
+  variable: "--font-playfair-display",
   subsets: ["latin", "vietnamese"],
 });

@@ -4,6 +4,13 @@
 @custom-variant dark (&:is(.dark *));
 
 @layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+
   :root {
     --color-gray-50: #fafafa;
     --color-gray-100: #f5f5f5;
@@ -141,6 +148,9 @@ body {
 @theme {
   --font-anton: "Anton", sans-serif;
   --font-roboto: "Roboto", sans-serif;
+  --font-playfair-display: "Playfair Display", serif;
+  --color-stroke-light: #d9e4f2;
+  --text-xsm: 0.9375rem;
 }
 
 @theme inline {
@@ -248,13 +258,4 @@ body {
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
-}
-
-@layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
 }
