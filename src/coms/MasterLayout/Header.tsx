@@ -1,20 +1,35 @@
 import clsx from "clsx";
-import { IconList, IconMagnifyingGlass, IconUser } from "../Icon/light";
-import { IconHome, IconNewspaper, IconTelevisionSimple } from "../Icon/fill";
-import { CategoryTree } from "@/type/category";
+import { IconList, IconMagnifyingGlass, IconUser } from "@/coms/Icon/light";
+import {
+  IconHome,
+  IconNewspaper,
+  IconTelevisionSimple,
+} from "@/coms/Icon/fill";
+
+import {
+  NavMenu,
+  NavMenuContent,
+  NavMenuItem,
+  NavMenuLink,
+  NavMenuList,
+  NavMenuTrigger,
+  navigationMenuTriggerStyle,
+} from "@/shadcn/ui/nav-menu";
+import Link from "next/link";
+import { isOn } from "@/lib/utils";
 
 interface HeaderProps {
-  categories: CategoryTree[];
+  menuItems: any[];
 }
 
-const Header: React.FC<HeaderProps> = async ({ categories }) => {
+const Header: React.FC<HeaderProps> = async ({ menuItems }) => {
   return (
     <header className="bg-blue-700">
-      <div className="lg:container lg:py-2 mx-auto gap-8 flex overflow-hidden w-full">
+      <div className="container lg:py-2 mx-auto gap-8 flex w-full">
         <button className="hidden lg:block shrink-0">
           <img src="/logo.svg" alt="Logo" className="w-[248.62px]" />
         </button>
-        <div className="flex-1 overflow-hidden flex flex-col gap-1">
+        <div className="flex-1 flex flex-col gap-1">
           {/* Mobile Header */}
           <div className="grid grid-cols-[1fr_auto_1fr] py-2 border-b border-blue-600 lg:hidden">
             <MenuButton classNames="ms-1" />
@@ -45,23 +60,56 @@ const Header: React.FC<HeaderProps> = async ({ categories }) => {
           </div>
 
           {/* Nav */}
-          <nav className="border-b border-blue-700 flex items-center lg:gap-1.5">
-            <div className="bg-blue-700 w-[52px] h-[48px] lg:size-10 flex items-center gap-2 px-2 py-1.5">
-              <button className="size-full flex items-center justify-center">
-                <IconHome size={20} className="text-white/90" />
-              </button>
-            </div>
-            <div className="flex-1 overflow-x-auto no-scrollbar flex items-center gap-2.5 lg:gap-1.5">
-              {categories.map((category) => (
-                <button
-                  key={category.id}
-                  className="whitespace-nowrap size-full px-1 lg:px-2 lg:py-3 lg:font-bold text-base leading-[160%] tracking-[0%] align-middle text-white font-anton lg:font-roboto font-normal"
+          <NavMenu viewport={false}>
+            <NavMenuList>
+              <NavMenuItem>
+                <NavMenuLink
+                  className={`${navigationMenuTriggerStyle()} px-1`}
+                  href="/"
                 >
-                  {category.name}
-                </button>
-              ))}
-            </div>
-          </nav>
+                  <IconHome className="text-white" size={20} />
+                </NavMenuLink>
+              </NavMenuItem>
+              {menuItems.map((item) => {
+                return isOn(item.childrens) ? (
+                  <NavMenuItem key={item.id}>
+                    <NavMenuTrigger>
+                      <Link href={`/danh-muc/${item.attributes.category_slug}`}>
+                        {item.name}
+                      </Link>
+                    </NavMenuTrigger>
+                    <NavMenuContent>
+                      <ul className="min-w-36 flex flex-col gap-1">
+                        {item.childrens.map((child: any) => (
+                          <li key={child.id}>
+                            <NavMenuLink asChild>
+                              <Link
+                                href={`/danh-muc/${child.attributes.category_slug}`}
+                                className="truncate font-medium"
+                              >
+                                {child.name}
+                              </Link>
+                            </NavMenuLink>
+                          </li>
+                        ))}
+                      </ul>
+                    </NavMenuContent>
+                  </NavMenuItem>
+                ) : (
+                  <NavMenuItem key={item.id}>
+                    <NavMenuLink className={navigationMenuTriggerStyle()}>
+                      <Link
+                        href={`/danh-muc/${item.attributes.category_slug}`}
+                        className="text-white truncate"
+                      >
+                        {item.name}
+                      </Link>
+                    </NavMenuLink>
+                  </NavMenuItem>
+                );
+              })}
+            </NavMenuList>
+          </NavMenu>
         </div>
       </div>
     </header>
