@@ -12,7 +12,7 @@ const HighlightArticleCard: React.FC<HighlightArticleCardProps> = ({
       <img
         src="https://picsum.photos/300/200"
         alt="test"
-        className="w-full object-cover aspect-video lg:rounded-[8px]"
+        className="w-full object-cover aspect-video md:rounded-[8px]"
       />
       <div className="px-4 lg:px-6 flex flex-col gap-2.5 lg:gap-4">
         <h2 className="text-xl font-bold leading-[140%] text-gray-900 tracking-[-1%] lg:text-[2rem] lg:leading-[130%]">
