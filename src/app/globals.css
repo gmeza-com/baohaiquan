@@ -130,8 +130,17 @@ body {
   font-family: Roboto, Arial, Helvetica, sans-serif;
 }
 
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
+
 @theme {
   --font-anton: "Anton", sans-serif;
+  --font-roboto: "Roboto", sans-serif;
 }
 
 @theme inline {

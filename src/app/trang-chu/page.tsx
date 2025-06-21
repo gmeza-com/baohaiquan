@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 
 const HomePage = () => {
-  return <div>Chang chu moi ne</div>;
+  return <div className="h-[500px]">Chang chu moi ne</div>;
 };
 
 export default HomePage;

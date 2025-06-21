@@ -10,7 +10,7 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = async ({ categories }) => {
   return (
     <header className="bg-blue-700">
-      <div className="lg:container lg:px-4 lg:py-2 mx-auto gap-8 flex overflow-hidden w-full">
+      <div className="lg:container lg:py-2 mx-auto gap-8 flex overflow-hidden w-full">
         <button className="hidden lg:block shrink-0">
           <img src="/logo.svg" alt="Logo" className="w-[248.62px]" />
         </button>
@@ -31,11 +31,11 @@ const Header: React.FC<HeaderProps> = async ({ categories }) => {
 
           {/* Desktop Header */}
           <div className="hidden lg:flex justify-end items-center gap-1">
-            <button className="h-10 px-2.5 flex items-center gap-2 text-uppercase text-white font-normal text-base leading-[160%] tracking-[0%] align-middle">
+            <button className="h-10 px-2.5 flex items-center gap-2 uppercase text-white font-normal text-base leading-[160%] tracking-[0%] align-middle">
               <IconNewspaper size={20} className="text-white/90" />
               Báo In
             </button>
-            <button className="h-10 px-2.5 flex items-center gap-2 text-uppercase text-white font-normal text-base leading-[160%] tracking-[0%] align-middle">
+            <button className="h-10 px-2.5 flex items-center gap-2 uppercase text-white font-normal text-base leading-[160%] tracking-[0%] align-middle">
               <IconTelevisionSimple size={20} className="text-white/90" />
               Truyền hình
             </button>
@@ -51,11 +51,11 @@ const Header: React.FC<HeaderProps> = async ({ categories }) => {
                 <IconHome size={20} className="text-white/90" />
               </button>
             </div>
-            <div className="flex-1 overflow-x-auto flex items-center gap-2.5 lg:gap-1.5">
+            <div className="flex-1 overflow-x-auto no-scrollbar flex items-center gap-2.5 lg:gap-1.5">
               {categories.map((category) => (
                 <button
                   key={category.id}
-                  className="whitespace-nowrap size-full px-1 lg:px-2 lg:py-3 font-anton font-normal text-[15px] leading-[160%] tracking-[0%] align-middle text-white lg:text-lg"
+                  className="whitespace-nowrap size-full px-1 lg:px-2 lg:py-3 lg:font-bold text-base leading-[160%] tracking-[0%] align-middle text-white font-anton lg:font-roboto font-normal"
                 >
                   {category.name}
                 </button>
