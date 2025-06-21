@@ -130,6 +130,10 @@ body {
   font-family: Roboto, Arial, Helvetica, sans-serif;
 }
 
+@theme {
+  --font-anton: "Anton", sans-serif;
+}
+
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
