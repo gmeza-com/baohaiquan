@@ -82,7 +82,11 @@ const Header: React.FC<HeaderProps> = async ({ menuItems }) => {
                       <ul className="min-w-36 flex flex-col gap-1">
                         {item.childrens.map((child: any) => (
                           <li key={child.id}>
-                            <NavMenuLink asChild>
+                            <NavMenuLink
+                              asChild
+                              href={`/danh-muc/${child.attributes.category_slug}`}
+                              className="truncate font-medium"
+                            >
                               <Link
                                 href={`/danh-muc/${child.attributes.category_slug}`}
                                 className="truncate font-medium"
@@ -97,13 +101,11 @@ const Header: React.FC<HeaderProps> = async ({ menuItems }) => {
                   </NavMenuItem>
                 ) : (
                   <NavMenuItem key={item.id}>
-                    <NavMenuLink className={navigationMenuTriggerStyle()}>
-                      <Link
-                        href={`/danh-muc/${item.attributes.category_slug}`}
-                        className="text-white truncate"
-                      >
-                        {item.name}
-                      </Link>
+                    <NavMenuLink
+                      className={navigationMenuTriggerStyle()}
+                      href={`/danh-muc/${item.attributes.category_slug}`}
+                    >
+                      {item.name}
                     </NavMenuLink>
                   </NavMenuItem>
                 );

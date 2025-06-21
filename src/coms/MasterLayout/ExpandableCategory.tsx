@@ -1,7 +1,7 @@
 "use client";
 
 import { CategoryTree } from "@/type/category";
-import { IconCaretUp } from "../Icon/light";
+import { IconCaretDown } from "../Icon/light";
 import Link from "next/link";
 import { useState } from "react";
 import clsx from "clsx";
@@ -25,7 +25,7 @@ const ExpandableCategory: React.FC<ExpandableCategoryProps> = ({
           {category.name}
         </Link>
         {category?.children?.length > 0 && (
-          <IconCaretUp
+          <IconCaretDown
             onClick={() => setIsExpanded((prev) => !prev)}
             className={clsx(
               "text-gray-800 cursor-pointer transition-transform",

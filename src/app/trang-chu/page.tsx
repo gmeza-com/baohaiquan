@@ -1,7 +1,12 @@
+import HeadlineBlock from "@/coms/Home/HeadlineBlock";
 import { Metadata } from "next";
 
 const HomePage = () => {
-  return <div className="h-[500px]">Chang chu moi ne</div>;
+  return (
+    <div className="container">
+      <HeadlineBlock />
+    </div>
+  );
 };
 
 export default HomePage;
