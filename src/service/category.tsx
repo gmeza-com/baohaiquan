@@ -3,6 +3,22 @@ import { cleanSlug } from "@/lib/utils";
 import { ArticleProps } from "@/type/article";
 
 const CategoryService = {
+  getCatIdFromSlug: async (slug: string): Promise<number | null> => {
+    try {
+      slug = cleanSlug(slug);
+      if (!slug) throw new Error("Category slug is required");
+
+      return await db("post_category_languages")
+        .select("post_category_id")
+        .where("slug", slug)
+        .first()
+        .then((row) => row.post_category_id);
+    } catch (error) {
+      console.error("Error fetching category ID by slug:", error);
+    }
+    return null;
+  },
+
   /**
    * Fetches articles by category slug, new items first
    * @param slug - The slug of the category
@@ -20,18 +36,13 @@ const CategoryService = {
     excludeIds: number[] = []
   ): Promise<ArticleProps[]> => {
     try {
-      const cleanedSlug = cleanSlug(slug);
-      if (!cleanedSlug) throw new Error("Category slug is required");
-
       if (!db) throw new Error("Database connection is not initialized");
 
-      // fetch the category-id by slug
-      const catId = await db("post_category_languages")
-        .select("post_category_id")
-        .where("slug", cleanedSlug)
-        .first()
-        .then((row) => row.post_category_id);
+      slug = cleanSlug(slug);
+      if (!slug) throw new Error("Category slug is required");
 
+      // fetch the category-id by slug
+      const catId = await CategoryService.getCatIdFromSlug(slug);
       if (!catId) throw new Error("Category not found");
 
       // fetch articles in the category, excluding specified IDs
@@ -85,18 +96,13 @@ const CategoryService = {
     limit = 10
   ): Promise<ArticleProps[]> => {
     try {
-      const cleanedSlug = cleanSlug(slug);
-      if (!cleanedSlug) throw new Error("Category slug is required");
-
       if (!db) throw new Error("Database connection is not initialized");
 
-      // fetch the category-id by slug
-      const catId = await db("post_category_languages")
-        .select("post_category_id")
-        .where("slug", cleanedSlug)
-        .first()
-        .then((row) => row.post_category_id);
+      slug = cleanSlug(slug);
+      if (!slug) throw new Error("Category slug is required");
 
+      // fetch the category-id by slug
+      const catId = await CategoryService.getCatIdFromSlug(slug);
       if (!catId) throw new Error("Category not found");
 
       // fetch articles in the category, excluding specified IDs
@@ -145,18 +151,71 @@ const CategoryService = {
     return [];
   },
 
+  getMostReadByCategory: async (
+    slug: string,
+    limitStart = 0,
+    limit = 8
+  ): Promise<ArticleProps[]> => {
+    try {
+      if (!db) throw new Error("Database connection is not initialized");
+
+      slug = cleanSlug(slug);
+      if (!slug) throw new Error("Category slug is required");
+
+      // fetch the category-id by slug
+      const catId = await CategoryService.getCatIdFromSlug(slug);
+      if (!catId) throw new Error("Category not found");
+
+      // fetch articles in the category, excluding specified IDs
+      return await db("posts as p")
+        .join("post_languages as pl", "p.id", "pl.post_id")
+        .join("post_category as pc", "p.id", "pc.post_id")
+        .join("users as u", "p.user_id", "u.id")
+        .select(
+          "p.id",
+          "pl.slug",
+          "pl.name",
+          "pl.description",
+          "pl.tags",
+          "p.thumbnail",
+          "p.featured",
+          "p.published",
+          "p.published_at",
+          "p.created_at",
+          "p.updated_at",
+          "p.featured_started_at",
+          "p.featured_ended_at",
+          "p.user_id as author_id",
+          "u.name as author_name"
+        )
+        .where("pc.post_category_id", catId)
+        .andWhere("p.featured", 1)
+        .andWhere("p.published", 3)
+        .andWhere("p.published_at", "<=", new Date().toISOString())
+        .andWhere("p.hide", 0)
+        .andWhere("pl.locale", "vi")
+        .orderBy("p.hits", "desc")
+        .offset(limitStart)
+        .limit(limit);
+    } catch (error) {
+      console.error("Error fetching articles by category:", error);
+    }
+
+    return [];
+  },
+
   getCategoryInfo: async (slug: string) => {
     try {
-      const cleanedSlug = cleanSlug(slug);
-      if (!cleanedSlug) throw new Error("Category slug is required");
-
       if (!db) throw new Error("Database connection is not initialized");
+
+      slug = cleanSlug(slug);
+      if (!slug) throw new Error("Category slug is required");
 
       // fetch the category information by slug
       const category = await db("post_category_languages as pcl")
         .join("post_categories as pc", "pc.id", "pcl.post_category_id")
         .select("pcl.slug", "pcl.name", "pcl.description", "pc.thumbnail")
-        .where("pcl.slug", cleanedSlug)
+        .where("pcl.slug", slug)
         .andWhere("pcl.locale", "vi")
         .first();
 
