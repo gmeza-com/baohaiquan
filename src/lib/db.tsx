@@ -1,10 +1,12 @@
 import knex from "knex";
+const env = process.env;
 
-let db;
+declare global {
+  var db: knex.Knex | undefined;
+}
 
-if (!db) {
-  const env = process.env;
-  db = knex({
+if (!globalThis.db) {
+  globalThis.db = knex({
     client: "mysql2",
     connection: {
       host: env.DB_HOST,
@@ -16,4 +18,6 @@ if (!db) {
   });
 }
 
+// Export the global `db` instance
+const db: knex.Knex = globalThis.db;
 export default db;

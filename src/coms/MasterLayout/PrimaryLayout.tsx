@@ -16,7 +16,6 @@ const PrimaryLayout: React.FC<PrimaryLayoutProps> = async ({ children }) => {
 
     // categories
     categories = await categoriesAPI.getCategories();
-    console.log("categories", categories);
   } catch (error) {}
 
   return (

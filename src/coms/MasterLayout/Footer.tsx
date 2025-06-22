@@ -151,8 +151,13 @@ interface SocialIconProps {
 const SocialIcons: React.FC<SocialIconProps> = ({ className }) => {
   return (
     <div className={clsx("flex gap-1", className)}>
-      {SOCIAL_ICONS?.map((item) => (
-        <Link href={item.href} target="_blank" className="size-7 rounded-full">
+      {SOCIAL_ICONS?.map((item, idx) => (
+        <Link
+          key={idx}
+          href={item.href}
+          target="_blank"
+          className="size-7 rounded-full"
+        >
           <img
             src={item.icon}
             alt={item.alt}

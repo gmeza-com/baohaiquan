@@ -13,6 +13,9 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  images: {
+    domains: ["baohaiquanvietnam.vn"], // Add the domain here
+  },
 };
 
 export default nextConfig;
