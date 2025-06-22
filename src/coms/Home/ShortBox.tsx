@@ -17,7 +17,7 @@ const ShortBox = () => {
 
   return (
     <div className="home-container mx-auto">
-      <div className="px-4 md:px-0 border-t border-blue-200 pt-9 pb-11">
+      <div className="px-4 md:px-0 border-t border-blue-200 pt-9 pb-11 lg:pb-[71.8px] lg:pt-[60px]">
         <div className="flex items-center justify-between gap-4 md:gap-9">
           <DecorTitle title="chính trị" className="shrink-0" />
           <div className="items-center gap-3 flex-1 overflow-x-auto hidden lg:flex">

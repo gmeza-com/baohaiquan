@@ -1,4 +1,6 @@
+import DefenseSecurityBox from "@/coms/Home/DefenseSecurityBox";
 import HeadlineBlock from "@/coms/Home/HeadlineBlock";
+import MediaBox from "@/coms/Home/MediaBox";
 import ShortBox from "@/coms/Home/ShortBox";
 import { Metadata } from "next";
 
@@ -7,7 +9,7 @@ const HomePage = () => {
     <div className="">
       <div>
         <HeadlineBlock />
-        <div className="home-container hidden md:block !pt-4 !pb-16 mx-auto">
+        <div className="home-container pt-4 pb-16 mx-auto">
           <img
             src="/images/home/hero-banner.webp"
             alt="banner"
@@ -15,6 +17,15 @@ const HomePage = () => {
           />
         </div>
         <ShortBox />
+        <div className="home-container mx-auto pb-10 md:pb-[72px]">
+          <img
+            src="/images/home/hero-banner-2.webp"
+            alt="banner"
+            className="w-full md:rounded-[12px]"
+          />
+        </div>
+        <DefenseSecurityBox />
+        <MediaBox />
       </div>
     </div>
   );

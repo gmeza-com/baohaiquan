@@ -182,7 +182,9 @@ body {
   --font-anton: "Anton", sans-serif;
   --font-roboto: "Roboto", sans-serif;
   --font-playfair-display: "Playfair Display", serif;
+
   --color-stroke-light: #d9e4f2;
+  --color-branch-default: #edf5fc;
   --text-xsm: 0.9375rem;
   --breakpoint-xlg: 75rem;
   --breakpoint-xxl: 82.5rem;
