@@ -3,7 +3,7 @@ import { Metadata } from "next";
 
 const HomePage = () => {
   return (
-    <div className="container">
+    <div className="">
       <HeadlineBlock />
     </div>
   );

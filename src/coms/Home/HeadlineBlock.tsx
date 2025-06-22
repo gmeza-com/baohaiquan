@@ -1,5 +1,6 @@
 import DecorTitle from "./DecorTitle";
 import HighlightArticleCard from "./HighlightArtileCard";
+import HighlightArticleCarousel from "./HighlightArticleCarousel";
 
 const HeadlineBlock: React.FC = () => {
   return (
@@ -37,7 +38,10 @@ const HeadlineBlock: React.FC = () => {
         </div>
       </div>
       <div className="row-start-1 pb-9 md:col-span-2 xl:col-span-2 xl:col-start-2">
-        <HighlightArticleCard />
+        <HighlightArticleCard className="md:hidden" />
+        <div className="hidden md:block">
+          <HighlightArticleCarousel />
+        </div>
       </div>
       <div className="py-9 px-4 border-t border-stroke-light xl:p-0 xl:border-t-0 md:pe-0 md:ps-6">
         <DecorTitle title="Tin mới" />
