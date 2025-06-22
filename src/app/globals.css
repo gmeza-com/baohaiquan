@@ -95,14 +95,29 @@
 }
 
 @layer utilities {
+  .mask-gradient {
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 100%);
+    mask-image: linear-gradient(to bottom, transparent 0%, black 100%);
+  }
+
   .container {
     margin: 0 auto;
     padding: 1rem;
   }
 
+  .home-container {
+    @apply container;
+  }
+
   @media (min-width: 640px) {
     .container {
       padding: 0.5rem;
+      max-width: 30rem;
+    }
+
+    .home-container {
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
       max-width: 30rem;
     }
   }
@@ -112,10 +127,20 @@
       padding: 0.75rem;
       max-width: 48rem;
     }
+
+    .home-container {
+      padding-left: 0.75rem;
+      padding-right: 0.75rem;
+      max-width: 48rem;
+    }
   }
 
   @media (min-width: 1024px) {
     .container {
+      max-width: 64rem;
+    }
+
+    .home-container {
       max-width: 64rem;
     }
   }
@@ -124,10 +149,18 @@
     .container {
       max-width: 75rem;
     }
+
+    .home-container {
+      max-width: 75rem;
+    }
   }
 
   @media (min-width: 1320px) {
     .container {
+      max-width: 82.5rem;
+    }
+
+    .home-container {
       max-width: 82.5rem;
     }
   }
