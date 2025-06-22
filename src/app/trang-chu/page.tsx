@@ -1,5 +1,6 @@
 import DefenseSecurityBox from "@/coms/Home/DefenseSecurityBox";
 import HeadlineBlock from "@/coms/Home/HeadlineBlock";
+import MediaBox from "@/coms/Home/MediaBox";
 import ShortBox from "@/coms/Home/ShortBox";
 import { Metadata } from "next";
 
@@ -24,6 +25,7 @@ const HomePage = () => {
           />
         </div>
         <DefenseSecurityBox />
+        <MediaBox />
       </div>
     </div>
   );
