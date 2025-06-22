@@ -1,0 +1,99 @@
+"use client";
+
+import {
+  Carousel,
+  CarouselApi,
+  CarouselContent,
+  CarouselItem,
+} from "@/shadcn/ui/carousel";
+import HighlightArticleCard from "./HighlightArtileCard";
+import React, { useState } from "react";
+import clsx from "clsx";
+import { IconCaretRight } from "../Icon/light";
+
+const HighlightArticleCarousel: React.FC = () => {
+  const [api, setApi] = React.useState<CarouselApi>();
+  const [count, setCount] = useState(0);
+  const [current, setCurrent] = useState(0);
+
+  React.useEffect(() => {
+    if (!api) {
+      return;
+    }
+
+    setCount(api.scrollSnapList().length);
+    setCurrent(api.selectedScrollSnap() + 1);
+
+    api.on("select", () => {
+      setCurrent(api.selectedScrollSnap() + 1);
+    });
+  }, [api]);
+
+  return (
+    <div className="pb-16 relative">
+      <Carousel
+        setApi={setApi}
+        opts={{
+          loop: true,
+        }}
+      >
+        <CarouselContent>
+          {Array.from({ length: 10 }).map((_, index) => (
+            <CarouselItem key={index}>
+              <HighlightArticleCard />
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+      </Carousel>
+
+      <div className="absolute top-0 left-0 w-full aspect-video pointer-events-none">
+        <NavButton
+          onClick={() => api?.scrollPrev()}
+          isLeft
+          className="absolute top-1/2 left-3 -translate-y-1/2"
+        />
+        <NavButton
+          onClick={() => api?.scrollNext()}
+          className="absolute top-1/2 right-3 -translate-y-1/2"
+        />
+      </div>
+
+      <div className="absolute bottom-5 left-0 w-full flex justify-center items-center gap-1.5 mt-4">
+        {Array.from({ length: count }).map((_, index) => (
+          <div
+            key={index}
+            className={clsx(
+              "rounded-full h-0.5 w-7",
+              current === index + 1 ? "bg-blue-600" : "bg-blue-200"
+            )}
+          />
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default HighlightArticleCarousel;
+
+interface NavButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  className?: string;
+  isLeft?: boolean;
+}
+
+const NavButton: React.FC<NavButtonProps> = ({
+  className,
+  isLeft,
+  ...props
+}) => {
+  return (
+    <button
+      {...props}
+      className={clsx(
+        "size-10 flex items-center justify-center bg-white border-[1.25px] rounded-full border-blue-200 text-blue-700 cursor-pointer pointer-events-auto",
+        className
+      )}
+    >
+      <IconCaretRight size={20} className={clsx(isLeft && "rotate-180")} />
+    </button>
+  );
+};
