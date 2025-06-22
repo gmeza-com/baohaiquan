@@ -24,7 +24,7 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = async ({ menuItems }) => {
   return (
-    <header className="bg-blue-700 overflow-hidden max-w-screen">
+    <header className="bg-blue-700 max-w-screen">
       <div className="container lg:py-2 mx-auto gap-8 flex w-full">
         <button className="hidden lg:block shrink-0">
           <img src="/logo.svg" alt="Logo" className="w-[248.62px]" />
