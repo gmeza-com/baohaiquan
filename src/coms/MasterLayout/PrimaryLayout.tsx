@@ -2,7 +2,7 @@ import { PropsWithChildren } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
 import { categoriesAPI } from "@/lib/api";
-import { rest } from "@/lib/rest";
+import MenuService from "@/service/menu";
 
 interface PrimaryLayoutProps extends PropsWithChildren {}
 
@@ -11,8 +11,7 @@ const PrimaryLayout: React.FC<PrimaryLayoutProps> = async ({ children }) => {
   let categories: any;
   try {
     // menu items
-    const { data, status } = await rest.get("/menu-items");
-    if (status === 200) menuItems = data;
+    menuItems = await MenuService.getMenuItems();
 
     // categories
     categories = await categoriesAPI.getCategories();

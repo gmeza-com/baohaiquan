@@ -1,5 +1,6 @@
 import { Category, CategoryTree } from "@/type/category";
 import { clsx, type ClassValue } from "clsx";
+import { NextRequest } from "next/server";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
@@ -14,6 +15,39 @@ export function cleanSlug(slug: string): string {
 }
 
 export const isSsr = (): boolean => typeof window === "undefined";
+
+export const clean = async (request: NextRequest) => {
+  const params: { [prop: string]: any } = {};
+
+  // first, parse the searchParams (GET)
+  try {
+    const searchParams = request.nextUrl.searchParams;
+    searchParams.forEach((value, key) => {
+      const val = searchParams.getAll(key);
+      return (params[key] =
+        Array.isArray(val) && val.length > 1 ? val : value.trim());
+    });
+  } catch (error) {}
+
+  // then, parse the body (POST, PUT)
+  try {
+    const data = (await request.clone().formData()).entries();
+    for (let [k, value] of data)
+      params[k] = typeof value === "string" ? value.trim() : value;
+  } catch (error) {}
+
+  // then, parse the body json (POST, PUT)
+  try {
+    const body = await request.json();
+    isOn(body) &&
+      Object.keys(body).forEach(
+        (k) =>
+          (params[k] = typeof body[k] === "string" ? body[k].trim() : body[k])
+      );
+  } catch (error) {}
+
+  return params;
+};
 
 export function isOn(el: any | undefined): boolean {
   let elType = typeof el;
