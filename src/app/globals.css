@@ -261,3 +261,30 @@ body {
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
 }
+
+/* -- customize article display ---------------------- */
+div.article-wrapper {
+  padding-bottom: 2rem;
+}
+div.article-wrapper img {
+  max-width: 860px;
+  height: auto;
+  width: 860px !important;
+  border-radius: var(--radius);
+  background-color: var(--color-gray-200);
+  margin-left: -146px !important;
+  border: solid 1px var(--color-white);
+}
+
+@media (max-width: 879px) {
+  div.article-wrapper img {
+    margin-left: 0;
+    width: 100%;
+  }
+}
+
+div.article-wrapper p {
+  margin: 2rem auto;
+  max-width: 568px;
+}
+/* -- end customize article display ------------------ */

@@ -1,6 +1,6 @@
 import db from "@/lib/db";
 import { cleanSlug } from "@/lib/utils";
-import { ArticleProps } from "@/type/article";
+import { ArticleProps, CategoryProps } from "@/type/article";
 
 const CategoryService = {
   getCatIdFromSlug: async (slug: string): Promise<number | null> => {
@@ -14,9 +14,9 @@ const CategoryService = {
         .first()
         .then((row) => row.post_category_id);
     } catch (error) {
-      console.error("Error fetching category ID by slug:", error);
+      console.error("getCatIdFromSlug:", error);
+      return null;
     }
-    return null;
   },
 
   /**
@@ -83,10 +83,9 @@ const CategoryService = {
         .offset(limitStart)
         .limit(limit);
     } catch (error) {
-      console.error("Error fetching articles by category:", error);
+      console.error("getPostsByCategory:", error);
+      return [];
     }
-
-    return [];
   },
 
   getFeaturedsByCategory: async (
@@ -145,10 +144,9 @@ const CategoryService = {
         .offset(limitStart)
         .limit(limit);
     } catch (error) {
-      console.error("Error fetching articles by category:", error);
+      console.error("getFeaturedsByCategory:", error);
+      return [];
     }
-
-    return [];
   },
 
   getMostReadByCategory: async (
@@ -198,13 +196,12 @@ const CategoryService = {
         .offset(limitStart)
         .limit(limit);
     } catch (error) {
-      console.error("Error fetching articles by category:", error);
+      console.error("getMostReadByCategory:", error);
+      return [];
     }
-
-    return [];
   },
 
-  getCategoryInfo: async (slug: string) => {
+  getCategoryInfo: async (slug: string): Promise<CategoryProps | null> => {
     try {
       if (!db) throw new Error("Database connection is not initialized");
 
@@ -214,17 +211,22 @@ const CategoryService = {
       // fetch the category information by slug
       const category = await db("post_category_languages as pcl")
         .join("post_categories as pc", "pc.id", "pcl.post_category_id")
-        .select("pcl.slug", "pcl.name", "pcl.description", "pc.thumbnail")
+        .select(
+          "pc.id",
+          "pcl.slug",
+          "pcl.name",
+          "pcl.description",
+          "pc.thumbnail"
+        )
         .where("pcl.slug", slug)
         .andWhere("pcl.locale", "vi")
         .first();
 
       return category || null;
     } catch (error) {
-      console.error("Error fetching category info:", error);
+      console.error("getCategoryInfo:", error);
+      return null;
     }
-
-    return null;
   },
 };
 

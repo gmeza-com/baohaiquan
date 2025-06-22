@@ -5,14 +5,14 @@ import { cleanSlug, isOn } from "@/lib/utils";
 import CategoryService from "@/service/category";
 import { ArticleProps } from "@/type/article";
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { slug: string };
-}) {
-  let { slug } = params;
+type PageProps = { params: Promise<{ slug: string }> };
+
+export async function generateMetadata({ params }: PageProps) {
   try {
+    let { slug } = await params;
     slug = cleanSlug(slug);
+    if (!slug) throw new Error("Slug is required");
+
     // Fetch category information
     const info = await CategoryService.getCategoryInfo(slug);
 
@@ -28,11 +28,7 @@ export async function generateMetadata({
   };
 }
 
-const DanhMucPage = async ({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) => {
+const DanhMucPage = async ({ params }: PageProps) => {
   let features: ArticleProps[] = [];
   let articles: ArticleProps[] = [];
   let excludeIds: number[] = [];

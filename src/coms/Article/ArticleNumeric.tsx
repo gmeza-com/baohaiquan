@@ -14,7 +14,7 @@ const ArticleNumeric: React.FC<{ post: ArticleProps; num: number }> = ({
       </div>
       <Link
         href={`/tin-tuc/${post.slug}`}
-        className="font-semibold text-gray-900 tracking-[-1%] leading-[150%] lg:text-xsm"
+        className="font-semibold text-gray-900 tracking-[-1%] leading-[150%] lg:text-xsm line-clamp-4"
       >
         {post.name}
       </Link>

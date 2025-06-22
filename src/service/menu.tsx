@@ -81,10 +81,9 @@ const MenuService = {
 
       return items;
     } catch (error) {
-      console.log("Error fetching menu items:", error);
+      console.log("getMenuItems:", error);
+      return [];
     }
-
-    return [];
   },
 };
 

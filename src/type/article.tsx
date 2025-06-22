@@ -6,6 +6,7 @@ export type ArticleProps = {
   thumbnail: string;
   tags: string | null;
   featured: 0 | 1;
+  content?: string;
   published_at: string;
   published: number;
   created_at: string;
@@ -14,4 +15,12 @@ export type ArticleProps = {
   featured_ended_at: string | null;
   author_id: number;
   author_name: string;
+};
+
+export type CategoryProps = {
+  id: number;
+  slug: string;
+  name: string;
+  description: string;
+  thumbnail: string | null;
 };

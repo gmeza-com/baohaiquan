@@ -16,6 +16,8 @@ export function cleanSlug(slug: string): string {
 
 export const isSsr = (): boolean => typeof window === "undefined";
 
+export const stripHtml = (str: string): string => str.replace(/<[^>]*>?/gm, "");
+
 export const clean = async (request: NextRequest) => {
   const params: { [prop: string]: any } = {};
 
