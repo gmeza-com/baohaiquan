@@ -1,10 +1,21 @@
 import HeadlineBlock from "@/coms/Home/HeadlineBlock";
+import ShortBox from "@/coms/Home/ShortBox";
 import { Metadata } from "next";
 
 const HomePage = () => {
   return (
     <div className="">
-      <HeadlineBlock />
+      <div>
+        <HeadlineBlock />
+        <div className="home-container hidden md:block !pt-4 !pb-16 mx-auto">
+          <img
+            src="/images/home/hero-banner.webp"
+            alt="banner"
+            className="w-full max-w-[50rem] mx-auto"
+          />
+        </div>
+        <ShortBox />
+      </div>
     </div>
   );
 };
