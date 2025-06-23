@@ -21,7 +21,7 @@ const PodcastBox = () => {
       <div className="px-4">
         <div className="flex justify-between items-center">
           <DecorTitle title="podcast" />
-          <div className="flex items-center gap-2">
+          <div className="items-center gap-2 hidden md:flex">
             <NavButton onClick={() => api?.scrollPrev()} />
             <NavButton isRight onClick={() => api?.scrollNext()} />
           </div>
@@ -42,7 +42,9 @@ const PodcastBox = () => {
             {Array.from({ length: 15 }).map((_, index) => (
               <CarouselItem
                 key={index}
-                className={clsx("md:basis-2/5 lg:basis-2/7 xl:basis-1/4 xl:pl-6")}
+                className={clsx(
+                  "md:basis-2/5 lg:basis-2/7 xl:basis-1/4 xl:pl-6"
+                )}
               >
                 <PodcastCard
                   key={index}

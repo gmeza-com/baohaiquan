@@ -6,6 +6,7 @@ import MediaBox from "@/coms/Home/MediaBox";
 import MixNewsBox from "@/coms/Home/MixNewsBox";
 import NavyMediaBox from "@/coms/Home/NavyMediaBox";
 import NavyNewspaperBox from "@/coms/Home/NavyNewspaperBox";
+import NavyTVBox from "@/coms/Home/NavyTVBox";
 import PodcastBox from "@/coms/Home/PodcastBox";
 import ShortBox from "@/coms/Home/ShortBox";
 import TrendingNewsBox from "@/coms/Home/TrendingNewsBox";
@@ -75,6 +76,7 @@ const HomePage = () => {
           </div>
         </div>
         <PodcastBox />
+        <NavyTVBox />
       </div>
       <ShortBox />
       <div className="container mx-auto pb-10 md:pb-[72px]">
