@@ -1,6 +1,7 @@
 import DecorTitle from "./DecorTitle";
 import HighlightArticleCard from "./HighlightArtileCard";
 import HighlightArticleCarousel from "./HighlightArticleCarousel";
+import ArticleRankItem from "./ArticleRankItem";
 
 const HeadlineBlock: React.FC = () => {
   return (
@@ -48,20 +49,11 @@ const HeadlineBlock: React.FC = () => {
           <DecorTitle title="Tin mới" />
           <div className="flex flex-col divide-y divide-stroke-light divide-dashed">
             {Array.from({ length: 6 })?.map((item, index) => (
-              <div
+              <ArticleRankItem
                 key={index}
-                className="pt-3 pb-4 pe-1 flex items-center gap-7"
-              >
-                <span className="font-playfair-display text-7xl -mt-5">
-                  <div className="w-8 flex justify-center items-center text-[#A5C5E6]">
-                    {index + 1}
-                  </div>
-                </span>
-                <p className="font-semibold text-gray-900 tracking-[-1%] leading-[150%] lg:text-xsm line-clamp-3">
-                  50 năm Đại thắng mùa xuân 1975: Xây dựng quyết tâm cho bộ đội
-                  trong trận quyết chiến chiến lược
-                </p>
-              </div>
+                number={index + 1}
+                title="Cảnh giác thủ đoạn dụ dỗ tham gia đầu tư tài chính, chứng khoán, tiền ảo trên không gian mạng"
+              />
             ))}
           </div>
         </div>

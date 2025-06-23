@@ -3,7 +3,7 @@ import DecorTitle from "./DecorTitle";
 
 const MediaBox = () => {
   return (
-    <div className="home-container mx-auto">
+    <div className="home-container mx-auto mb-10 lg:mb-24">
       <div className="bg-branch-default py-9 px-4 lg:px-7 lg:pt-8 lg:pb-10 md:rounded-3xl">
         <DecorTitle title="Đa phương tiện" />
         <div className="mt-5 flex flex-col gap-5 md:grid md:grid-cols-2 lg:mt-10 xl:gap-12 ">
