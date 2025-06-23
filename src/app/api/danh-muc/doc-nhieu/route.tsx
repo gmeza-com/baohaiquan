@@ -20,12 +20,10 @@ export async function GET(request: NextRequest) {
       : [];
 
     // query database for posts
-    const data = await CategoryService.getPostsByCategory(
+    const data = await CategoryService.getMostReadByCategory(
       slug,
       offset,
-      limit,
-      false,
-      excludes
+      limit
     );
 
     return NextResponse.json({ data }, { status: 200 });

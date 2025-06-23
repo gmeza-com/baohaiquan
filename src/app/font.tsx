@@ -1,4 +1,4 @@
-import { Roboto, Roboto_Mono, Anton, Playfair_Display } from "next/font/google";
+import { Roboto, Anton, Oswald, Playfair_Display } from "next/font/google";
 
 export const roboto = Roboto({
   weight: ["300", "400", "500", "600", "700", "900"],
@@ -6,9 +6,15 @@ export const roboto = Roboto({
   subsets: ["latin", "vietnamese"],
 });
 
-export const robotoMono = Roboto_Mono({
-  weight: ["300", "400", "500", "600", "700"],
-  variable: "--font-roboto-mono",
+// export const robotoMono = Roboto_Mono({
+//   weight: ["300", "400", "500", "600", "700"],
+//   variable: "--font-roboto-mono",
+//   subsets: ["latin", "vietnamese"],
+// });
+
+export const oswald = Oswald({
+  weight: ["400", "500"],
+  variable: "--font-oswald",
   subsets: ["latin", "vietnamese"],
 });
 

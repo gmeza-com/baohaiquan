@@ -15,11 +15,17 @@ export async function generateMetadata({ params }: PageProps) {
     // Fetch category information
     const post = await PostService.getPostFromSlug(slug);
 
-    if (post) return { title: post.name, description: post.description };
+    if (post)
+      return {
+        title: post.name,
+        description: post.description,
+        icons: { icon: "/favicon.ico" },
+      };
   } catch (error) {
     return {
       title: "Báo Hải Quân Việt Nam",
       description: "Chuyên Trang Báo Chính Thức Của Hải Quân Nhân Dân Việt Nam",
+      icons: { icon: "/favicon.ico" },
     };
   }
 }
@@ -34,6 +40,11 @@ const TinTucPage = async ({ params }: PageProps) => {
 
     post = await PostService.getPostFromSlug(slug);
     cat = await PostService.getCategoryOfPost(slug);
+
+    // increment view count
+    if (post && post.id) {
+      await PostService.increaseViewCount(post.id);
+    }
   } catch (error) {}
 
   return (

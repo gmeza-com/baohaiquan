@@ -1,6 +1,7 @@
 import CategoryArticles from "@/coms/Block/CategoryArticles";
 import CategoryFeature from "@/coms/Block/CategoryFeature";
 import CategoryMostRead from "@/coms/Block/CategoryMostRead";
+import DecorTitle from "@/coms/Home/DecorTitle";
 import { cleanSlug, isOn } from "@/lib/utils";
 import CategoryService from "@/service/category";
 import { ArticleProps } from "@/type/article";
@@ -16,7 +17,12 @@ export async function generateMetadata({ params }: PageProps) {
     // Fetch category information
     const info = await CategoryService.getCategoryInfo(slug);
 
-    if (info) return { title: info.name, description: info.description };
+    if (info)
+      return {
+        title: info.name,
+        description: info.description,
+        icons: { icon: "/favicon.ico" },
+      };
   } catch (error) {
     console.error("Error fetching metadata:", error);
   }
@@ -25,6 +31,7 @@ export async function generateMetadata({ params }: PageProps) {
   return {
     title: "Báo Hải Quân Việt Nam",
     description: "Chuyên Trang Báo Chính Thức Của Hải Quân Nhân Dân Việt Nam",
+    icons: { icon: "/favicon.ico" },
   };
 }
 
@@ -70,7 +77,11 @@ const DanhMucPage = async ({ params }: PageProps) => {
             slug={slug}
           />
         </div>
-        <div className="hidden lg:block lg:col-span-1">banners</div>
+        <div className="hidden lg:block lg:col-span-1">
+          <div className="sticky top-6">
+            <DecorTitle title="Đọc Báo In" className="mb-6" />
+          </div>
+        </div>
         <div className="md:col-span-4 lg:hidden">
           <CategoryMostRead slug={slug} quantity={8} />
         </div>

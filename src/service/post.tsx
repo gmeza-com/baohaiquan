@@ -70,6 +70,17 @@ const PostService = {
       return null;
     }
   },
+
+  increaseViewCount: async (postId: number): Promise<void> => {
+    try {
+      if (!db) throw new Error("Database connection is not initialized");
+      if (!postId) throw new Error("Post ID is required");
+
+      await db("posts").where("id", postId).increment("hits", 1);
+    } catch (error) {
+      console.error("increaseViewCount:", error);
+    }
+  },
 };
 
 export default PostService;
