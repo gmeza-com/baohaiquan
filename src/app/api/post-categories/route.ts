@@ -7,7 +7,8 @@ export async function GET(request: NextRequest) {
   try {
     const categories = await db("post_categories as pcs")
       .select("pcs.id", "pcl.name", "pcl.slug", "pcs.parent_id")
-      .join("post_category_languages as pcl", "pcl.post_category_id", "pcs.id");
+      .join("post_category_languages as pcl", "pcl.post_category_id", "pcs.id")
+      .where("pcs.published", 1);
 
     // Convert to tree structure
     const categoryTree = getCategoryTree(categories as Category[]);

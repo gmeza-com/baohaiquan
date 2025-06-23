@@ -144,5 +144,5 @@ export function sortCategoryTree(categories: CategoryTree[]): CategoryTree[] {
  */
 export function getCategoryTree(categories: Category[]): CategoryTree[] {
   const tree = convertToCategoryTree(categories);
-  return sortCategoryTree(tree);
+  return tree;
 }
