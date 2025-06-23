@@ -6,6 +6,7 @@ import MediaBox from "@/coms/Home/MediaBox";
 import MixNewsBox from "@/coms/Home/MixNewsBox";
 import NavyMediaBox from "@/coms/Home/NavyMediaBox";
 import NavyNewspaperBox from "@/coms/Home/NavyNewspaperBox";
+import PodcastBox from "@/coms/Home/PodcastBox";
 import ShortBox from "@/coms/Home/ShortBox";
 import TrendingNewsBox from "@/coms/Home/TrendingNewsBox";
 import { Metadata } from "next";
@@ -73,6 +74,7 @@ const HomePage = () => {
             </div>
           </div>
         </div>
+        <PodcastBox />
       </div>
     </div>
   );

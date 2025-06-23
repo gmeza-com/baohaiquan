@@ -11,6 +11,7 @@ import {
   CarouselApi,
 } from "@/shadcn/ui/carousel";
 import React from "react";
+import NavButton from "./NavButton";
 
 const ShortBox = () => {
   const [api, setApi] = React.useState<CarouselApi>();
@@ -91,21 +92,6 @@ const TabButton: React.FC = () => {
   return (
     <button className="whitespace-nowrap h-9 px-4 rounded-full border border-blue-200 text-blue-700 font-semibold text-xsm leading-[160%] tracking-[0%]">
       Bảo vệ nền tảng tư tưởng của Đảng
-    </button>
-  );
-};
-
-interface NavButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  isRight?: boolean;
-}
-
-const NavButton: React.FC<NavButtonProps> = ({ isRight, ...props }) => {
-  return (
-    <button
-      {...props}
-      className="size-9 bg-blue-100/65 rounded-full flex items-center justify-center text-blue-700"
-    >
-      <IconCaretLeft size={20} className={clsx(isRight && "rotate-180")} />
     </button>
   );
 };
