@@ -26,7 +26,7 @@ const ShortBox = () => {
               <TabButton key={index} />
             ))}
           </div>
-          <div className="flex items-center gap-2">
+          <div className="items-center gap-2 hidden md:flex">
             <NavButton onClick={() => api?.scrollPrev()} />
             <NavButton isRight onClick={() => api?.scrollNext()} />
           </div>
