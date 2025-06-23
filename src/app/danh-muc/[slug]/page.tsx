@@ -82,7 +82,7 @@ const DanhMucPage = async ({ params }: PageProps) => {
             <DecorTitle title="Đọc Báo In" className="mb-6" />
           </div>
         </div>
-        <div className="md:col-span-4 lg:hidden">
+        <div className="col-span-4 lg:hidden">
           <CategoryMostRead slug={slug} quantity={8} />
         </div>
       </div>
