@@ -36,7 +36,7 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = async ({ menuItems }) => {
   return (
-    <header className="bg-blue-700 max-w-screen">
+    <header className="bg-blue-700 max-w-screen sticky top-0 z-40 lg:static">
       <div className="container mx-auto gap-12 flex w-full">
         <Link href="/" className="hidden shrink-0 items-end xl:flex pb-1">
           <img
@@ -203,7 +203,7 @@ const MenuButton: React.FC<{ data: any[] }> = ({ data }) => {
               </DropdownMenuPortal>
             </DropdownMenuSub>
           ) : (
-            <DropdownMenuItem>
+            <DropdownMenuItem key={idx}>
               <Link href={`/danh-muc/${item.attributes.category_slug}`}>
                 {item.name}
               </Link>
@@ -212,8 +212,12 @@ const MenuButton: React.FC<{ data: any[] }> = ({ data }) => {
         })}
 
         <DropdownMenuSeparator />
-        <DropdownMenuItem>Báo In</DropdownMenuItem>
-        <DropdownMenuItem>Truyền Hình Hải Quân</DropdownMenuItem>
+        <DropdownMenuItem>
+          <Link href="/bao-in-hai-quan-3d">Báo In</Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem>
+          <Link href="/truyen-hinh-hai-quan">Truyền Hình Hải Quân</Link>
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
