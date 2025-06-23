@@ -17,8 +17,8 @@ const PodcastBox = () => {
   const [api, setApi] = React.useState<CarouselApi>();
 
   return (
-    <div className="home-container mx-auto py-9 xl:pt-14 xl:pb-24 border-t border-blue-200">
-      <div className="px-4">
+    <div className="home-container mx-auto">
+      <div className="px-4 md:px-0  py-9 xl:pt-14 xl:pb-24 border-t border-blue-200">
         <div className="flex justify-between items-center">
           <DecorTitle title="podcast" />
           <div className="items-center gap-2 hidden md:flex">
@@ -38,7 +38,7 @@ const PodcastBox = () => {
           ))}
         </div>
         <Carousel className="md:mt-8 xl:mt-10 hidden md:block" setApi={setApi}>
-          <CarouselContent>
+          <CarouselContent className="xl:-ml-6">
             {Array.from({ length: 15 }).map((_, index) => (
               <CarouselItem
                 key={index}

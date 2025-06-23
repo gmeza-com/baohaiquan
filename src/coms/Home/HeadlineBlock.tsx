@@ -5,7 +5,7 @@ import ArticleRankItem from "./ArticleRankItem";
 
 const HeadlineBlock: React.FC = () => {
   return (
-    <div className="mx-auto">
+    <div className="home-container mx-auto">
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 xl:gap-12 lg:pb-10 xl:pt-7 md:pt-3">
         <div className="py-9 px-4 border-t border-stroke-light xl:p-0 xl:border-t-0 md:ps-0 md:pe-6">
           <DecorTitle title="tiêu điểm" />

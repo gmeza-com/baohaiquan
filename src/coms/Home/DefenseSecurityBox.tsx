@@ -4,10 +4,10 @@ import ArticleCard, { ArticleCardProps } from "../common/ArticleCard";
 
 const DefenseSecurityBox = () => {
   return (
-    <div className="home-container mx-auto ">
+    <div className="home-container mx-auto">
       <div className="px-4 md:px-0 py-9 lg:pt-[3.75rem] lg:pb-[6.25rem] border-t border-blue-200">
         <DecorTitle title="Quốc phòng - An ninh" />
-        <div className="mt-5 xl:mt-10 flex flex-col gap-3 md:gap-6 xl:gap-12 md:grid md:grid-cols-2 lg:grid-cols-5 xl:grid-cols-12 divide-y divide-blue-200 divide-dashed md:divide-none">
+        <div className="mt-5 lg:mt-8 xl:mt-10 flex flex-col gap-3 md:gap-6 xl:gap-12 md:grid md:grid-cols-2 lg:grid-cols-5 xl:grid-cols-12 divide-y divide-blue-200 divide-dashed md:divide-none">
           <ArticleCard
             title="Khối thi đua số 2, Vùng 3: Hội nghị sơ kết công tác thi đua khen thưởng 6 tháng đầu năm 2025"
             description="Sáng 26/5, tại Lữ đoàn 172 (Đà Nẵng) khối thi đua số 2 (khối cấp trung, lữ đoàn và tương đương) Vùng 3 Hải quân tổ chức Hội nghị sơ kết công tác thi đua khen thưởng (TĐKT) và phong trào thi đua quyết thắng (TĐQT) 6 tháng đầu năm 2025."
