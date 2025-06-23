@@ -12,20 +12,32 @@ import {
 } from "@/shadcn/ui/carousel";
 import React from "react";
 import NavButton from "./NavButton";
+import { CategoryTree } from "@/type/category";
+import TabButton from "./TabButton";
 
-const ShortBox = () => {
+interface ShortBoxProps {
+  categoryTree: CategoryTree;
+}
+
+const ShortBox: React.FC<ShortBoxProps> = ({ categoryTree }) => {
   const [api, setApi] = React.useState<CarouselApi>();
 
   return (
     <div className="home-container mx-auto">
       <div className="px-4 md:px-0 border-t border-blue-200 pt-9 pb-11 lg:pb-[71.8px] lg:pt-[60px]">
         <div className="flex items-center justify-between gap-4 md:gap-9">
-          <DecorTitle title="chính trị" className="shrink-0" />
-          <div className="items-center gap-3 flex-1 overflow-x-auto hidden lg:flex">
-            {Array.from({ length: 3 }).map((_, index) => (
-              <TabButton key={index} />
-            ))}
-          </div>
+          <DecorTitle title={categoryTree?.name ?? ""} className="shrink-0" />
+          {categoryTree?.children?.length > 0 && (
+            <div className="items-center gap-3 flex-1 overflow-x-auto hidden lg:flex">
+              {categoryTree?.children.map((item) => (
+                <TabButton
+                  key={item?.id}
+                  title={item?.name ?? ""}
+                  link={`/danh-muc/${item?.slug}`}
+                />
+              ))}
+            </div>
+          )}
           <div className="items-center gap-2 hidden md:flex">
             <NavButton onClick={() => api?.scrollPrev()} />
             <NavButton isRight onClick={() => api?.scrollNext()} />
@@ -85,13 +97,5 @@ const Card: React.FC<CardProps> = ({ title, image, className }) => {
         </p>
       </div>
     </div>
-  );
-};
-
-const TabButton: React.FC = () => {
-  return (
-    <button className="whitespace-nowrap h-9 px-4 rounded-full border border-blue-200 text-blue-700 font-semibold text-xsm leading-[160%] tracking-[0%]">
-      Bảo vệ nền tảng tư tưởng của Đảng
-    </button>
   );
 };

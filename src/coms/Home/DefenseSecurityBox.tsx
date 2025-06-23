@@ -1,12 +1,33 @@
 import clsx from "clsx";
 import DecorTitle from "./DecorTitle";
 import ArticleCard, { ArticleCardProps } from "../common/ArticleCard";
+import { CategoryTree } from "@/type/category";
+import TabButton from "./TabButton";
 
-const DefenseSecurityBox = () => {
+interface DefenseSecurityBoxProps {
+  categoryTree: CategoryTree;
+}
+
+const DefenseSecurityBox: React.FC<DefenseSecurityBoxProps> = ({
+  categoryTree,
+}) => {
   return (
     <div className="home-container mx-auto">
       <div className="px-4 md:px-0 py-9 lg:pt-[3.75rem] lg:pb-[6.25rem] border-t border-blue-200">
-        <DecorTitle title="Quốc phòng - An ninh" />
+        <div className="flex items-center justify-between gap-4 md:gap-9">
+          <DecorTitle title={categoryTree?.name ?? ""} />
+          {categoryTree?.children?.length > 0 && (
+            <div className="items-center gap-3 flex-1 overflow-x-auto hidden lg:flex">
+              {categoryTree?.children.map((item) => (
+                <TabButton
+                  key={item?.id}
+                  title={item?.name ?? ""}
+                  link={`/danh-muc/${item?.slug}`}
+                />
+              ))}
+            </div>
+          )}
+        </div>
         <div className="mt-5 lg:mt-8 xl:mt-10 flex flex-col gap-3 md:gap-6 xl:gap-12 md:grid md:grid-cols-2 lg:grid-cols-5 xl:grid-cols-12 divide-y divide-blue-200 divide-dashed md:divide-none">
           <ArticleCard
             title="Khối thi đua số 2, Vùng 3: Hội nghị sơ kết công tác thi đua khen thưởng 6 tháng đầu năm 2025"

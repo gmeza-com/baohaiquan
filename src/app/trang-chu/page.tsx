@@ -10,12 +10,24 @@ import NavyTVBox from "@/coms/Home/NavyTVBox";
 import PodcastBox from "@/coms/Home/PodcastBox";
 import ShortBox from "@/coms/Home/ShortBox";
 import TrendingNewsBox from "@/coms/Home/TrendingNewsBox";
+import { getCategoryTree } from "@/lib/utils";
+import { Category } from "@/type/category";
 import { Metadata } from "next";
+import db from "@/lib/db";
 
-const HomePage = () => {
+const HomePage = async () => {
+  const categories = await db("post_categories as pcs")
+    .select("pcs.id", "pcl.name", "pcl.slug", "pcs.parent_id")
+    .join("post_category_languages as pcl", "pcl.post_category_id", "pcs.id")
+    .where("pcs.published", 1);
+
+  // Convert to tree structure
+  const categoryTree = getCategoryTree(categories as Category[]);
+
   return (
     <div>
       <HeadlineBlock />
+
       <div className="home-container mx-auto pt-4 pb-16">
         <img
           src="/images/home/hero-banner.webp"
@@ -23,7 +35,8 @@ const HomePage = () => {
           className="w-full max-w-[50rem] mx-auto"
         />
       </div>
-      <ShortBox />
+      {/* Block 1 trong categoryTree */}
+      <ShortBox categoryTree={categoryTree?.[0]} />
       <div className="home-container mx-auto pb-10 md:pb-[72px]">
         <img
           src="/images/home/hero-banner-2.webp"
@@ -31,7 +44,8 @@ const HomePage = () => {
           className="w-full md:rounded-[12px]"
         />
       </div>
-      <DefenseSecurityBox />
+      {/* Block 2 trong categoryTree */}
+      <DefenseSecurityBox categoryTree={categoryTree?.[0]} />
       <MediaBox />
       <div className="home-container mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:gap-12 md:gap-x-6 md:gap-y-16 md:pt-10 md:pb-10 xl:pb-24 xl:pt-[3.75rem] md:border-t border-blue-200">
@@ -74,8 +88,31 @@ const HomePage = () => {
           </div>
         </div>
       </div>
+      {/* Block 3 trong categoryTree */}
+      <DefenseSecurityBox categoryTree={categoryTree?.[2]} />
+
+      {/* Block 4 trong categoryTree */}
+      <DefenseSecurityBox categoryTree={categoryTree?.[3]} />
+
       <PodcastBox />
+      {/* Block 5 trong categoryTree */}
+      <DefenseSecurityBox categoryTree={categoryTree?.[4]} />
+
+      {/* Block 6 trong categoryTree */}
+      <DefenseSecurityBox categoryTree={categoryTree?.[5]} />
+
       <NavyTVBox />
+
+      {/* Block 7 trong categoryTree */}
+      {/* Block 8 trong categoryTree */}
+      {/* Block 9 trong categoryTree */}
+      {/* Block 10 trong categoryTree */}
+      {/* Block 11 trong categoryTree */}
+      {/* Block 12 trong categoryTree */}
+      {/* Block 13 trong categoryTree */}
+      {categoryTree?.slice(6).map((item) => (
+        <DefenseSecurityBox key={item?.id} categoryTree={item} />
+      ))}
     </div>
   );
 };
