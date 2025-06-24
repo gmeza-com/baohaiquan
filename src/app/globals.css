@@ -142,6 +142,13 @@ body {
   font-family: Roboto, Arial, Helvetica, sans-serif;
 }
 
+@font-face {
+  font-family: "MyriadPro";
+  src: url("/font/MyriadPro-BoldCond.woff") format("woff");
+  font-weight: bold;
+  font-style: normal;
+}
+
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
@@ -151,10 +158,11 @@ body {
 }
 
 @theme {
-  --font-anton: "Anton", sans-serif;
+  /* --font-anton: "Anton", sans-serif; */
   --font-roboto: "Roboto", sans-serif;
-  --font-oswald: "Oswald", sans-serif;
+  /* --font-oswald: "Oswald", sans-serif; */
   --font-playfair-display: "Playfair Display", serif;
+  --font-myriad-pro: "MyriadPro", sans-serif;
 
   --color-stroke-light: #d9e4f2;
   --color-branch-default: #edf5fc;
@@ -270,7 +278,7 @@ body {
   --sidebar-ring: oklch(0.556 0 0);
 }
 
-/* -- customize article display ---------------------- */
+/* -- customize article display --------------------- */
 div.article-wrapper {
   padding-bottom: 2rem;
 }
@@ -296,3 +304,30 @@ div.article-wrapper p {
   max-width: 568px;
 }
 /* -- end customize article display ------------------ */
+
+.menu-up-arrow::after {
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  top: 0;
+  left: 1.75rem;
+  box-sizing: border-box;
+  border: 0.35em solid #000;
+  border-color: transparent transparent #176dc3 #176dc3;
+  transform-origin: 0 0;
+  transform: rotate(135deg);
+}
+
+.menu-up-arrow.right-0::after {
+  right: 0rem;
+  left: auto;
+}
+
+.menu-item.active .menu-item-indicator {
+  opacity: 1 !important;
+}
+
+.navigation-menu-link.active {
+  background-color: var(--color-blue-500);
+}

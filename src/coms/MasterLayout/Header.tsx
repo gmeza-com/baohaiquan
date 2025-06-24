@@ -1,4 +1,3 @@
-import clsx from "clsx";
 import { IconList, IconMagnifyingGlass, IconMenu2 } from "@/coms/Icon/light";
 import {
   IconHome,
@@ -16,29 +15,51 @@ import {
   navigationMenuTriggerStyle,
 } from "@/shadcn/ui/nav-menu";
 import Link from "next/link";
+import { headers } from "next/headers";
 import { isOn } from "@/lib/utils";
-import { anton } from "@/app/font";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuPortal,
-  DropdownMenuSeparator,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
-  DropdownMenuTrigger,
-} from "@/shadcn/ui/dropdown-menu";
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/shadcn/ui/sheet";
+import {
+  Accordion,
+  AccordionItem,
+  AccordionContent,
+  AccordionTrigger,
+} from "@/shadcn/ui/accordion";
 
 interface HeaderProps {
   menuItems: any[];
 }
 
 const Header: React.FC<HeaderProps> = async ({ menuItems }) => {
+  const path = (await headers()).get("x-pathname") || "";
+
+  // get the last part of the path
+  const slug = path.split("/").pop() || "";
+
+  const isActive = (item: any) => {
+    if (isOn(path)) {
+      if (item.attributes.category_slug === slug) return true;
+
+      if (item.childrens)
+        return item.childrens.some(
+          (child: any) => child.attributes.category_slug === slug
+        );
+    }
+
+    return false;
+  };
+
   return (
     <header className="bg-blue-700 max-w-screen sticky top-0 z-40 lg:static">
-      <div className="container mx-auto gap-12 flex w-full">
-        <Link href="/" className="hidden shrink-0 items-end xl:flex pb-1">
+      <div className="container mx-auto gap-12 flex w-full !py-0">
+        <Link href="/" className="hidden shrink-0 items-end xl:flex py-3">
           <img
             src="/logo.svg"
             alt="Logo"
@@ -49,20 +70,20 @@ const Header: React.FC<HeaderProps> = async ({ menuItems }) => {
           {/* Mobile Header */}
           <div className="grid grid-cols-[1fr_auto_1fr] py-2 xl:hidden lg:border-b border-blue-600">
             <div className="flex items-center justify-start">
-              <MenuButton data={menuItems} />
+              <MenuSidebar data={menuItems} />
             </div>
             <Link href="/">
               <img src="/logo.svg" alt="Logo" className="w-[216px]" />
             </Link>
             <div className="flex items-center justify-end">
-              <button className="p-1 rounded cursor-pointer hover:bg-blue-600 transition lg:hidden">
+              <button className="p-2 rounded cursor-pointer hover:bg-blue-600 transition lg:hidden">
                 <IconMagnifyingGlass className="text-white/90" size={24} />
               </button>
             </div>
           </div>
 
           {/* Desktop Header */}
-          <div className="hidden xl:flex justify-end items-center gap-1">
+          <div className="hidden xl:flex justify-end items-center gap-1 pt-2">
             <Link
               href="/bao-in-hai-quan-3d"
               className="pl-2 pr-3 py-1 rounded bg-blue-600 hover:bg-blue-500 transition flex text-sm items-center gap-2 uppercase text-white font-normal leading-[160%] tracking-[0%] align-middle"
@@ -75,7 +96,7 @@ const Header: React.FC<HeaderProps> = async ({ menuItems }) => {
               className="pl-2 pr-3 py-1 rounded bg-blue-600 hover:bg-blue-500 transition flex items-center gap-2 uppercase text-white font-normal text-sm leading-[160%] tracking-[0%] align-middle"
             >
               <IconTelevisionSimple size={20} className="text-white/90" />
-              Truyền hình
+              Truyền Hình Hải Quân
             </Link>
             <button className="p-1 rounded cursor-pointer hover:bg-blue-500 transition">
               <IconMagnifyingGlass size={20} className="text-white/90" />
@@ -83,29 +104,37 @@ const Header: React.FC<HeaderProps> = async ({ menuItems }) => {
           </div>
 
           {/* Nav menu for wide screen */}
-          <NavMenu viewport={false} className="hidden lg:block mt-2">
-            <NavMenuList className={`${anton.variable} font-anton`}>
-              <NavMenuItem>
-                <NavMenuLink
-                  className={`${navigationMenuTriggerStyle()} px-1`}
-                  href="/"
-                >
-                  <IconHome className="text-white" size={20} />
+          <NavMenu
+            viewport={false}
+            className="hidden lg:block mt-2 font-myriad-pro text-lg"
+          >
+            <NavMenuList>
+              <NavMenuItem className={path == "/" ? "active" : ""}>
+                <NavMenuLink asChild className="py-1 hover:bg-blue-600">
+                  <Link href="/">
+                    <IconHome className="text-white inline-block" size={24} />
+                  </Link>
                 </NavMenuLink>
               </NavMenuItem>
               {menuItems.map((item) => {
                 return isOn(item.childrens) ? (
-                  <NavMenuItem key={item.id}>
+                  <NavMenuItem
+                    key={item.id}
+                    className={isActive(item) ? "active" : ""}
+                  >
                     <NavMenuTrigger>
                       <Link href={`/danh-muc/${item.attributes.category_slug}`}>
                         {item.name}
                       </Link>
                     </NavMenuTrigger>
-                    <NavMenuContent>
-                      <ul className="min-w-36 flex flex-col gap-1 font-oswald">
+                    <NavMenuContent className="bg-blue-600 menu-up-arrow">
+                      <ul className="min-w-36 flex flex-col gap-1 text-white">
                         {item.childrens.map((child: any) => (
                           <li key={child.id}>
-                            <NavMenuLink asChild>
+                            <NavMenuLink
+                              asChild
+                              className={isActive(child) ? "active" : ""}
+                            >
                               <Link
                                 href={`/danh-muc/${child.attributes.category_slug}`}
                                 className="truncate"
@@ -119,7 +148,10 @@ const Header: React.FC<HeaderProps> = async ({ menuItems }) => {
                     </NavMenuContent>
                   </NavMenuItem>
                 ) : (
-                  <NavMenuItem key={item.id}>
+                  <NavMenuItem
+                    key={item.id}
+                    className={isActive(item) ? "active" : ""}
+                  >
                     <NavMenuLink
                       className={navigationMenuTriggerStyle()}
                       href={`/danh-muc/${item.attributes.category_slug}`}
@@ -130,12 +162,12 @@ const Header: React.FC<HeaderProps> = async ({ menuItems }) => {
                 );
               })}
 
-              <NavMenuItem className="hidden lg:flex xl:hidden">
-                <NavMenuTrigger className="cursor-pointer">
-                  <IconMenu2 />
+              <NavMenuItem className="hidden lg:block xl:hidden">
+                <NavMenuTrigger className="flex cursor-pointer">
+                  <IconMenu2 width={20} height={26} className="inline-flex" />
                 </NavMenuTrigger>
-                <NavMenuContent>
-                  <ul className="min-w-36 flex flex-col gap-1 font-oswald">
+                <NavMenuContent className="bg-blue-600 menu-up-arrow right-0 left-auto min-w-44">
+                  <ul className="flex flex-col gap-1 text-white">
                     <li>
                       <NavMenuLink asChild>
                         <Link href="/bao-in-hai-quan-3d" className="truncate">
@@ -146,7 +178,7 @@ const Header: React.FC<HeaderProps> = async ({ menuItems }) => {
                     <li>
                       <NavMenuLink asChild>
                         <Link href="/truyen-hinh-hai-quan" className="truncate">
-                          Truyền Hình
+                          Truyền Hình Hải Quân
                         </Link>
                       </NavMenuLink>
                     </li>
@@ -163,62 +195,82 @@ const Header: React.FC<HeaderProps> = async ({ menuItems }) => {
 
 export default Header;
 
-const MenuButton: React.FC<{ data: any[] }> = ({ data }) => {
+const MenuSidebar: React.FC<{ data: any[] }> = ({ data }) => {
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <button className="p-1 rounded cursor-pointer hover:bg-blue-600 transition lg:hidden outline-0">
+    <Sheet>
+      <SheetTrigger asChild>
+        <button className="p-2 rounded cursor-pointer hover:bg-blue-600 transition lg:hidden outline-0">
           <IconList className="text-white/90" size={24} />
         </button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="start" className="font-anton p-3">
-        <DropdownMenuItem className="my-1">
-          <Link href="/">Trang Chủ</Link>
-        </DropdownMenuItem>
-        {data.map((item, idx) => {
-          return isOn(item.childrens) ? (
-            <DropdownMenuSub key={idx}>
-              <DropdownMenuSubTrigger className="my-1">
-                <Link href={`/danh-muc/${item.attributes.category_slug}`}>
-                  {item.name}
-                </Link>
-              </DropdownMenuSubTrigger>
-              <DropdownMenuPortal>
-                <DropdownMenuSubContent>
-                  <ul className="min-w-36 flex flex-col gap-1 font-oswald font-medium">
-                    {item.childrens.map((child: any) => (
-                      <li key={child.id}>
-                        <DropdownMenuItem asChild>
+      </SheetTrigger>
+      <SheetContent side="left">
+        <SheetHeader>
+          <SheetTitle className="text-sm px-2 font-light"></SheetTitle>
+        </SheetHeader>
+        <div className="px-6 font-myriad-pro text-lg">
+          <div className="border-b">
+            <Link className="py-4 block font-medium" href="/">
+              Trang Chủ
+            </Link>
+          </div>
+          <Accordion type="single" collapsible>
+            {data.map((item, idx) => {
+              return isOn(item.childrens) ? (
+                <AccordionItem
+                  key={idx}
+                  value={`item-${item.id}`}
+                  className="py-1"
+                >
+                  <AccordionTrigger>
+                    <Link
+                      href={`/danh-muc/${item.attributes.category_slug}`}
+                      className="truncate no-underline"
+                    >
+                      {item.name}
+                    </Link>
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    <ul className="w-full flex flex-col gap-1 font-normal pl-3">
+                      {item.childrens.map((child: any) => (
+                        <li key={child.id}>
                           <Link
                             href={`/danh-muc/${child.attributes.category_slug}`}
-                            className="truncate cursor-pointer"
+                            className="truncate block cursor-pointer py-1"
                           >
                             {child.name}
                           </Link>
-                        </DropdownMenuItem>
-                      </li>
-                    ))}
-                  </ul>
-                </DropdownMenuSubContent>
-              </DropdownMenuPortal>
-            </DropdownMenuSub>
-          ) : (
-            <DropdownMenuItem key={idx}>
-              <Link href={`/danh-muc/${item.attributes.category_slug}`}>
-                {item.name}
-              </Link>
-            </DropdownMenuItem>
-          );
-        })}
-
-        <DropdownMenuSeparator />
-        <DropdownMenuItem>
-          <Link href="/bao-in-hai-quan-3d">Báo In</Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem>
-          <Link href="/truyen-hinh-hai-quan">Truyền Hình Hải Quân</Link>
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+                        </li>
+                      ))}
+                    </ul>
+                  </AccordionContent>
+                </AccordionItem>
+              ) : (
+                <div key={item.attributes.category_slug} className="border-b">
+                  <Link
+                    className="py-4 block font-medium"
+                    href={`/danh-muc/${item.attributes.category_slug}`}
+                  >
+                    {item.name}
+                  </Link>
+                </div>
+              );
+            })}
+          </Accordion>
+          <div className="border-b">
+            <Link className="py-4 block font-medium" href="/bao-in-hai-quan-3d">
+              Báo In
+            </Link>
+          </div>
+          <div>
+            <Link
+              className="py-4 block font-medium"
+              href="/truyen-hinh-hai-quan"
+            >
+              Truyền Hình Hải Quân
+            </Link>
+          </div>
+        </div>
+      </SheetContent>
+    </Sheet>
   );
 };

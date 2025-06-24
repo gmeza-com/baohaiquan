@@ -65,25 +65,22 @@ const DanhMucPage = async ({ params }: PageProps) => {
     <div className="container">
       {isOn(features) && <CategoryFeature posts={features} />}
       <div className="grid grid-cols-4 gap-6 mt-21">
-        <div className="hidden lg:block lg:col-span-1">
+        <div className="col-span-4 lg:col-span-1 row-start-2 lg:row-start-1">
           <div className="sticky top-6">
             <CategoryMostRead slug={slug} quantity={8} />
           </div>
         </div>
-        <div className="col-span-4 lg:col-span-2">
+        <div className="col-span-4 lg:col-span-2 row-start-1">
           <CategoryArticles
             posts={articles}
             excludes={excludeIds}
             slug={slug}
           />
         </div>
-        <div className="hidden lg:block lg:col-span-1">
+        <div className="col-span-1 row-start-3 lg:row-start-1">
           <div className="sticky top-6">
             <DecorTitle title="Đọc Báo In" className="mb-6" />
           </div>
-        </div>
-        <div className="col-span-4 lg:hidden">
-          <CategoryMostRead slug={slug} quantity={8} />
         </div>
       </div>
     </div>

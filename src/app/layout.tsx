@@ -1,6 +1,6 @@
 "use client";
 import Head from "next/head";
-import { roboto, anton, playfairDisplay, oswald } from "@/app/font";
+import { roboto } from "@/app/font";
 import Bootstrap from "@/coms/App/Bootstrap";
 import Toaster from "@/coms/common/Toaster";
 import "./globals.css";

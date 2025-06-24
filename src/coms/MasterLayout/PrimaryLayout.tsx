@@ -9,6 +9,7 @@ interface PrimaryLayoutProps extends PropsWithChildren {}
 const PrimaryLayout: React.FC<PrimaryLayoutProps> = async ({ children }) => {
   let menuItems: any[] = [];
   let categories: any;
+
   try {
     // menu items
     menuItems = await MenuService.getMenuItems();
