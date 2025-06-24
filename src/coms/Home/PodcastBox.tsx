@@ -17,46 +17,51 @@ const PodcastBox = () => {
   const [api, setApi] = React.useState<CarouselApi>();
 
   return (
-    <div className="home-container mx-auto">
-      <div className="px-4 md:px-0  py-9 xl:pt-14 xl:pb-24 border-t border-blue-200">
-        <div className="flex justify-between items-center">
-          <DecorTitle title="podcast" />
-          <div className="items-center gap-2 hidden md:flex">
-            <NavButton onClick={() => api?.scrollPrev()} />
-            <NavButton isRight onClick={() => api?.scrollNext()} />
+    <div className="border-t border-blue-200 md:border-0">
+      <div className="container mx-auto">
+        <div className="py-5 lg:pt-11 lg:pb-[5.25rem] md:border-t md:border-blue-200">
+          <div className="flex justify-between items-center">
+            <DecorTitle title="podcast" />
+            <div className="items-center gap-2 hidden md:flex">
+              <NavButton onClick={() => api?.scrollPrev()} />
+              <NavButton isRight onClick={() => api?.scrollNext()} />
+            </div>
           </div>
-        </div>
-        <div className="flex overflow-x-auto gap-6 mt-5 -mx-4 px-4 md:hidden">
-          {Array.from({ length: 10 }).map((_, index) => (
-            <PodcastCard
-              key={index}
-              className="basis-4/5 shrink-0"
-              title="Bản Tin Thời Sự"
-              description="Bản tin thời sự sáng ngày 21/5/2025: Hôm nay, Quốc hội sẽ ra quyết định rút ngắn nhiệm kỳ, ấn định ngày bầu cử khóa XVI"
-              image="https://picsum.photos/200/200"
-            />
-          ))}
-        </div>
-        <Carousel className="md:mt-8 xl:mt-10 hidden md:block" setApi={setApi}>
-          <CarouselContent className="xl:-ml-6">
-            {Array.from({ length: 15 }).map((_, index) => (
-              <CarouselItem
+          <div className="flex overflow-x-auto gap-6 mt-5 -mx-4 px-4 md:hidden">
+            {Array.from({ length: 10 }).map((_, index) => (
+              <PodcastCard
                 key={index}
-                className={clsx(
-                  "md:basis-2/5 lg:basis-2/7 xl:basis-1/4 xl:pl-6"
-                )}
-              >
-                <PodcastCard
-                  key={index}
-                  className="basis-4/5 shrink-0"
-                  title="Bản Tin Thời Sự"
-                  description="Bản tin thời sự sáng ngày 21/5/2025: Hôm nay, Quốc hội sẽ ra quyết định rút ngắn nhiệm kỳ, ấn định ngày bầu cử khóa XVI"
-                  image="https://picsum.photos/200/200"
-                />
-              </CarouselItem>
+                className="basis-4/5 shrink-0"
+                title="Bản Tin Thời Sự"
+                description="Bản tin thời sự sáng ngày 21/5/2025: Hôm nay, Quốc hội sẽ ra quyết định rút ngắn nhiệm kỳ, ấn định ngày bầu cử khóa XVI"
+                image="https://picsum.photos/200/200"
+              />
             ))}
-          </CarouselContent>
-        </Carousel>
+          </div>
+          <Carousel
+            className="md:mt-8 xl:mt-10 hidden md:block"
+            setApi={setApi}
+          >
+            <CarouselContent className="xl:-ml-6">
+              {Array.from({ length: 15 }).map((_, index) => (
+                <CarouselItem
+                  key={index}
+                  className={clsx(
+                    "md:basis-2/5 lg:basis-2/7 xl:basis-1/4 xl:pl-6"
+                  )}
+                >
+                  <PodcastCard
+                    key={index}
+                    className="basis-4/5 shrink-0"
+                    title="Bản Tin Thời Sự"
+                    description="Bản tin thời sự sáng ngày 21/5/2025: Hôm nay, Quốc hội sẽ ra quyết định rút ngắn nhiệm kỳ, ấn định ngày bầu cử khóa XVI"
+                    image="https://picsum.photos/200/200"
+                  />
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+          </Carousel>
+        </div>
       </div>
     </div>
   );
