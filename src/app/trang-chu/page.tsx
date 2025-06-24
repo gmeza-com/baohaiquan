@@ -58,6 +58,8 @@ const HomePage = async () => {
 
   const newestPosts2 = await PostService.getNewestPosts(14, true);
 
+  const galleryTV = await PostService.getGalleryTV(5);
+
   const categories = await db("post_categories as pcs")
     .select("pcs.id", "pcl.name", "pcl.slug", "pcs.parent_id")
     .join("post_category_languages as pcl", "pcl.post_category_id", "pcs.id")
@@ -201,7 +203,7 @@ const HomePage = async () => {
         articles={categoriesData?.[4]}
       />
 
-      <NavyTVBox className="mb-10" />
+      <NavyTVBox className="mb-10" galleries={galleryTV} />
 
       {/* Block 7 trong categoryTree */}
       {/* Block 8 trong categoryTree */}

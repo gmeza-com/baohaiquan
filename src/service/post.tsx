@@ -1,4 +1,4 @@
-import { cleanSlug } from "@/lib/utils";
+import { cleanSlug, extractLink } from "@/lib/utils";
 import { ArticleProps, CategoryProps, INewestPost } from "@/type/article";
 import db from "@/lib/db";
 
@@ -214,6 +214,36 @@ const PostService = {
       return result;
     } catch (error) {
       console.error("getMostViewedPosts:", error);
+      return [];
+    }
+  },
+
+  getGalleryTV: async (limit: number): Promise<any[]> => {
+    try {
+      const result = await db("gallery as g")
+        .join("gallery_languages as gl", "gl.gallery_id", "g.id")
+        .join("gallery_category as gc", "gc.gallery_id", "g.id")
+        .join("gallery_categories as gc2", "gc2.id", "gc.gallery_category_id")
+        .select(
+          "g.id",
+          "g.thumbnail",
+          "gl.name",
+          "gl.description",
+          "gl.slug",
+          "gl.content"
+        )
+        .where("gc2.id", 1)
+        .andWhere("g.published", 1)
+        .andWhere("gl.locale", "vi")
+        .orderBy("g.published_at", "desc")
+        .limit(limit);
+
+      return result.map((item) => ({
+        ...item,
+        content: extractLink(item?.content),
+      }));
+    } catch (error) {
+      console.error("getGalleryTV:", error);
       return [];
     }
   },
