@@ -1,61 +1,79 @@
 import DecorTitle from "./DecorTitle";
-import HighlightArticleCard from "./HighlightArtileCard";
 import HighlightArticleCarousel from "./HighlightArticleCarousel";
 import ArticleRankItem from "./ArticleRankItem";
+import { ArticleProps, INewestPost } from "@/type/article";
+import Image from "next/image";
+import Link from "next/link";
 
-const HeadlineBlock: React.FC = () => {
+interface HeadlineBlockProps {
+  newestPosts: INewestPost[];
+  featuredPosts: ArticleProps[];
+}
+
+const HeadlineBlock: React.FC<HeadlineBlockProps> = ({
+  newestPosts,
+  featuredPosts,
+}) => {
+  const mainFeaturedPost = featuredPosts?.slice(0, 6);
+  const otherFeaturedPosts = featuredPosts?.slice(6);
+  const firstFeaturedPost = otherFeaturedPosts?.[0];
+
   return (
     <div className="container mx-auto">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 lg:gap-6 xl:gap-12 lg:pb-10 lg:pt-3 -m-4 md:m-0">
         <div className="py-9 px-4 lg:p-0 border-t border-stroke-light lg:border-t-0 md:ps-0 md:pe-6">
           <DecorTitle title="tiêu điểm" />
           <div className="flex flex-col gap-3 mt-5">
-            <div className="flex items-start flex-col gap-2.5 pb-5 border-b border-stroke-light border-dashed">
-              <img
-                src="https://picsum.photos/100/100"
-                alt="test"
+            <Link
+              href={`/tin-tuc/${firstFeaturedPost?.slug}`}
+              className="group flex items-start flex-col gap-2.5 pb-5 border-b border-stroke-light border-dashed"
+            >
+              <Image
+                src={firstFeaturedPost?.thumbnail}
+                alt={firstFeaturedPost?.name}
                 className="w-full object-cover aspect-video rounded-[0.375rem]"
+                width={294}
+                height={165}
               />
-              <p className="text-lg font-bold text-gray-900 tracking-[-1%] leading-[150%] line-clamp-2">
-                Đoàn công tác số 24 hoàn thành chuyến công tác thăm Trường Sa và
-                Nhà giàn DK1
-              </p>
-            </div>
-            {Array.from({ length: 3 }).map((_, index) => (
-              <div
-                key={index}
-                className="flex items-start gap-5 border-b border-stroke-light border-dashed pb-4 last:border-b-0 lg:gap-3"
+              <h5 className="group-hover:underline group-hover:text-blue-700 text-lg font-bold text-gray-900 tracking-[-1%] leading-[150%] line-clamp-2">
+                {firstFeaturedPost?.name}
+              </h5>
+            </Link>
+            {otherFeaturedPosts?.slice(1).map((item, index) => (
+              <Link
+                key={item?.id}
+                href={`/tin-tuc/${item?.slug}`}
+                className="group flex items-start gap-5 border-b border-stroke-light border-dashed pb-4 last:border-b-0 lg:gap-3"
               >
-                <img
-                  src="https://picsum.photos/100/100"
-                  alt="test"
+                <Image
+                  src={item?.thumbnail}
+                  alt={item?.name}
                   className="w-36 object-cover aspect-video rounded-[0.375rem] shrink-0 lg:w-28"
+                  width={120}
+                  height={68}
                 />
-                <p className="flex-1 text-base lg:text-[0.9375rem] font-semibold text-gray-900 tracking-[-1%] leading-[150%] line-clamp-3">
-                  Ban Thường vụ Đảng ủy Quân chủng thông qua công tác chuẩn bị
-                  Đại hội đại biểu Đảng bộ Cục Chính trị
-                </p>
-              </div>
+                <h6 className="group-hover:underline group-hover:text-blue-700 flex-1 text-base lg:text-[0.9375rem] font-semibold text-gray-900 tracking-[-1%] leading-[150%] line-clamp-3">
+                  {item?.name}
+                </h6>
+              </Link>
             ))}
           </div>
         </div>
         <div className="row-start-1 pb-9 md:col-span-2  lg:col-start-2">
-          <HighlightArticleCard className="md:hidden" />
-          <div className="hidden md:block">
-            <HighlightArticleCarousel />
-          </div>
+          <HighlightArticleCarousel posts={mainFeaturedPost} />
         </div>
         <div className="py-9 px-4 border-t border-stroke-light lg:p-0 lg:border-t-0 md:pe-0 md:ps-6">
           <DecorTitle title="Tin mới" />
-          <div className="flex flex-col divide-y divide-stroke-light divide-dashed">
-            {Array.from({ length: 6 })?.map((item, index) => (
+          <ol className="flex flex-col divide-y divide-stroke-light divide-dashed">
+            {newestPosts?.map((item, index) => (
               <ArticleRankItem
                 key={index}
                 number={index + 1}
-                title="Cảnh giác thủ đoạn dụ dỗ tham gia đầu tư tài chính, chứng khoán, tiền ảo trên không gian mạng"
+                title={item?.name}
+                slug={item?.slug}
               />
             ))}
-          </div>
+          </ol>
         </div>
       </div>
     </div>

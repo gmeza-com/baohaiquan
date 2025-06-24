@@ -10,8 +10,15 @@ import HighlightArticleCard from "./HighlightArtileCard";
 import React, { useState } from "react";
 import clsx from "clsx";
 import { IconCaretRight } from "../Icon/light";
+import { ArticleProps } from "@/type/article";
 
-const HighlightArticleCarousel: React.FC = () => {
+interface HighlightArticleCarouselProps {
+  posts: ArticleProps[];
+}
+
+const HighlightArticleCarousel: React.FC<HighlightArticleCarouselProps> = ({
+  posts,
+}) => {
   const [api, setApi] = React.useState<CarouselApi>();
   const [count, setCount] = useState(0);
   const [current, setCurrent] = useState(0);
@@ -38,15 +45,15 @@ const HighlightArticleCarousel: React.FC = () => {
         }}
       >
         <CarouselContent>
-          {Array.from({ length: 10 }).map((_, index) => (
-            <CarouselItem key={index}>
-              <HighlightArticleCard />
+          {posts.map((item, index) => (
+            <CarouselItem key={item?.id}>
+              <HighlightArticleCard data={item} />
             </CarouselItem>
           ))}
         </CarouselContent>
       </Carousel>
 
-      <div className="absolute top-0 left-0 w-full aspect-video pointer-events-none">
+      <div className="absolute top-0 left-0 w-full aspect-video pointer-events-none hidden md:block">
         <NavButton
           onClick={() => api?.scrollPrev()}
           isLeft
@@ -59,9 +66,9 @@ const HighlightArticleCarousel: React.FC = () => {
       </div>
 
       <div className="absolute bottom-5 left-0 w-full flex justify-center items-center gap-1.5 mt-4">
-        {Array.from({ length: count }).map((_, index) => (
+        {posts.map((item, index) => (
           <div
-            key={index}
+            key={item?.id}
             className={clsx(
               "rounded-full h-0.5 w-7",
               current === index + 1 ? "bg-blue-600" : "bg-blue-200"

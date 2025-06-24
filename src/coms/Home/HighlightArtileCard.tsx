@@ -1,33 +1,38 @@
+import { ArticleProps } from "@/type/article";
 import clsx from "clsx";
+import Image from "next/image";
+import Link from "next/link";
 
 interface HighlightArticleCardProps {
   className?: string;
+  data: ArticleProps;
 }
 
 const HighlightArticleCard: React.FC<HighlightArticleCardProps> = ({
   className,
+  data,
 }) => {
   return (
-    <div className={clsx("flex flex-col gap-4 lg:gap-6", className)}>
-      <img
-        src="https://picsum.photos/300/200"
-        alt="test"
+    <Link
+      href={`tin-tuc/${data?.slug}`}
+      className={clsx("group flex flex-col gap-4 lg:gap-6", className)}
+    >
+      <Image
+        src={data?.thumbnail}
+        alt={data?.name}
         className="w-full object-cover aspect-video md:rounded-[8px]"
+        width={636}
+        height={375}
       />
       <div className="px-4 lg:px-6 flex flex-col gap-2.5 lg:gap-4">
-        <h2 className="text-xl font-bold leading-[140%] text-gray-900 tracking-[-1%] lg:text-[2rem] lg:leading-[130%]">
-          Khối thi đua số 2, Vùng 3: Hội nghị sơ kết công tác thi đua khen
-          thưởng 6 tháng đầu năm 2025
-        </h2>
+        <h4 className="group-hover:underline group-hover:text-blue-700 text-xl font-bold leading-[140%] text-gray-900 tracking-[-1%] lg:text-[2rem] lg:leading-[130%]">
+          {data?.name}
+        </h4>
         <p className="text-[15px] font-normal leading-[160%] text-gray-700 tracking-[0%]">
-          Sáng 26/5, tại Lữ đoàn 172 (Đà Nẵng) khối thi đua số 2 (khối cấp
-          trung, lữ đoàn và tương đương) Vùng 3 Hải quân tổ chức Hội nghị sơ kết
-          công tác thi đua khen thưởng (TĐKT) và phong trào thi đua quyết thắng
-          (TĐQT) 6 tháng đầu năm 2025. Đại tá Vũ Đình Hiển, Phó Tư lệnh, Tham
-          mưu trưởng Vùng 3 dự, chỉ đạo.
+          {data?.description}
         </p>
       </div>
-    </div>
+    </Link>
   );
 };
 

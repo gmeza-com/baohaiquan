@@ -5,6 +5,7 @@ import { CategoryTree } from "@/type/category";
 import { ArticleProps } from "@/type/article";
 import Link from "next/link";
 import SubCategoryTab from "./SubCategoryTab";
+import Image from "next/image";
 
 interface DefenseSecurityBoxProps {
   categoryTree: CategoryTree;
@@ -81,10 +82,12 @@ const ArticleCompactHorizontalCard: React.FC<OtherArticleCardProps> = ({
       className="@container/card border-b border-blue-200 border-dashed last:border-b-0 cursor-pointer"
     >
       <div className={clsx("pr-1 pb-4 flex gap-5 items-start ", className)}>
-        <img
+        <Image
           src={image}
           alt={title}
           className="w-[135px] aspect-video rounded-[6px] @min-[400px]/card:w-[128px] @min-[400px]/card:aspect-[128/96]"
+          width={128}
+          height={96}
         />
         <p className="hover:underline hover:text-blue-700 text-gray-900 text-base @min-[400px]/card:text-lg font-semibold leading-[150%] tracking-[-1%]">
           {title}
