@@ -26,53 +26,55 @@ const ShortBox: React.FC<ShortBoxProps> = ({ categoryTree, articles }) => {
   const [api, setApi] = React.useState<CarouselApi>();
 
   return (
-    <div className="home-container mx-auto">
-      <div className="px-4 md:px-0 border-t border-blue-200 pt-9 pb-11 lg:pb-[71.8px] lg:pt-[60px]">
-        <div className="flex items-center justify-between gap-4 md:gap-9">
-          <DecorTitle title={categoryTree?.name ?? ""} className="shrink-0" />
-          {categoryTree?.children?.length > 0 && (
-            <div className="items-center gap-3 flex-1 overflow-x-auto hidden lg:flex">
-              {categoryTree?.children.map((item) => (
-                <TabButton
-                  key={item?.id}
-                  title={item?.name ?? ""}
-                  link={`/danh-muc/${item?.slug}`}
-                />
-              ))}
+    <div className="border-t border-blue-200 md:border-0 pt-5 pb-7 md:py-0">
+      <div className="container mx-auto">
+        <div className="md:border-t md:border-blue-200 md:py-5 lg:pt-11 lg:pb-[5.25rem]">
+          <div className="flex items-center justify-between gap-4 md:gap-9">
+            <DecorTitle title={categoryTree?.name ?? ""} className="shrink-0" />
+            {categoryTree?.children?.length > 0 && (
+              <div className="items-center gap-3 flex-1 overflow-x-auto hidden lg:flex">
+                {categoryTree?.children.map((item) => (
+                  <TabButton
+                    key={item?.id}
+                    title={item?.name ?? ""}
+                    link={`/danh-muc/${item?.slug}`}
+                  />
+                ))}
+              </div>
+            )}
+            <div className="items-center gap-2 hidden md:flex">
+              <NavButton onClick={() => api?.scrollPrev()} />
+              <NavButton isRight onClick={() => api?.scrollNext()} />
             </div>
-          )}
-          <div className="items-center gap-2 hidden md:flex">
-            <NavButton onClick={() => api?.scrollPrev()} />
-            <NavButton isRight onClick={() => api?.scrollNext()} />
           </div>
-        </div>
-        <div className="flex gap-3 overflow-x-auto mt-5 -mx-4  px-4 md:hidden">
-          {articles.map((article, index) => (
-            <Card
-              key={article?.id}
-              title={article?.name ?? ""}
-              image={article?.thumbnail ?? ""}
-              className="basis-[40%]"
-              slug={article?.slug ?? ""}
-            />
-          ))}
-        </div>
-        <Carousel className="mt-5 md:mt-10 hidden md:block" setApi={setApi}>
-          <CarouselContent>
+          <div className="flex gap-3 overflow-x-auto mt-5 -mx-4  px-4 md:hidden">
             {articles.map((article, index) => (
-              <CarouselItem
+              <Card
                 key={article?.id}
-                className={clsx("basis-2/5 md:basis-1/4 lg:basis-1/5")}
-              >
-                <Card
-                  title={article?.name ?? ""}
-                  image={article?.thumbnail ?? ""}
-                  slug={article?.slug ?? ""}
-                />
-              </CarouselItem>
+                title={article?.name ?? ""}
+                image={article?.thumbnail ?? ""}
+                className="basis-[40%] shrink-0"
+                slug={article?.slug ?? ""}
+              />
             ))}
-          </CarouselContent>
-        </Carousel>
+          </div>
+          <Carousel className="mt-5 md:mt-10 hidden md:block" setApi={setApi}>
+            <CarouselContent>
+              {articles.map((article, index) => (
+                <CarouselItem
+                  key={article?.id}
+                  className={clsx("basis-2/5 md:basis-1/4 lg:basis-1/5 w-full")}
+                >
+                  <Card
+                    title={article?.name ?? ""}
+                    image={article?.thumbnail ?? ""}
+                    slug={article?.slug ?? ""}
+                  />
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+          </Carousel>
+        </div>
       </div>
     </div>
   );
@@ -89,14 +91,13 @@ interface CardProps {
 
 const Card: React.FC<CardProps> = ({ title, image, className, slug }) => {
   return (
-    <Link href={`/tin-tuc/${slug}`}>
+    <Link href={`/tin-tuc/${slug}`} className={clsx("w-full", className)}>
       <div
         className={clsx(
-          "relative w-full aspect-[9/16] bg-blue-200 shrink-0 overflow-hidden rounded-[11.03px] @container/card",
-          className
+          "relative bg-blue-200 overflow-hidden rounded-[11.03px] @container/card"
         )}
       >
-        <img src={image} className="size-full object-cover" />
+        <img src={image} className="size-full aspect-[9/16] object-cover" />
         <BlurEffect
           position="bottom"
           intensity={60}

@@ -98,21 +98,25 @@ const HomePage = async () => {
     <div>
       <HeadlineBlock />
 
-      <div className="home-container mx-auto pt-4 pb-16">
-        <img
-          src="/images/home/hero-banner.webp"
-          alt="banner"
-          className="w-full max-w-[50rem] mx-auto"
-        />
+      <div className="pb-12">
+        <div className="container mx-auto">
+          <img
+            src="/images/home/hero-banner.webp"
+            alt="banner"
+            className="w-full max-w-[50rem] mx-auto"
+          />
+        </div>
       </div>
       {/* Block 1 trong categoryTree */}
       <ShortBox categoryTree={categoryTree?.[0]} articles={firstData} />
-      <div className="home-container mx-auto pb-10 md:pb-[72px]">
-        <img
-          src="/images/home/hero-banner-2.webp"
-          alt="banner"
-          className="w-full md:rounded-[12px]"
-        />
+      <div className="pb-10 md:pb-[72px]">
+        <div className="container mx-auto">
+          <img
+            src="/images/home/hero-banner-2.webp"
+            alt="banner"
+            className="w-full md:rounded-[12px]"
+          />
+        </div>
       </div>
       {/* Block 2 trong categoryTree */}
       <DefenseSecurityBox
@@ -120,9 +124,9 @@ const HomePage = async () => {
         articles={categoriesData?.[0]}
       />
       <MediaBox />
-      <div className="home-container mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:gap-12 md:gap-x-6 md:gap-y-16 md:pt-10 md:pb-10 xl:pb-24 xl:pt-[3.75rem] md:border-t border-blue-200">
-          <div className="border-t border-blue-200 md:border-none px-4 pt-9 pb-5 md:p-0">
+      <div className="container mx-auto">
+        <div className="-m-4 md:m-0 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:gap-12 md:gap-x-6 md:gap-y-16 lg:pt-11 lg:pb-[5.25rem] md:border-t border-blue-200">
+          <div className="px-4 pt-9 pb-5 md:p-0">
             <TrendingNewsBox />
           </div>
           <div className="md:col-span-2 md:row-start-1 lg:col-start-2 xl:col-start-2">
@@ -141,22 +145,24 @@ const HomePage = async () => {
           </div>
         </div>
       </div>
-      <div className="home-container mx-auto">
-        <div className="px-4 md:px-0 py-9 xl:pt-14 xl:pb-24 border-t border-blue-200">
-          <DecorTitle title="Hải quân Media" />
-          <div className="mt-8 xl:mt-10 grid grid-cols-1 gap-6 md:grid-cols-5 xl:grid-cols-4 xl:gap-10">
-            <NavyMediaBox className="md:col-span-3 xl:col-span-3" />
-            <div className="md:col-span-2 xl:col-span-1">
-              <img
-                src="/images/home/mb-ads.jpg"
-                alt="MB Ads"
-                className="w-full"
-              />
-              <img
-                src="/images/home/viettel-ads.jpg"
-                alt="Viettel Ads"
-                className="w-full mt-6"
-              />
+      <div className="py-5 md:p-0 border-t border-blue-200 md:border-0">
+        <div className="container mx-auto">
+          <div className="md:border-t md:border-blue-200 md:py-5  lg:pt-11 lg:pb-[5.25rem]">
+            <DecorTitle title="Hải quân Media" />
+            <div className="mt-8 xl:mt-10 grid grid-cols-1 gap-6 md:grid-cols-5 xl:grid-cols-4 xl:gap-10">
+              <NavyMediaBox className="md:col-span-3 xl:col-span-3" />
+              <div className="md:col-span-2 xl:col-span-1">
+                <img
+                  src="/images/home/mb-ads.jpg"
+                  alt="MB Ads"
+                  className="w-full"
+                />
+                <img
+                  src="/images/home/viettel-ads.jpg"
+                  alt="Viettel Ads"
+                  className="w-full mt-6"
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -186,7 +192,7 @@ const HomePage = async () => {
         articles={categoriesData?.[4]}
       />
 
-      <NavyTVBox />
+      <NavyTVBox className="mb-10" />
 
       {/* Block 7 trong categoryTree */}
       {/* Block 8 trong categoryTree */}
@@ -200,6 +206,7 @@ const HomePage = async () => {
           key={item?.id}
           categoryTree={item}
           articles={categoriesData?.[5 + index]}
+          hideBorder={index === 0}
         />
       ))}
     </div>
