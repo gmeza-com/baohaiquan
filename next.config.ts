@@ -14,7 +14,7 @@ const nextConfig: NextConfig = {
     ];
   },
   images: {
-    domains: ["baohaiquanvietnam.vn"], // Add the domain here
+    domains: ["baohaiquanvietnam.vn", "picsum.photos"], // Add the domain here
   },
 };
 

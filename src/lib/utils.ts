@@ -146,3 +146,38 @@ export function getCategoryTree(categories: Category[]): CategoryTree[] {
   const tree = convertToCategoryTree(categories);
   return tree;
 }
+
+/**
+ * Extracts link from PHP serialized content
+ * @param content - PHP serialized string content
+ * @returns Extracted link or null if not found
+ */
+export function extractLink(content: string): string | null {
+  try {
+    if (!content) return null;
+
+    // Fallback: Parse the serialized string directly using regex
+    // Look for the link pattern in the serialized string
+    const linkMatch = content.match(/s:\d+:"([^"]*link[^"]*)";s:\d+:"([^"]+)"/);
+    if (linkMatch) {
+      return linkMatch[2];
+    }
+
+    // Alternative pattern for different serialization formats
+    const altLinkMatch = content.match(/s:\d+:"link";s:\d+:"([^"]+)"/);
+    if (altLinkMatch) {
+      return altLinkMatch[1];
+    }
+
+    // Try to find any URL pattern in the content
+    const urlMatch = content.match(/https?:\/\/[^\s"{}]+/);
+    if (urlMatch) {
+      return urlMatch[0];
+    }
+
+    return null;
+  } catch (error) {
+    console.error("Error extracting link from content:", error);
+    return null;
+  }
+}

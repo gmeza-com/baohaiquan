@@ -14,6 +14,7 @@ import { getCategoryTree } from "@/lib/utils";
 import { Category } from "@/type/category";
 import { Metadata } from "next";
 import db from "@/lib/db";
+import PostService from "@/service/post";
 
 const getArticleData = async (categoryId: number, limit: number) => {
   return db("posts as p")
@@ -49,6 +50,16 @@ const getArticleData = async (categoryId: number, limit: number) => {
 };
 
 const HomePage = async () => {
+  const newestPosts = await PostService.getNewestPosts(6);
+
+  const featuredPosts = await PostService.getFeaturedPosts(11);
+
+  const mostViewedPosts = await PostService.getMostViewedPosts(8);
+
+  const newestPosts2 = await PostService.getNewestPosts(14, true);
+
+  const galleryTV = await PostService.getGalleryTV(5);
+
   const categories = await db("post_categories as pcs")
     .select("pcs.id", "pcl.name", "pcl.slug", "pcs.parent_id")
     .join("post_category_languages as pcl", "pcl.post_category_id", "pcs.id")
@@ -96,7 +107,7 @@ const HomePage = async () => {
 
   return (
     <div>
-      <HeadlineBlock />
+      <HeadlineBlock newestPosts={newestPosts} featuredPosts={featuredPosts} />
 
       <div className="pb-12">
         <div className="container mx-auto">
@@ -127,11 +138,11 @@ const HomePage = async () => {
       <div className="container mx-auto">
         <div className="-m-4 md:m-0 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:gap-12 md:gap-x-6 md:gap-y-16 lg:pt-11 lg:pb-[5.25rem] md:border-t border-blue-200">
           <div className="px-4 pt-9 pb-5 md:p-0">
-            <TrendingNewsBox />
+            <TrendingNewsBox posts={mostViewedPosts} />
           </div>
           <div className="md:col-span-2 md:row-start-1 lg:col-start-2 xl:col-start-2">
             <div className="px-4 py-9 md:p-0 border-t border-blue-200 md:border-none">
-              <MixNewsBox />
+              <MixNewsBox posts={newestPosts2} />
             </div>
           </div>
           <div className="flex flex-col gap-12 px-4 py-9 md:p-0 border-t border-blue-200 md:border-none">
@@ -192,7 +203,7 @@ const HomePage = async () => {
         articles={categoriesData?.[4]}
       />
 
-      <NavyTVBox className="mb-10" />
+      <NavyTVBox className="mb-10" galleries={galleryTV} />
 
       {/* Block 7 trong categoryTree */}
       {/* Block 8 trong categoryTree */}

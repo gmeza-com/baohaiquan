@@ -1,5 +1,5 @@
-import { cleanSlug } from "@/lib/utils";
-import { ArticleProps, CategoryProps } from "@/type/article";
+import { cleanSlug, extractLink } from "@/lib/utils";
+import { ArticleProps, CategoryProps, INewestPost } from "@/type/article";
 import db from "@/lib/db";
 
 const PostService = {
@@ -79,6 +79,172 @@ const PostService = {
       await db("posts").where("id", postId).increment("hits", 1);
     } catch (error) {
       console.error("increaseViewCount:", error);
+    }
+  },
+
+  getNewestPosts: async (
+    limit: number,
+    includeCategory: boolean = false
+  ): Promise<INewestPost[]> => {
+    try {
+      let query = db("posts as p")
+        .join("post_languages as pl", "p.id", "pl.post_id")
+        .select("p.id", "pl.slug", "pl.name", "pl.description", "p.thumbnail")
+        .where("p.published", 3)
+        .andWhere("p.published_at", "<=", new Date().toISOString())
+        .andWhere("p.hide", 0)
+        .andWhere("pl.locale", "vi");
+
+      // Nếu cần trả về category, thêm join với bảng category
+      if (includeCategory) {
+        query = query
+          .leftJoin("post_category as pc", "p.id", "pc.post_id")
+          .leftJoin("post_categories as pcat", "pc.post_category_id", "pcat.id")
+          .leftJoin(
+            "post_category_languages as pcl",
+            "pc.post_category_id",
+            "pcl.post_category_id"
+          )
+          .select(
+            "p.id",
+            "pl.slug",
+            "pl.name",
+            "pl.description",
+            "p.thumbnail",
+            "pc.post_category_id as category_id",
+            "pcl.slug as category_slug",
+            "pcl.name as category_name"
+          )
+          .andWhere("pcl.locale", "vi");
+      }
+
+      const results =
+        (await query.orderBy("p.published_at", "desc").limit(limit)) || [];
+
+      // Nếu cần trả về category, group data thành object
+      if (includeCategory) {
+        return results.map((item: any) => ({
+          id: item.id,
+          slug: item.slug,
+          name: item.name,
+          description: item.description,
+          thumbnail: item.thumbnail,
+          category: item.category_id
+            ? {
+                id: item.category_id,
+                slug: item.category_slug,
+                name: item.category_name,
+              }
+            : undefined,
+        }));
+      }
+
+      return results;
+    } catch (error) {
+      console.error("getNewestPosts:", error);
+      return [];
+    }
+  },
+
+  getFeaturedPosts: async (limit: number): Promise<ArticleProps[]> => {
+    try {
+      return (
+        (await db("posts as p")
+          .join("post_languages as pl", "p.id", "pl.post_id")
+          .select(
+            "p.id",
+            "pl.slug",
+            "pl.name",
+            "p.thumbnail",
+            "p.published_at",
+            "pl.description"
+          )
+          .where("p.published", 3)
+          .andWhere("p.featured", 1)
+          .andWhere("p.published_at", "<=", new Date().toISOString())
+          .andWhere("p.hide", 0)
+          .andWhere("pl.locale", "vi")
+          .orderBy("p.published_at", "desc")
+          .limit(limit)) || []
+      );
+    } catch (error) {
+      console.error("getFeaturedPosts:", error);
+      return [];
+    }
+  },
+
+  getMostViewedPosts: async (limit: number): Promise<ArticleProps[]> => {
+    try {
+      const postQuery = db("views as v")
+        .join("posts as p", "v.subject_id", "p.id")
+        .join("post_languages as pl", "pl.post_id", "p.id")
+        .where("v.subject_type", "Modules\\News\\Models\\Post")
+        .select([
+          "v.count",
+          "pl.name",
+          "pl.slug",
+          "pl.description",
+          "p.thumbnail",
+          "p.id",
+        ]);
+
+      const galleryQuery = db("views as v")
+        .join("gallery as g", "v.subject_id", "g.id")
+        .join("gallery_languages as gl", "g.id", "gl.gallery_id")
+        .where("v.subject_type", "Modules\\Gallery\\Models\\Gallery")
+        .select([
+          "v.count",
+          "gl.name",
+          "gl.slug",
+          "gl.description",
+          "g.thumbnail",
+          "g.id",
+        ]);
+
+      const finalQuery = db
+        .unionAll([postQuery, galleryQuery], true) // true => wrap in parentheses (subquery)
+        .as("all_views");
+
+      const result = await db
+        .select("*")
+        .from(finalQuery)
+        .limit(limit)
+        .orderBy("count", "desc");
+
+      return result;
+    } catch (error) {
+      console.error("getMostViewedPosts:", error);
+      return [];
+    }
+  },
+
+  getGalleryTV: async (limit: number): Promise<any[]> => {
+    try {
+      const result = await db("gallery as g")
+        .join("gallery_languages as gl", "gl.gallery_id", "g.id")
+        .join("gallery_category as gc", "gc.gallery_id", "g.id")
+        .join("gallery_categories as gc2", "gc2.id", "gc.gallery_category_id")
+        .select(
+          "g.id",
+          "g.thumbnail",
+          "gl.name",
+          "gl.description",
+          "gl.slug",
+          "gl.content"
+        )
+        .where("gc2.id", 1)
+        .andWhere("g.published", 1)
+        .andWhere("gl.locale", "vi")
+        .orderBy("g.published_at", "desc")
+        .limit(limit);
+
+      return result.map((item) => ({
+        ...item,
+        content: extractLink(item?.content),
+      }));
+    } catch (error) {
+      console.error("getGalleryTV:", error);
+      return [];
     }
   },
 };

@@ -24,3 +24,10 @@ export type CategoryProps = {
   description: string;
   thumbnail: string | null;
 };
+
+export type INewestPost = Pick<
+  ArticleProps,
+  "id" | "slug" | "name" | "description" | "thumbnail"
+> & {
+  category?: Pick<CategoryProps, "id" | "slug" | "name">;
+};
