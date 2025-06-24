@@ -13,9 +13,9 @@ import {
 import React from "react";
 import NavButton from "./NavButton";
 import { CategoryTree } from "@/type/category";
-import TabButton from "./TabButton";
 import { ArticleProps } from "@/type/article";
 import Link from "next/link";
+import SubCategoryTab from "./SubCategoryTab";
 
 interface ShortBoxProps {
   categoryTree: CategoryTree;
@@ -29,23 +29,9 @@ const ShortBox: React.FC<ShortBoxProps> = ({ categoryTree, articles }) => {
     <div className="border-t border-blue-200 md:border-0 pt-5 pb-7 md:py-0">
       <div className="container mx-auto">
         <div className="md:border-t md:border-blue-200 md:py-5 lg:pt-11 lg:pb-[5.25rem]">
-          <div className="flex items-center justify-between gap-4 md:gap-9">
+          <div className="flex md:items-center justify-between gap-4 md:gap-9 flex-col md:flex-row">
             <DecorTitle title={categoryTree?.name ?? ""} className="shrink-0" />
-            {categoryTree?.children?.length > 0 && (
-              <div className="items-center gap-3 flex-1 overflow-x-auto hidden lg:flex">
-                {categoryTree?.children.map((item) => (
-                  <TabButton
-                    key={item?.id}
-                    title={item?.name ?? ""}
-                    link={`/danh-muc/${item?.slug}`}
-                  />
-                ))}
-              </div>
-            )}
-            <div className="items-center gap-2 hidden md:flex">
-              <NavButton onClick={() => api?.scrollPrev()} />
-              <NavButton isRight onClick={() => api?.scrollNext()} />
-            </div>
+            <SubCategoryTab categoryTrees={categoryTree?.children ?? []} />
           </div>
           <div className="flex gap-3 overflow-x-auto mt-5 -mx-4  px-4 md:hidden">
             {articles.map((article, index) => (
@@ -58,7 +44,11 @@ const ShortBox: React.FC<ShortBoxProps> = ({ categoryTree, articles }) => {
               />
             ))}
           </div>
-          <Carousel className="mt-5 md:mt-10 hidden md:block" setApi={setApi}>
+
+          <Carousel
+            className="mt-5 md:mt-10 hidden md:block relative"
+            setApi={setApi}
+          >
             <CarouselContent>
               {articles.map((article, index) => (
                 <CarouselItem
@@ -73,6 +63,10 @@ const ShortBox: React.FC<ShortBoxProps> = ({ categoryTree, articles }) => {
                 </CarouselItem>
               ))}
             </CarouselContent>
+            <div className="absolute inset-0 items-center gap-2 hidden md:flex justify-between px-4 pointer-events-none">
+              <NavButton onClick={() => api?.scrollPrev()} />
+              <NavButton isRight onClick={() => api?.scrollNext()} />
+            </div>
           </Carousel>
         </div>
       </div>

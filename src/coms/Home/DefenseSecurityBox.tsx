@@ -2,9 +2,9 @@ import clsx from "clsx";
 import DecorTitle from "./DecorTitle";
 import ArticleCard, { ArticleCardProps } from "../common/ArticleCard";
 import { CategoryTree } from "@/type/category";
-import TabButton from "./TabButton";
 import { ArticleProps } from "@/type/article";
 import Link from "next/link";
+import SubCategoryTab from "./SubCategoryTab";
 
 interface DefenseSecurityBoxProps {
   categoryTree: CategoryTree;
@@ -31,19 +31,9 @@ const DefenseSecurityBox: React.FC<DefenseSecurityBoxProps> = ({
             !hideBorder && "md:border-t md:border-blue-200"
           )}
         >
-          <div className="flex items-center justify-between gap-4 md:gap-9">
+          <div className="flex md:items-center justify-between gap-4 md:gap-9 flex-col md:flex-row">
             <DecorTitle title={categoryTree?.name ?? ""} />
-            {categoryTree?.children?.length > 0 && (
-              <div className="items-center gap-3 flex-1 overflow-x-auto hidden lg:flex">
-                {categoryTree?.children.map((item) => (
-                  <TabButton
-                    key={item?.id}
-                    title={item?.name ?? ""}
-                    link={`/danh-muc/${item?.slug}`}
-                  />
-                ))}
-              </div>
-            )}
+            <SubCategoryTab categoryTrees={categoryTree?.children ?? []} />
           </div>
           {articles.length > 0 && (
             <div className="mt-5 lg:mt-8 xl:mt-10 flex flex-col gap-3 md:gap-6 xl:gap-12 md:grid md:grid-cols-2 lg:grid-cols-5 xl:grid-cols-8 divide-y divide-blue-200 divide-dashed md:divide-none">
