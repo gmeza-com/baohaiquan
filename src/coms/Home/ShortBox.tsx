@@ -16,6 +16,7 @@ import { CategoryTree } from "@/type/category";
 import { ArticleProps } from "@/type/article";
 import Link from "next/link";
 import SubCategoryTab from "./SubCategoryTab";
+import Image from "next/image";
 
 interface ShortBoxProps {
   categoryTree: CategoryTree;
@@ -30,7 +31,11 @@ const ShortBox: React.FC<ShortBoxProps> = ({ categoryTree, articles }) => {
       <div className="container mx-auto">
         <div className="md:border-t md:border-blue-200 md:py-5 lg:pt-11 lg:pb-[5.25rem]">
           <div className="flex md:items-center justify-between gap-4 md:gap-9 flex-col md:flex-row">
-            <DecorTitle title={categoryTree?.name ?? ""} className="shrink-0" />
+            <DecorTitle
+              title={categoryTree?.name ?? ""}
+              className="shrink-0"
+              link={`/danh-muc/${categoryTree?.slug}`}
+            />
             <SubCategoryTab categoryTrees={categoryTree?.children ?? []} />
           </div>
           <div className="flex gap-3 overflow-x-auto mt-5 -mx-4  px-4 md:hidden">
@@ -85,13 +90,20 @@ interface CardProps {
 
 const Card: React.FC<CardProps> = ({ title, image, className, slug }) => {
   return (
-    <Link href={`/tin-tuc/${slug}`} className={clsx("w-full", className)}>
+    <Link href={`/tin-tuc/${slug}`} className={clsx("w-full group", className)}>
       <div
         className={clsx(
           "relative bg-blue-200 overflow-hidden rounded-[11.03px] @container/card"
         )}
       >
-        <img src={image} className="size-full aspect-[9/16] object-cover" />
+        <Image
+          src={image}
+          className="size-full aspect-[9/16] object-cover group-hover:scale-110 transition-transform duration-300"
+          alt={title}
+          width={251}
+          height={435}
+          loading="lazy"
+        />
         <BlurEffect
           position="bottom"
           intensity={60}

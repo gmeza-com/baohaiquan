@@ -56,6 +56,7 @@ const MixNewsItem: React.FC<MixNewsItemProps> = ({
           className="w-[135px] @min-[624px]/mix-news-item:w-[234px] aspect-video rounded-[6px] object-cover"
           width={234}
           height={132}
+          loading="lazy"
         />
         <div>
           <span className="hover:underline hidden @min-[624px]/mix-news-item:block text-xsm font-medium leading-[160%] tracking-[0%] text-gray-700 mb-1">

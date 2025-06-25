@@ -77,6 +77,7 @@ const NavyMediaItem: React.FC<NavyMediaItemProps> = ({
           width={120}
           height={68}
           alt={title}
+          loading="lazy"
         />
 
         <div className="z-20 cursor-pointer absolute size-8 rounded-full bg-white/25 backdrop-blur-2xl top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 flex items-center justify-center">

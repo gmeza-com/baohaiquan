@@ -34,7 +34,7 @@ export type INewestPost = Pick<
 
 export type IGalleryCollection = Pick<
   ArticleProps,
-  "id" | "thumbnail" | "name" | "description" | "slug"
+  "id" | "thumbnail" | "name" | "description" | "slug" | "published_at"
 > & {
   content: string;
 };

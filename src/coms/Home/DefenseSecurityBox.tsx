@@ -18,6 +18,8 @@ const DefenseSecurityBox: React.FC<DefenseSecurityBoxProps> = ({
   articles = [],
   hideBorder = false,
 }) => {
+  if (articles?.length <= 0) return null;
+
   return (
     <div
       className={clsx(
@@ -33,7 +35,10 @@ const DefenseSecurityBox: React.FC<DefenseSecurityBoxProps> = ({
           )}
         >
           <div className="flex md:items-center justify-between gap-4 md:gap-9 flex-col md:flex-row">
-            <DecorTitle title={categoryTree?.name ?? ""} />
+            <DecorTitle
+              title={categoryTree?.name ?? ""}
+              link={`/danh-muc/${categoryTree?.slug}`}
+            />
             <SubCategoryTab categoryTrees={categoryTree?.children ?? []} />
           </div>
           {articles.length > 0 && (
@@ -88,6 +93,7 @@ const ArticleCompactHorizontalCard: React.FC<OtherArticleCardProps> = ({
           className="w-[135px] aspect-video rounded-[6px] @min-[400px]/card:w-[128px] @min-[400px]/card:aspect-[128/96]"
           width={128}
           height={96}
+          loading="lazy"
         />
         <p className="hover:underline hover:text-blue-700 text-gray-900 text-base @min-[400px]/card:text-lg font-semibold leading-[150%] tracking-[-1%]">
           {title}

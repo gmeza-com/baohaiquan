@@ -62,6 +62,7 @@ const NavyTVBox: React.FC<NavyTVBoxProps> = ({
                         width={128}
                         height={96}
                         className="w-[133px] aspect-[133/100] object-cover rounded-[6px]"
+                        loading="lazy"
                       />
                       <div className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 size-12 rounded-full bg-white/25 backdrop-blur-2xl flex items-center justify-center">
                         <IconPlay2 size={19} className="text-white" />
