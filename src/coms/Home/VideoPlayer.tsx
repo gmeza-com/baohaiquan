@@ -5,26 +5,41 @@ import { IconPlay2 } from "../Icon/fill";
 import { useState } from "react";
 import Image from "next/image";
 import dynamic from "next/dynamic";
+import clsx from "clsx";
 
 const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
 
 interface VideoPlayerProps {
   url: string;
   thumbnail: string;
+  className?: string;
+  width?: number;
+  height?: number;
 }
 
-const VideoPlayer: React.FC<VideoPlayerProps> = ({ url, thumbnail }) => {
+const VideoPlayer: React.FC<VideoPlayerProps> = ({
+  url,
+  thumbnail,
+  className,
+  width = 807,
+  height = 451,
+}) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isPlayed, setIsPlayed] = useState(false);
 
   return (
-    <div className="relative w-full aspect-video overflow-hidden rounded-[6px]">
+    <div
+      className={clsx(
+        "relative w-full aspect-video overflow-hidden rounded-[6px]",
+        className
+      )}
+    >
       {!isPlaying && !isPlayed && (
         <Image
           src={thumbnail}
           alt="thumbnail"
-          width={807}
-          height={451}
+          width={width}
+          height={height}
           className="absolute inset-0 object-cover z-10"
           onClick={() => setIsPlaying(true)}
         />

@@ -1,7 +1,6 @@
-export interface Category {
-  id: number;
-  name: string | null;
-  slug: string | null;
+import { CategoryProps } from "./article";
+
+export interface Category extends CategoryProps {
   parent_id: number;
   children?: Category[];
 }

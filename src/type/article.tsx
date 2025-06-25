@@ -31,3 +31,10 @@ export type INewestPost = Pick<
 > & {
   category?: Pick<CategoryProps, "id" | "slug" | "name">;
 };
+
+export type IGalleryCollection = Pick<
+  ArticleProps,
+  "id" | "thumbnail" | "name" | "description" | "slug"
+> & {
+  content: string;
+};

@@ -1,6 +1,7 @@
 import db from "@/lib/db";
 import { cleanSlug } from "@/lib/utils";
 import { ArticleProps, CategoryProps } from "@/type/article";
+import { Category } from "@/type/category";
 
 const CategoryService = {
   getCatIdFromSlug: async (slug: string): Promise<number | null> => {
@@ -227,6 +228,32 @@ const CategoryService = {
       console.error("getCategoryInfo:", error);
       return null;
     }
+  },
+
+  getGalleryCategories: async (): Promise<
+    Omit<Category, "parent_id" | "description">[]
+  > => {
+    return await db("gallery_categories as gc")
+      .select("gc.id", "gcl.name", "gcl.slug")
+      .join(
+        "gallery_category_languages as gcl",
+        "gcl.gallery_category_id",
+        "gc.id"
+      )
+      .where("gc.published", 1);
+  },
+
+  getPostCategories: async (): Promise<Category[]> => {
+    return await db("post_categories as pcs")
+      .select(
+        "pcs.id",
+        "pcl.name",
+        "pcl.slug",
+        "pcs.parent_id",
+        "pcl.description"
+      )
+      .join("post_category_languages as pcl", "pcl.post_category_id", "pcs.id")
+      .where("pcs.published", 1);
   },
 };
 
