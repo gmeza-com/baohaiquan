@@ -1,6 +1,9 @@
 import { cleanSlug, extractLink } from "@/lib/utils";
 import { ArticleProps, CategoryProps, INewestPost } from "@/type/article";
 import db from "@/lib/db";
+import { unserialize } from "php-serialize";
+import { Collection } from "@/lib/php-erialize/Collection";
+import { GalleryCategory } from "@/data/category";
 
 const PostService = {
   getPostFromSlug: async (slug: string): Promise<ArticleProps | null> => {
@@ -218,7 +221,10 @@ const PostService = {
     }
   },
 
-  getGalleryTV: async (limit: number): Promise<any[]> => {
+  getGalleryCollection: async (
+    categoryId: GalleryCategory,
+    limit: number
+  ): Promise<any[]> => {
     try {
       const result = await db("gallery as g")
         .join("gallery_languages as gl", "gl.gallery_id", "g.id")
@@ -232,7 +238,7 @@ const PostService = {
           "gl.slug",
           "gl.content"
         )
-        .where("gc2.id", 1)
+        .where("gc2.id", categoryId)
         .andWhere("g.published", 1)
         .andWhere("gl.locale", "vi")
         .orderBy("g.published_at", "desc")
@@ -240,7 +246,9 @@ const PostService = {
 
       return result.map((item) => ({
         ...item,
-        content: extractLink(item?.content),
+        content: unserialize(item?.content, {
+          "Illuminate\\Support\\Collection": Collection,
+        })?.items?.link,
       }));
     } catch (error) {
       console.error("getGalleryTV:", error);

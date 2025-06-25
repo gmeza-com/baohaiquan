@@ -4,13 +4,19 @@ import DecorTitle from "./DecorTitle";
 import VideoPlayer from "./VideoPlayer";
 import Image from "next/image";
 import Link from "next/link";
+import { Category } from "@/type/category";
 
 interface NavyTVBoxProps {
   className?: string;
   galleries: any[];
+  category: Pick<Category, "slug" | "name">;
 }
 
-const NavyTVBox: React.FC<NavyTVBoxProps> = ({ className, galleries }) => {
+const NavyTVBox: React.FC<NavyTVBoxProps> = ({
+  className,
+  galleries,
+  category,
+}) => {
   const firstGallery = galleries?.[0];
   const otherGalleries = galleries?.slice(1);
 
@@ -18,7 +24,11 @@ const NavyTVBox: React.FC<NavyTVBoxProps> = ({ className, galleries }) => {
     <div className={clsx("bg-blue-700", className)}>
       <div className="container mx-auto">
         <div className="pt-5 pb-7 xl:pt-11 xl:pb-16">
-          <DecorTitle title="Truyền hình hải quân" textClassName="text-white" />
+          <DecorTitle
+            title={category?.name || "Truyền hình hải quân"}
+            textClassName="text-white"
+            link={`/gallery/collections/${category?.slug}`}
+          />
           <div className="mt-5 md:mt-8 xl:mt-10 md:grid md:grid-cols-2 lg:grid-cols-5 xl:grid-cols-8 md:gap-5 xl:gap-12">
             <div className="lg:col-span-3 xl:col-span-5 @container/main-video">
               <VideoPlayer

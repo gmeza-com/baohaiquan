@@ -15,6 +15,8 @@ import { Category } from "@/type/category";
 import { Metadata } from "next";
 import db from "@/lib/db";
 import PostService from "@/service/post";
+import { GalleryCategory } from "@/data/category";
+import CategoryService from "@/service/category";
 
 const getArticleData = async (categoryId: number, limit: number) => {
   return db("posts as p")
@@ -58,12 +60,25 @@ const HomePage = async () => {
 
   const newestPosts2 = await PostService.getNewestPosts(14, true);
 
-  const galleryTV = await PostService.getGalleryTV(5);
+  const galleryTV = await PostService.getGalleryCollection(
+    GalleryCategory.HQ_TV,
+    5
+  );
+  const hqVideo = await PostService.getGalleryCollection(
+    GalleryCategory.HQ_VIDEO,
+    3
+  );
 
-  const categories = await db("post_categories as pcs")
-    .select("pcs.id", "pcl.name", "pcl.slug", "pcs.parent_id")
-    .join("post_category_languages as pcl", "pcl.post_category_id", "pcs.id")
-    .where("pcs.published", 1);
+  const categories = await CategoryService.getPostCategories();
+  const galleryCategories = await CategoryService.getGalleryCategories();
+
+  const hqMediaCategory = galleryCategories.find(
+    (item) => item.id === GalleryCategory.HQ_VIDEO
+  );
+
+  const hqTvCategory = galleryCategories.find(
+    (item) => item.id === GalleryCategory.HQ_TV
+  );
 
   // Convert to tree structure
   const categoryTree = getCategoryTree(categories as Category[]);
@@ -72,36 +87,8 @@ const HomePage = async () => {
 
   const categoriesData = await Promise.all(
     categoryTree?.slice(1)?.map(async (item) => {
-      return db("posts as p")
-        .join("post_languages as pl", "p.id", "pl.post_id")
-        .join("post_category as pc", "p.id", "pc.post_id")
-        .join("users as u", "p.user_id", "u.id")
-        .select(
-          "p.id",
-          "pl.slug",
-          "pl.name",
-          "pl.description",
-          "pl.tags",
-          "p.thumbnail",
-          "p.featured",
-          "p.published",
-          "p.published_at",
-          "p.created_at",
-          "p.updated_at",
-          "p.featured_started_at",
-          "p.featured_ended_at",
-          "p.user_id as author_id",
-          "u.name as author_name"
-        )
-        .where("pc.post_category_id", item?.id)
-        .andWhere("p.featured", 1)
-        .andWhere("p.published", 3)
-        .andWhere("p.published_at", "<=", new Date().toISOString())
-        .andWhere("p.hide", 0)
-        .andWhere("pl.locale", "vi")
-        .orderBy("p.updated_at", "desc")
-        .offset(0)
-        .limit(4);
+      const articles = await getArticleData(item?.id, 4);
+      return articles;
     })
   );
 
@@ -159,9 +146,15 @@ const HomePage = async () => {
       <div className="py-5 md:p-0 border-t border-blue-200 md:border-0">
         <div className="container mx-auto">
           <div className="md:border-t md:border-blue-200 md:py-5  lg:pt-11 lg:pb-[5.25rem]">
-            <DecorTitle title="Hải quân Media" />
+            <DecorTitle
+              title={hqMediaCategory?.name || "Hải quân Media"}
+              link={`/gallery/collections/${hqMediaCategory?.slug}`}
+            />
             <div className="mt-8 xl:mt-10 grid grid-cols-1 gap-6 md:grid-cols-5 xl:grid-cols-4 xl:gap-10">
-              <NavyMediaBox className="md:col-span-3 xl:col-span-3" />
+              <NavyMediaBox
+                className="md:col-span-3 xl:col-span-3"
+                galleries={hqVideo}
+              />
               <div className="md:col-span-2 xl:col-span-1">
                 <img
                   src="/images/home/mb-ads.jpg"
@@ -203,7 +196,16 @@ const HomePage = async () => {
         articles={categoriesData?.[4]}
       />
 
-      <NavyTVBox className="mb-10" galleries={galleryTV} />
+      <NavyTVBox
+        className="mb-10"
+        galleries={galleryTV}
+        category={
+          hqTvCategory ?? {
+            name: "Truyền hình hải quân",
+            slug: "truyen-hinh-hai-quan",
+          }
+        }
+      />
 
       {/* Block 7 trong categoryTree */}
       {/* Block 8 trong categoryTree */}
