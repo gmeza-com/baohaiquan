@@ -42,6 +42,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
           height={height}
           className="absolute inset-0 object-cover z-10"
           onClick={() => setIsPlaying(true)}
+          loading="lazy"
         />
       )}
 

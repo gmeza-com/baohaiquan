@@ -2,75 +2,42 @@ import DecorTitle from "@/coms/Home/DecorTitle";
 import DefenseSecurityBox from "@/coms/Home/DefenseSecurityBox";
 import HeadlineBlock from "@/coms/Home/HeadlineBlock";
 import LinkedWebsiteBox from "@/coms/Home/LinkedWebsiteBox";
-import MediaBox from "@/coms/Home/MediaBox";
 import MixNewsBox from "@/coms/Home/MixNewsBox";
 import NavyMediaBox from "@/coms/Home/NavyMediaBox";
 import NavyNewspaperBox from "@/coms/Home/NavyNewspaperBox";
 import NavyTVBox from "@/coms/Home/NavyTVBox";
-import PodcastBox from "@/coms/Home/PodcastBox";
 import ShortBox from "@/coms/Home/ShortBox";
 import TrendingNewsBox from "@/coms/Home/TrendingNewsBox";
 import { getCategoryTree } from "@/lib/utils";
 import { Category } from "@/type/category";
 import { Metadata } from "next";
-import db from "@/lib/db";
 import PostService from "@/service/post";
 import { GalleryCategory } from "@/data/category";
 import CategoryService from "@/service/category";
-
-const getArticleData = async (categoryId: number, limit: number) => {
-  return db("posts as p")
-    .join("post_languages as pl", "p.id", "pl.post_id")
-    .join("post_category as pc", "p.id", "pc.post_id")
-    .join("users as u", "p.user_id", "u.id")
-    .select(
-      "p.id",
-      "pl.slug",
-      "pl.name",
-      "pl.description",
-      "pl.tags",
-      "p.thumbnail",
-      "p.featured",
-      "p.published",
-      "p.published_at",
-      "p.created_at",
-      "p.updated_at",
-      "p.featured_started_at",
-      "p.featured_ended_at",
-      "p.user_id as author_id",
-      "u.name as author_name"
-    )
-    .where("pc.post_category_id", categoryId)
-    .andWhere("p.featured", 1)
-    .andWhere("p.published", 3)
-    .andWhere("p.published_at", "<=", new Date().toISOString())
-    .andWhere("p.hide", 0)
-    .andWhere("pl.locale", "vi")
-    .orderBy("p.updated_at", "desc")
-    .offset(0)
-    .limit(limit);
-};
+import Image from "next/image";
 
 const HomePage = async () => {
-  const newestPosts = await PostService.getNewestPosts(6);
-
-  const featuredPosts = await PostService.getFeaturedPosts(11);
-
-  const mostViewedPosts = await PostService.getMostViewedPosts(8);
-
-  const newestPosts2 = await PostService.getNewestPosts(14, true);
-
-  const galleryTV = await PostService.getGalleryCollection(
-    GalleryCategory.HQ_TV,
-    5
-  );
-  const hqVideo = await PostService.getGalleryCollection(
-    GalleryCategory.HQ_VIDEO,
-    3
-  );
-
-  const categories = await CategoryService.getPostCategories();
-  const galleryCategories = await CategoryService.getGalleryCategories();
+  const [
+    newestPosts,
+    featuredPosts,
+    mostViewedPosts,
+    newestPosts2,
+    galleryTV,
+    hqVideo,
+    categories,
+    galleryCategories,
+    hqNewsPaperContent,
+  ] = await Promise.all([
+    PostService.getNewestPosts(6),
+    PostService.getFeaturedPosts(11),
+    PostService.getMostViewedPosts(8),
+    PostService.getNewestPosts(14, true),
+    PostService.getGalleryCollection(GalleryCategory.HQ_TV, 5),
+    PostService.getGalleryCollection(GalleryCategory.HQ_VIDEO, 3),
+    CategoryService.getPostCategories(),
+    CategoryService.getGalleryCategories(),
+    PostService.getGalleryCollection(GalleryCategory.HQ_NEWS_PAPER, 1),
+  ]);
 
   const hqMediaCategory = galleryCategories.find(
     (item) => item.id === GalleryCategory.HQ_VIDEO
@@ -83,11 +50,13 @@ const HomePage = async () => {
   // Convert to tree structure
   const categoryTree = getCategoryTree(categories as Category[]);
 
-  const firstData = await getArticleData(categoryTree?.[0]?.id, 10);
-
   const categoriesData = await Promise.all(
-    categoryTree?.slice(1)?.map(async (item) => {
-      const articles = await getArticleData(item?.id, 4);
+    categoryTree?.map(async (item, index) => {
+      const articles = await CategoryService.getPostsByCategory(
+        item?.slug,
+        0,
+        index === 0 ? 10 : 4
+      );
       return articles;
     })
   );
@@ -102,26 +71,36 @@ const HomePage = async () => {
             src="/images/home/hero-banner.webp"
             alt="banner"
             className="w-full max-w-[50rem] mx-auto"
+            loading="lazy"
           />
         </div>
       </div>
       {/* Block 1 trong categoryTree */}
-      <ShortBox categoryTree={categoryTree?.[0]} articles={firstData} />
+      <ShortBox
+        categoryTree={categoryTree?.[0]}
+        articles={categoriesData?.[0]}
+      />
       <div className="pb-10 md:pb-[72px]">
         <div className="container mx-auto">
-          <img
+          <Image
             src="/images/home/hero-banner-2.webp"
             alt="banner"
             className="w-full md:rounded-[12px]"
+            loading="lazy"
+            width={1320}
+            height={172}
           />
         </div>
       </div>
       {/* Block 2 trong categoryTree */}
       <DefenseSecurityBox
-        categoryTree={categoryTree?.[0]}
-        articles={categoriesData?.[0]}
+        categoryTree={categoryTree?.[1]}
+        articles={categoriesData?.[1]}
       />
-      <MediaBox />
+
+      {/* TODO: coming soon */}
+      {/* <MediaBox /> */}
+
       <div className="container mx-auto">
         <div className="-m-4 md:m-0 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:gap-12 md:gap-x-6 md:gap-y-16 lg:pt-11 lg:pb-[5.25rem] md:border-t border-blue-200">
           <div className="px-4 pt-9 pb-5 md:p-0">
@@ -133,12 +112,20 @@ const HomePage = async () => {
             </div>
           </div>
           <div className="flex flex-col gap-12 px-4 py-9 md:p-0 border-t border-blue-200 md:border-none">
-            <NavyNewspaperBox />
+            {!!hqNewsPaperContent?.[0] && (
+              <NavyNewspaperBox gallery={hqNewsPaperContent?.[0]} />
+            )}
+
             <LinkedWebsiteBox />
-            <img src="/images/home/100-nam.jpg" className="w-full" />
+            <img
+              src="/images/home/100-nam.jpg"
+              className="w-full"
+              loading="lazy"
+            />
             <img
               src="/images/home/cong-ty-xay-lap-thanh-an.jpg"
               className="w-full"
+              loading="lazy"
             />
           </div>
         </div>
@@ -160,11 +147,13 @@ const HomePage = async () => {
                   src="/images/home/mb-ads.jpg"
                   alt="MB Ads"
                   className="w-full"
+                  loading="lazy"
                 />
                 <img
                   src="/images/home/viettel-ads.jpg"
                   alt="Viettel Ads"
                   className="w-full mt-6"
+                  loading="lazy"
                 />
               </div>
             </div>
@@ -174,26 +163,28 @@ const HomePage = async () => {
       {/* Block 3 trong categoryTree */}
       <DefenseSecurityBox
         categoryTree={categoryTree?.[2]}
-        articles={categoriesData?.[1]}
+        articles={categoriesData?.[2]}
       />
 
       {/* Block 4 trong categoryTree */}
       <DefenseSecurityBox
         categoryTree={categoryTree?.[3]}
-        articles={categoriesData?.[2]}
+        articles={categoriesData?.[3]}
       />
 
-      <PodcastBox />
+      {/* TODO: coming soon */}
+      {/* <PodcastBox /> */}
+
       {/* Block 5 trong categoryTree */}
       <DefenseSecurityBox
         categoryTree={categoryTree?.[4]}
-        articles={categoriesData?.[3]}
+        articles={categoriesData?.[4]}
       />
 
       {/* Block 6 trong categoryTree */}
       <DefenseSecurityBox
         categoryTree={categoryTree?.[5]}
-        articles={categoriesData?.[4]}
+        articles={categoriesData?.[5]}
       />
 
       <NavyTVBox
@@ -218,7 +209,7 @@ const HomePage = async () => {
         <DefenseSecurityBox
           key={item?.id}
           categoryTree={item}
-          articles={categoriesData?.[5 + index]}
+          articles={categoriesData?.[6 + index]}
           hideBorder={index === 0}
         />
       ))}

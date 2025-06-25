@@ -1,3 +1,4 @@
+import Image from "next/image";
 import DecorTitle from "./DecorTitle";
 
 const linkedWebsites = [
@@ -36,7 +37,10 @@ const linkedWebsites = [
 const LinkedWebsiteBox = () => {
   return (
     <div className="@container/linked-website-box">
-      <DecorTitle title="Liên kết website" textClassName="@max-[250px]/linked-website-box:text-lg" />
+      <DecorTitle
+        title="Liên kết website"
+        textClassName="@max-[250px]/linked-website-box:text-lg"
+      />
       <div className="mt-8">
         <div className="pb-5 border-b border-blue-200 border-dashed">
           <img
@@ -52,10 +56,13 @@ const LinkedWebsiteBox = () => {
               key={website.name}
               className="bg-white border border-blue-100 flex items-center justify-center px-2 aspect-[139/80] overflow-hidden rounded-[12px] py-4"
             >
-              <img
+              <Image
                 src={website.image}
                 alt={website.name}
                 className="size-full object-contain"
+                loading="lazy"
+                width={139}
+                height={80}
               />
             </div>
           ))}

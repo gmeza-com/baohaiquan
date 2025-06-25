@@ -1,5 +1,10 @@
 import { cleanSlug, extractLink } from "@/lib/utils";
-import { ArticleProps, CategoryProps, INewestPost } from "@/type/article";
+import {
+  ArticleProps,
+  CategoryProps,
+  IGalleryCollection,
+  INewestPost,
+} from "@/type/article";
 import db from "@/lib/db";
 import { unserialize } from "php-serialize";
 import { Collection } from "@/lib/php-erialize/Collection";
@@ -151,25 +156,46 @@ const PostService = {
 
   getFeaturedPosts: async (limit: number): Promise<ArticleProps[]> => {
     try {
-      return (
-        (await db("posts as p")
-          .join("post_languages as pl", "p.id", "pl.post_id")
-          .select(
-            "p.id",
-            "pl.slug",
-            "pl.name",
-            "p.thumbnail",
-            "p.published_at",
-            "pl.description"
-          )
-          .where("p.published", 3)
-          .andWhere("p.featured", 1)
-          .andWhere("p.published_at", "<=", new Date().toISOString())
-          .andWhere("p.hide", 0)
-          .andWhere("pl.locale", "vi")
-          .orderBy("p.published_at", "desc")
-          .limit(limit)) || []
-      );
+      const result = await db("posts as p")
+        .join("post_languages as pl", "p.id", "pl.post_id")
+        .select(
+          "p.id",
+          "pl.slug",
+          "pl.name",
+          "p.thumbnail",
+          "p.published_at",
+          "pl.description"
+        )
+        .where("p.published", 3)
+        .andWhere("p.featured", 1)
+        .andWhere("p.published_at", "<=", new Date().toISOString())
+        .andWhere("p.hide", 0)
+        .andWhere("pl.locale", "vi")
+        .andWhere(function () {
+          this.where(function () {
+            // Current featured posts: started_at <= now AND (ended_at IS NULL OR ended_at >= now)
+            this.where("p.featured_started_at", "<=", db.raw("NOW()")).andWhere(
+              function () {
+                this.whereNull("p.featured_ended_at").orWhere(
+                  "p.featured_ended_at",
+                  ">=",
+                  db.raw("NOW()")
+                );
+              }
+            );
+          }).orWhere(function () {
+            // Expired featured posts: started_at < now AND ended_at < now
+            this.where("p.featured_started_at", "<", db.raw("NOW()")).andWhere(
+              "p.featured_ended_at",
+              "<",
+              db.raw("NOW()")
+            );
+          });
+        })
+        .orderBy("p.featured_started_at", "desc")
+        .limit(limit);
+
+      return result || [];
     } catch (error) {
       console.error("getFeaturedPosts:", error);
       return [];
@@ -224,7 +250,7 @@ const PostService = {
   getGalleryCollection: async (
     categoryId: GalleryCategory,
     limit: number
-  ): Promise<any[]> => {
+  ): Promise<IGalleryCollection[]> => {
     try {
       const result = await db("gallery as g")
         .join("gallery_languages as gl", "gl.gallery_id", "g.id")
@@ -236,7 +262,8 @@ const PostService = {
           "gl.name",
           "gl.description",
           "gl.slug",
-          "gl.content"
+          "gl.content",
+          "g.published_at"
         )
         .where("gc2.id", categoryId)
         .andWhere("g.published", 1)
