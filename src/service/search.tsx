@@ -39,21 +39,34 @@ const SearchService = {
           db.raw(
             `MATCH(pl.name, pl.content) AGAINST(? IN BOOLEAN MODE) AS match_index`,
             [keyword]
-          ) // Match index
+          )
         )
-        .whereRaw(`MATCH(pl.name, pl.content) AGAINST(? IN BOOLEAN MODE) > 8`, [
-          keyword,
+        .where("p.published", 3)
+        .andWhere("p.published_at", "<=", new Date().toISOString())
+        .andWhere("p.hide", 0)
+        .andWhere("pl.locale", "vi")
+        .andWhereRaw(
+          `MATCH(pl.name, pl.content) AGAINST(? IN BOOLEAN MODE) > 8`,
+          [keyword]
+        )
+        .orderBy([
+          { column: "match_index", order: "desc" }, // First order condition
+          { column: "p.published_at", order: "desc" }, // Second order condition
         ])
-        .orderBy("match_index", "desc")
         .offset(offset)
         .limit(10);
 
       // Count the number of results
       const fetcher = await db("posts as p")
         .join("post_languages as pl", "p.id", "pl.post_id")
-        .whereRaw(`MATCH(pl.name, pl.content) AGAINST(? IN BOOLEAN MODE) > 8`, [
-          keyword,
-        ])
+        .where("p.published", 3)
+        .andWhere("p.published_at", "<=", new Date().toISOString())
+        .andWhere("p.hide", 0)
+        .andWhere("pl.locale", "vi")
+        .andWhereRaw(
+          `MATCH(pl.name, pl.content) AGAINST(? IN BOOLEAN MODE) > 8`,
+          [keyword]
+        )
         .count({ count: "*" })
         .first();
 

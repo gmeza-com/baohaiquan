@@ -1,6 +1,5 @@
 import { IconArticle, IconMagnifyingGlass, IconVideo } from "@/coms/Icon/light";
 import ResultList from "@/coms/Search/ResultList";
-import { isOn } from "@/lib/utils";
 import SearchService from "@/service/search";
 import { Metadata } from "next";
 
