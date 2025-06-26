@@ -46,7 +46,7 @@ const SearchService = {
         .andWhere("p.hide", 0)
         .andWhere("pl.locale", "vi")
         .andWhereRaw(
-          `MATCH(pl.name, pl.content) AGAINST(? IN BOOLEAN MODE) > 8`,
+          `MATCH(pl.name, pl.content) AGAINST(? IN BOOLEAN MODE) > 10`,
           [keyword]
         )
         .orderBy([
@@ -64,7 +64,7 @@ const SearchService = {
         .andWhere("p.hide", 0)
         .andWhere("pl.locale", "vi")
         .andWhereRaw(
-          `MATCH(pl.name, pl.content) AGAINST(? IN BOOLEAN MODE) > 8`,
+          `MATCH(pl.name, pl.content) AGAINST(? IN BOOLEAN MODE) > 10`,
           [keyword]
         )
         .count({ count: "*" })
