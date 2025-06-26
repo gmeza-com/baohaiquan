@@ -51,7 +51,14 @@ const TinTucPage = async ({ params }: PageProps) => {
     <div className="p-6">
       <div className="mx-auto max-w-[860px]">
         <div className="max-w-[660px] text-center mx-auto pt-6 pb-12">
-          {isOn(cat) && <span className="uppercase text-sm">{cat?.name}</span>}
+          {isOn(cat) && (
+            <a
+              href={`/danh-muc/${cat?.slug}`}
+              className="uppercase text-sm hover:underline"
+            >
+              {cat?.name}
+            </a>
+          )}
           {post && (
             <>
               <h1 className="text-5xl mt-5 mb-6 font-bold">

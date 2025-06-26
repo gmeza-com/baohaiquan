@@ -14,7 +14,10 @@ const nextConfig: NextConfig = {
     ];
   },
   images: {
-    domains: ["baohaiquanvietnam.vn", "picsum.photos"], // Add the domain here
+    remotePatterns: [
+      { protocol: "https", hostname: "baohaiquanvietnam.vn" },
+      { protocol: "https", hostname: "picsum.photos" },
+    ],
   },
 };
 

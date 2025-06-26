@@ -1,5 +1,6 @@
 import { Category, CategoryTree } from "@/type/category";
 import { clsx, type ClassValue } from "clsx";
+import escapeRegExp from "escape-string-regexp";
 import { NextRequest } from "next/server";
 import { twMerge } from "tailwind-merge";
 
@@ -12,6 +13,25 @@ export function cleanSlug(slug: string): string {
     .trim()
     .toLowerCase()
     .replace(/[^a-z0-9-]/g, "");
+}
+
+export function sanitizeInput(input: string): string {
+  if (!input.trim()) return "";
+
+  // Step 1: Trim and collapse whitespace
+  let clean = input.trim().replace(/\s+/g, " ");
+
+  // Step 2: Remove boolean operators (optional: keep if needed)
+  clean = clean.replace(/[+\-<>()~*"@]/g, "");
+
+  // Step 3: Escape regex special characters
+  clean = escapeRegExp(clean);
+
+  // Step 4: Split and filter short words (<3 chars)
+  const words = clean.split(" ");
+  const filtered = words.filter((word) => word.length >= 3);
+
+  return filtered.join(" ");
 }
 
 export const isSsr = (): boolean => typeof window === "undefined";
