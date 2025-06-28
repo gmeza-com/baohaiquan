@@ -5,7 +5,7 @@ import ArticleHorizontal from "@/coms/Article/ArticleHorizontal";
 
 const CategoryFeature: React.FC<{ posts: ArticleProps[] }> = ({ posts }) => {
   return (
-    <div className="grid grid-cols-4 gap-6 my-3 pb-21 border-b border-b-blue-200">
+    <div className="grid grid-cols-4 gap-6 my-3 pb-21 border-b-2 border-b-blue-200">
       <div className="lg:col-span-2 col-span-4">
         {isOn(posts[0]) && (
           <ArticleVerticle

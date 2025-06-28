@@ -1,5 +1,5 @@
 import db from "@/lib/db";
-import { cleanSlug } from "@/lib/utils";
+import { cleanSlug, isOn } from "@/lib/utils";
 import { ArticleProps, CategoryProps } from "@/type/article";
 import { Category } from "@/type/category";
 
@@ -170,6 +170,7 @@ const CategoryService = {
         .join("post_languages as pl", "p.id", "pl.post_id")
         .join("post_category as pc", "p.id", "pc.post_id")
         .join("users as u", "p.user_id", "u.id")
+        .join("views as v", "v.subject_id", "p.id")
         .select(
           "p.id",
           "pl.slug",
@@ -193,7 +194,7 @@ const CategoryService = {
         .andWhere("p.published_at", "<=", new Date().toISOString())
         .andWhere("p.hide", 0)
         .andWhere("pl.locale", "vi")
-        .orderBy("p.hits", "desc")
+        .orderBy("v.count", "desc")
         .offset(limitStart)
         .limit(limit);
     } catch (error) {
@@ -254,6 +255,55 @@ const CategoryService = {
       )
       .join("post_category_languages as pcl", "pcl.post_category_id", "pcs.id")
       .where("pcs.published", 1);
+  },
+
+  getOtherCateogoryPosts: async (slug: string): Promise<ArticleProps[]> => {
+    try {
+      if (!db) throw new Error("Database connection is not initialized");
+
+      slug = cleanSlug(slug);
+      if (!slug) throw new Error("Category slug is required");
+
+      // fetch the category-id by slug
+      const catId = await CategoryService.getCatIdFromSlug(slug);
+      if (!catId) throw new Error("Category not found");
+
+      // fetch articles in the category, excluding specified IDs
+      const query = `
+        WITH RankedPosts AS (
+          SELECT
+            p.id,
+            p.thumbnail,
+            pl.name,
+            pl.slug,
+            pl.description,
+            ROW_NUMBER() OVER (PARTITION BY c.post_category_id ORDER BY p.published_at DESC) AS row_num,
+            c.post_category_id AS category_id,
+            pcl.slug AS category_slug,
+            pcl.name AS category
+          FROM posts AS p
+          JOIN post_category AS c ON p.id = c.post_id
+          JOIN post_languages AS pl ON p.id = pl.post_id
+          JOIN post_categories as pc on pc.id = c.post_category_id
+          JOIN post_category_languages as pcl on pcl.post_category_id = c.post_category_id
+          WHERE p.published = 3
+          AND pc.parent_id = 0
+          AND c.post_category_id <> ${catId}
+          AND p.hide = 0
+          AND pl.locale = 'vi'
+          AND pc.published = 1)
+        SELECT *
+        FROM RankedPosts
+        WHERE row_num <= 4;
+      `;
+
+      const res = await db.raw(query);
+
+      return isOn(res[0]) ? res[0] : [];
+    } catch (error) {
+      console.error("getOtherCateogoryPosts:", error);
+      return [];
+    }
   },
 };
 

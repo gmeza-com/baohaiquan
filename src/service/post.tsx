@@ -84,7 +84,7 @@ const PostService = {
       if (!db) throw new Error("Database connection is not initialized");
       if (!postId) throw new Error("Post ID is required");
 
-      await db("posts").where("id", postId).increment("hits", 1);
+      await db("views").where("subject_id", postId).increment("count", 1);
     } catch (error) {
       console.error("increaseViewCount:", error);
     }
