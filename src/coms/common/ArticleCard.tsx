@@ -22,7 +22,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
       href={`/tin-tuc/${slug}`}
       className={clsx("@container/card cursor-pointer", className)}
     >
-      <div className="flex flex-col @min-[750px]/card:flex-row-reverse @min-[750px]/card:bg-blue-50 @min-[750px]/card:py-4 @min-[750px]/card:px-6 @min-[750px]/card:rounded-[12px] @min-[750px]/card:gap-7 pb-5">
+      <div className="flex flex-col @min-[750px]/card:flex-row-reverse @min-[750px]/card:bg-blue-50 @min-[750px]/card:p-4 @min-[750px]/card:rounded-[12px] @min-[750px]/card:gap-7 pb-5">
         <Image
           src={image}
           alt={title}
