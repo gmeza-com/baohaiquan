@@ -11,6 +11,7 @@ import React, { useState } from "react";
 import clsx from "clsx";
 import { IconCaretRight } from "../Icon/light";
 import { ArticleProps } from "@/type/article";
+import CarouselNavButton from "./CarouselNavButton";
 
 interface HighlightArticleCarouselProps {
   posts: ArticleProps[];
@@ -54,12 +55,12 @@ const HighlightArticleCarousel: React.FC<HighlightArticleCarouselProps> = ({
       </Carousel>
 
       <div className="absolute top-0 left-0 w-full aspect-video pointer-events-none hidden md:block">
-        <NavButton
+        <CarouselNavButton
           onClick={() => api?.scrollPrev()}
           isLeft
           className="absolute top-1/2 left-3 -translate-y-1/2"
         />
-        <NavButton
+        <CarouselNavButton
           onClick={() => api?.scrollNext()}
           className="absolute top-1/2 right-3 -translate-y-1/2"
         />
@@ -81,26 +82,3 @@ const HighlightArticleCarousel: React.FC<HighlightArticleCarouselProps> = ({
 };
 
 export default HighlightArticleCarousel;
-
-interface NavButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  className?: string;
-  isLeft?: boolean;
-}
-
-const NavButton: React.FC<NavButtonProps> = ({
-  className,
-  isLeft,
-  ...props
-}) => {
-  return (
-    <button
-      {...props}
-      className={clsx(
-        "size-10 flex items-center justify-center bg-white border-[1.25px] rounded-full border-blue-200 text-blue-700 cursor-pointer pointer-events-auto",
-        className
-      )}
-    >
-      <IconCaretRight size={20} className={clsx(isLeft && "rotate-180")} />
-    </button>
-  );
-};

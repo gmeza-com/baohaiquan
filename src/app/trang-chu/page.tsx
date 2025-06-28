@@ -31,7 +31,7 @@ const HomePage = async () => {
     hqPodcast,
   ] = await Promise.all([
     PostService.getNewestPosts(6),
-    PostService.getFeaturedPosts(11),
+    PostService.getFeaturedPosts(10),
     PostService.getMostViewedPosts(8),
     PostService.getNewestPosts(14, true),
     PostService.getGalleryCollection(GalleryCategory.HQ_TV, 5),
