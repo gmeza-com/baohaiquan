@@ -15,7 +15,7 @@ const NavButton: React.FC<NavButtonProps> = ({
     <button
       {...props}
       className={clsx(
-        "size-9 bg-blue-100/65 rounded-full flex items-center justify-center text-blue-700 pointer-events-auto cursor-pointer",
+        "size-7 rounded-full flex items-center justify-center text-gray-900 pointer-events-auto cursor-pointer",
         className
       )}
     >
