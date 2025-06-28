@@ -331,3 +331,65 @@ div.article-wrapper p {
 .navigation-menu-link.active {
   background-color: var(--color-blue-500);
 }
+
+/* Sound wave animations for podcast */
+@keyframes sound-wave {
+  0%, 100% {
+    transform: scaleY(0.3);
+    opacity: 0.3;
+  }
+  50% {
+    transform: scaleY(1);
+    opacity: 0.8;
+  }
+}
+
+@keyframes sound-wave-pulse {
+  0%, 100% {
+    transform: scaleY(0.5);
+    opacity: 0.4;
+  }
+  25% {
+    transform: scaleY(0.8);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scaleY(1.2);
+    opacity: 0.9;
+  }
+  75% {
+    transform: scaleY(0.7);
+    opacity: 0.5;
+  }
+}
+
+@keyframes sound-wave-flow {
+  0% {
+    transform: scaleY(0.4);
+    opacity: 0.3;
+  }
+  33% {
+    transform: scaleY(0.9);
+    opacity: 0.7;
+  }
+  66% {
+    transform: scaleY(1.1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scaleY(0.6);
+    opacity: 0.4;
+  }
+}
+
+.animate-sound-wave {
+  animation: sound-wave 1.2s ease-in-out infinite;
+}
+
+.animate-sound-wave-pulse {
+  animation: sound-wave-pulse 1.5s ease-in-out infinite;
+}
+
+.animate-sound-wave-flow {
+  animation: sound-wave-flow 1.8s ease-in-out infinite;
+}

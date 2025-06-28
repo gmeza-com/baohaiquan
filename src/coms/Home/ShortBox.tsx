@@ -17,6 +17,7 @@ import { ArticleProps } from "@/type/article";
 import Link from "next/link";
 import SubCategoryTab from "./SubCategoryTab";
 import Image from "next/image";
+import CarouselNavButton from "./CarouselNavButton";
 
 interface ShortBoxProps {
   categoryTree: CategoryTree;
@@ -69,8 +70,8 @@ const ShortBox: React.FC<ShortBoxProps> = ({ categoryTree, articles }) => {
               ))}
             </CarouselContent>
             <div className="absolute inset-0 items-center gap-2 hidden md:flex justify-between px-4 pointer-events-none">
-              <NavButton onClick={() => api?.scrollPrev()} />
-              <NavButton isRight onClick={() => api?.scrollNext()} />
+              <CarouselNavButton isLeft onClick={() => api?.scrollPrev()} />
+              <CarouselNavButton onClick={() => api?.scrollNext()} />
             </div>
           </Carousel>
         </div>
