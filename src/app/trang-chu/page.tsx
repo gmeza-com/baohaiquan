@@ -50,6 +50,10 @@ const HomePage = async () => {
     (item) => item.id === GalleryCategory.HQ_TV
   );
 
+  const hqPodcastCategory = galleryCategories.find(
+    (item) => item.id === GalleryCategory.HQ_PODCAST
+  );
+
   // Convert to tree structure
   const categoryTree = getCategoryTree(categories as Category[]);
 
@@ -176,7 +180,15 @@ const HomePage = async () => {
       />
 
       {/* TODO: coming soon */}
-      <PodcastBox />
+      <PodcastBox
+        podcasts={hqPodcast}
+        category={
+          hqPodcastCategory ?? {
+            name: "Podcast",
+            slug: "podcast",
+          }
+        }
+      />
 
       {/* Block 5 trong categoryTree */}
       <DefenseSecurityBox
