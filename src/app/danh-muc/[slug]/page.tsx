@@ -79,9 +79,11 @@ const DanhMucPage = async ({ params }: PageProps) => {
 
   return (
     <div className="container">
-      <h1 className="text-2xl lg:text-3xl font-bold mt-12 mb-6 pb-9 border-b-2 border-b-blue-200 text-center text-blue-700 font-playfair-display uppercase">
+      <h1 className="text-3xl lg:text-4xl font-bold mt-12 pb-6 text-center text-blue-700 font-playfair-display uppercase">
         {info.name}
       </h1>
+      <div className="border-b-4 mx-auto border-b-blue-400 w-30 mb-12"></div>
+
       {isOn(features) && <CategoryFeature posts={features} />}
       <div className="grid grid-cols-4 gap-6 mt-21 pb-12 mb-12 border-b-2 border-b-blue-200">
         <div className="col-span-4 md:col-span-2 lg:col-span-1 row-start-2 lg:row-start-1">
