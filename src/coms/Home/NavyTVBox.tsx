@@ -34,6 +34,7 @@ const NavyTVBox: React.FC<NavyTVBoxProps> = ({
               <VideoPlayer
                 url={firstGallery?.content}
                 thumbnail={firstGallery?.thumbnail}
+                className="rounded-[6px]"
               />
 
               <div className="mt-4 @min-[700px]/main-video:mt-5">

@@ -2,6 +2,7 @@ import { cleanSlug, extractLink } from "@/lib/utils";
 import {
   ArticleProps,
   CategoryProps,
+  GalleryProps,
   IGalleryCollection,
   INewestPost,
 } from "@/type/article";
@@ -49,6 +50,47 @@ const PostService = {
     }
   },
 
+  getGalleryFromSlug: async (slug: string): Promise<GalleryProps | null> => {
+    try {
+      slug = cleanSlug(slug);
+      if (!slug) throw new Error("Gallery slug is required");
+
+      const result = await db("gallery as g")
+        .join("gallery_languages as gl", "gl.gallery_id", "g.id")
+        .join("users as u", "u.id", "g.user_id")
+        .select(
+          "g.id",
+          "gl.slug",
+          "gl.name",
+          "gl.description",
+          "gl.content",
+          "g.thumbnail",
+          "g.featured",
+          "g.published",
+          "g.published_at",
+          "g.created_at",
+          "g.updated_at",
+          "g.user_id as author_id",
+          "u.name as author_name"
+        )
+        .where("g.published", 1)
+        .andWhere("g.published_at", "<=", db.raw("NOW()"))
+        .andWhere("gl.locale", "vi")
+        .andWhere("gl.slug", slug)
+        .first();
+
+      return {
+        ...result,
+        content: unserialize(result?.content, {
+          "Illuminate\\Support\\Collection": Collection,
+        })?.items,
+      };
+    } catch (error) {
+      console.error("getGalleryFromSlug:", error);
+      return null;
+    }
+  },
+
   getCategoryOfPost: async (slug: string): Promise<CategoryProps | null> => {
     try {
       slug = cleanSlug(slug);
@@ -75,6 +117,33 @@ const PostService = {
         .first();
     } catch (error) {
       console.error("getCategoryOfPost:", error);
+      return null;
+    }
+  },
+
+  getCategoryOfGallery: async (
+    slug: string
+  ): Promise<Omit<CategoryProps, "description"> | null> => {
+    try {
+      slug = cleanSlug(slug);
+      if (!slug) throw new Error("Gallery slug is required");
+
+      return await db("gallery as g")
+        .join("gallery_category as gc", "gc.gallery_id", "g.id")
+        .join("gallery_categories as gc2", "gc2.id", "gc.gallery_category_id")
+        .join(
+          "gallery_category_languages as gcl",
+          "gcl.gallery_category_id",
+          "gc2.id"
+        )
+        .join("gallery_languages as gl", "gl.gallery_id", "g.id")
+        .select("gc2.id", "gcl.slug", "gcl.name", "gc2.thumbnail")
+        .where("gl.slug", slug)
+        .andWhere("gcl.locale", "vi")
+        .orderBy("gc2.id", "desc")
+        .first();
+    } catch (error) {
+      console.error("getCategoryOfGallery:", error);
       return null;
     }
   },
@@ -202,12 +271,22 @@ const PostService = {
     }
   },
 
-  getMostViewedPosts: async (limit: number): Promise<ArticleProps[]> => {
+  getMostViewedByCategory: async (
+    categoryId: number,
+    limit: number
+  ): Promise<ArticleProps[]> => {
     try {
-      const postQuery = db("views as v")
+      // Tối ưu: Tạo 2 subqueries riêng biệt cho posts và galleries theo category
+      const postSubquery = db("views as v")
         .join("posts as p", "v.subject_id", "p.id")
         .join("post_languages as pl", "pl.post_id", "p.id")
+        .join("post_category as pc", "pc.post_id", "p.id")
         .where("v.subject_type", "Modules\\News\\Models\\Post")
+        .andWhere("p.published", 3)
+        .andWhere("p.published_at", "<=", new Date().toISOString())
+        .andWhere("p.hide", 0)
+        .andWhere("pl.locale", "vi")
+        .andWhere("pc.post_category_id", categoryId)
         .select([
           "v.count",
           "pl.name",
@@ -215,12 +294,20 @@ const PostService = {
           "pl.description",
           "p.thumbnail",
           "p.id",
-        ]);
+        ])
+        .orderBy("v.count", "desc")
+        .limit(limit);
 
-      const galleryQuery = db("views as v")
+      const gallerySubquery = db("views as v")
         .join("gallery as g", "v.subject_id", "g.id")
         .join("gallery_languages as gl", "g.id", "gl.gallery_id")
+        .join("gallery_category as gc", "gc.gallery_id", "g.id")
         .where("v.subject_type", "Modules\\Gallery\\Models\\Gallery")
+        .andWhere("g.published", 1)
+        .andWhere("g.published_at", "<=", new Date().toISOString())
+        // .andWhere("g.hide", 0)
+        .andWhere("gl.locale", "vi")
+        .andWhere("gc.gallery_category_id", categoryId)
         .select([
           "v.count",
           "gl.name",
@@ -228,17 +315,69 @@ const PostService = {
           "gl.description",
           "g.thumbnail",
           "g.id",
-        ]);
+        ])
+        .orderBy("v.count", "desc")
+        .limit(limit);
 
-      const finalQuery = db
-        .unionAll([postQuery, galleryQuery], true) // true => wrap in parentheses (subquery)
-        .as("all_views");
-
+      // Union và lấy top N từ kết quả
       const result = await db
-        .select("*")
-        .from(finalQuery)
-        .limit(limit)
-        .orderBy("count", "desc");
+        .unionAll([postSubquery, gallerySubquery], true)
+        .orderBy("count", "desc")
+        .limit(limit);
+
+      return result;
+    } catch (error) {
+      console.error("getMostViewedByCategory:", error);
+      return [];
+    }
+  },
+
+  getMostViewedPosts: async (limit: number): Promise<ArticleProps[]> => {
+    try {
+      // Tối ưu: Tạo 2 subqueries riêng biệt, sau đó union và limit
+      const postSubquery = db("views as v")
+        .join("posts as p", "v.subject_id", "p.id")
+        .join("post_languages as pl", "pl.post_id", "p.id")
+        .where("v.subject_type", "Modules\\News\\Models\\Post")
+        .andWhere("p.published", 3)
+        .andWhere("p.published_at", "<=", new Date().toISOString())
+        .andWhere("p.hide", 0)
+        .andWhere("pl.locale", "vi")
+        .select([
+          "v.count",
+          "pl.name",
+          "pl.slug",
+          "pl.description",
+          "p.thumbnail",
+          "p.id",
+        ])
+        .orderBy("v.count", "desc")
+        .limit(limit);
+
+      const gallerySubquery = db("views as v")
+        .join("gallery as g", "v.subject_id", "g.id")
+        .join("gallery_languages as gl", "g.id", "gl.gallery_id")
+        .where("v.subject_type", "Modules\\Gallery\\Models\\Gallery")
+        .andWhere("g.published", 1)
+        .andWhere("g.published_at", "<=", new Date().toISOString())
+        // .andWhere("g.hide", 0)
+        .andWhere("gl.locale", "vi")
+        .select([
+          "v.count",
+          "gl.name",
+          "gl.slug",
+          "gl.description",
+          "g.thumbnail",
+          "g.id",
+        ])
+        .orderBy("v.count", "desc")
+        .limit(limit);
+
+      // Union và lấy top N từ kết quả
+      const result = await db
+        .unionAll([postSubquery, gallerySubquery], true)
+        .orderBy("count", "desc")
+        .limit(limit);
 
       return result;
     } catch (error) {
@@ -279,6 +418,24 @@ const PostService = {
       }));
     } catch (error) {
       console.error("getGalleryTV:", error);
+      return [];
+    }
+  },
+
+  getRelativeVideos: async (slug: string): Promise<IGalleryCollection[]> => {
+    try {
+      const currentCategory = await PostService?.getCategoryOfGallery(slug);
+
+      if (!currentCategory) throw new Error("Category not found");
+
+      const result = await PostService?.getGalleryCollection(
+        currentCategory.id,
+        16
+      );
+
+      return result;
+    } catch (error) {
+      console.error("getRelativeVideos:", error);
       return [];
     }
   },

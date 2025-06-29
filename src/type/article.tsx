@@ -17,6 +17,26 @@ export type ArticleProps = {
   author_name: string;
 };
 
+// TODO: add type for this
+export type GalleryContentType = any;
+
+export type GalleryProps = Pick<
+  ArticleProps,
+  | "id"
+  | "slug"
+  | "name"
+  | "description"
+  | "thumbnail"
+  | "published_at"
+  | "published"
+  | "created_at"
+  | "updated_at"
+  | "author_id"
+  | "author_name"
+> & {
+  content: GalleryContentType;
+};
+
 export type CategoryProps = {
   id: number;
   slug: string;

@@ -30,7 +30,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
   return (
     <div
       className={clsx(
-        "relative w-full aspect-video overflow-hidden rounded-[6px]",
+        "relative w-full aspect-video overflow-hidden",
         className
       )}
     >
@@ -40,7 +40,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
           alt="thumbnail"
           width={width}
           height={height}
-          className="absolute inset-0 object-cover z-10"
+          className="absolute top-0 left-0 w-full h-full object-cover z-10"
           onClick={() => setIsPlaying(true)}
           loading="lazy"
         />
