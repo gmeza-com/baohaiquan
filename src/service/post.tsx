@@ -271,12 +271,22 @@ const PostService = {
     }
   },
 
-  getMostViewedPosts: async (limit: number): Promise<ArticleProps[]> => {
+  getMostViewedByCategory: async (
+    categoryId: number,
+    limit: number
+  ): Promise<ArticleProps[]> => {
     try {
-      const postQuery = db("views as v")
+      // Tối ưu: Tạo 2 subqueries riêng biệt cho posts và galleries theo category
+      const postSubquery = db("views as v")
         .join("posts as p", "v.subject_id", "p.id")
         .join("post_languages as pl", "pl.post_id", "p.id")
+        .join("post_category as pc", "pc.post_id", "p.id")
         .where("v.subject_type", "Modules\\News\\Models\\Post")
+        .andWhere("p.published", 3)
+        .andWhere("p.published_at", "<=", new Date().toISOString())
+        .andWhere("p.hide", 0)
+        .andWhere("pl.locale", "vi")
+        .andWhere("pc.post_category_id", categoryId)
         .select([
           "v.count",
           "pl.name",
@@ -284,12 +294,20 @@ const PostService = {
           "pl.description",
           "p.thumbnail",
           "p.id",
-        ]);
+        ])
+        .orderBy("v.count", "desc")
+        .limit(limit);
 
-      const galleryQuery = db("views as v")
+      const gallerySubquery = db("views as v")
         .join("gallery as g", "v.subject_id", "g.id")
         .join("gallery_languages as gl", "g.id", "gl.gallery_id")
+        .join("gallery_category as gc", "gc.gallery_id", "g.id")
         .where("v.subject_type", "Modules\\Gallery\\Models\\Gallery")
+        .andWhere("g.published", 1)
+        .andWhere("g.published_at", "<=", new Date().toISOString())
+        // .andWhere("g.hide", 0)
+        .andWhere("gl.locale", "vi")
+        .andWhere("gc.gallery_category_id", categoryId)
         .select([
           "v.count",
           "gl.name",
@@ -297,17 +315,69 @@ const PostService = {
           "gl.description",
           "g.thumbnail",
           "g.id",
-        ]);
+        ])
+        .orderBy("v.count", "desc")
+        .limit(limit);
 
-      const finalQuery = db
-        .unionAll([postQuery, galleryQuery], true) // true => wrap in parentheses (subquery)
-        .as("all_views");
-
+      // Union và lấy top N từ kết quả
       const result = await db
-        .select("*")
-        .from(finalQuery)
-        .limit(limit)
-        .orderBy("count", "desc");
+        .unionAll([postSubquery, gallerySubquery], true)
+        .orderBy("count", "desc")
+        .limit(limit);
+
+      return result;
+    } catch (error) {
+      console.error("getMostViewedByCategory:", error);
+      return [];
+    }
+  },
+
+  getMostViewedPosts: async (limit: number): Promise<ArticleProps[]> => {
+    try {
+      // Tối ưu: Tạo 2 subqueries riêng biệt, sau đó union và limit
+      const postSubquery = db("views as v")
+        .join("posts as p", "v.subject_id", "p.id")
+        .join("post_languages as pl", "pl.post_id", "p.id")
+        .where("v.subject_type", "Modules\\News\\Models\\Post")
+        .andWhere("p.published", 3)
+        .andWhere("p.published_at", "<=", new Date().toISOString())
+        .andWhere("p.hide", 0)
+        .andWhere("pl.locale", "vi")
+        .select([
+          "v.count",
+          "pl.name",
+          "pl.slug",
+          "pl.description",
+          "p.thumbnail",
+          "p.id",
+        ])
+        .orderBy("v.count", "desc")
+        .limit(limit);
+
+      const gallerySubquery = db("views as v")
+        .join("gallery as g", "v.subject_id", "g.id")
+        .join("gallery_languages as gl", "g.id", "gl.gallery_id")
+        .where("v.subject_type", "Modules\\Gallery\\Models\\Gallery")
+        .andWhere("g.published", 1)
+        .andWhere("g.published_at", "<=", new Date().toISOString())
+        // .andWhere("g.hide", 0)
+        .andWhere("gl.locale", "vi")
+        .select([
+          "v.count",
+          "gl.name",
+          "gl.slug",
+          "gl.description",
+          "g.thumbnail",
+          "g.id",
+        ])
+        .orderBy("v.count", "desc")
+        .limit(limit);
+
+      // Union và lấy top N từ kết quả
+      const result = await db
+        .unionAll([postSubquery, gallerySubquery], true)
+        .orderBy("count", "desc")
+        .limit(limit);
 
       return result;
     } catch (error) {

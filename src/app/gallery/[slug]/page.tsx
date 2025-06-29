@@ -7,6 +7,7 @@ import Link from "next/link";
 import DOMPurify from "isomorphic-dompurify";
 import ShareList from "@/coms/Article/ShareList";
 import RelativeVideos from "@/coms/Gallery/RelativeVideos";
+import MostViewArticles from "@/coms/Gallery/MostViewArticles";
 
 type PageProps = { params: Promise<{ slug: string }> };
 
@@ -99,7 +100,13 @@ const GalleryDetailPage = async ({ params }: PageProps) => {
           </div>
         </div>
       </div>
-      <RelativeVideos slug={slug} />
+      <div className="bg-white">
+        <RelativeVideos slug={slug} />
+        <div className="container mx-auto">
+          <div className="w-full h-[1px] bg-stroke-light" />
+        </div>
+        <MostViewArticles />
+      </div>
     </div>
   );
 };

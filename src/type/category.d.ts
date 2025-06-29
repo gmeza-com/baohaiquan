@@ -1,4 +1,4 @@
-import { CategoryProps } from "./article";
+import { ArticleProps, CategoryProps } from "./article";
 
 export interface Category extends CategoryProps {
   parent_id: number;
@@ -8,3 +8,7 @@ export interface Category extends CategoryProps {
 export interface CategoryTree extends Category {
   children: Category[];
 }
+
+export type MostViewCategory = Pick<Category, "id" | "name" | "slug"> & {
+  most_viewed: ArticleProps[];
+};
