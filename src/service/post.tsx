@@ -2,6 +2,7 @@ import { cleanSlug, extractLink } from "@/lib/utils";
 import {
   ArticleProps,
   CategoryProps,
+  GalleryProps,
   IGalleryCollection,
   INewestPost,
 } from "@/type/article";
@@ -49,6 +50,47 @@ const PostService = {
     }
   },
 
+  getGalleryFromSlug: async (slug: string): Promise<GalleryProps | null> => {
+    try {
+      slug = cleanSlug(slug);
+      if (!slug) throw new Error("Gallery slug is required");
+
+      const result = await db("gallery as g")
+        .join("gallery_languages as gl", "gl.gallery_id", "g.id")
+        .join("users as u", "u.id", "g.user_id")
+        .select(
+          "g.id",
+          "gl.slug",
+          "gl.name",
+          "gl.description",
+          "gl.content",
+          "g.thumbnail",
+          "g.featured",
+          "g.published",
+          "g.published_at",
+          "g.created_at",
+          "g.updated_at",
+          "g.user_id as author_id",
+          "u.name as author_name"
+        )
+        .where("g.published", 1)
+        .andWhere("g.published_at", "<=", db.raw("NOW()"))
+        .andWhere("gl.locale", "vi")
+        .andWhere("gl.slug", slug)
+        .first();
+
+      return {
+        ...result,
+        content: unserialize(result?.content, {
+          "Illuminate\\Support\\Collection": Collection,
+        })?.items,
+      };
+    } catch (error) {
+      console.error("getGalleryFromSlug:", error);
+      return null;
+    }
+  },
+
   getCategoryOfPost: async (slug: string): Promise<CategoryProps | null> => {
     try {
       slug = cleanSlug(slug);
@@ -75,6 +117,33 @@ const PostService = {
         .first();
     } catch (error) {
       console.error("getCategoryOfPost:", error);
+      return null;
+    }
+  },
+
+  getCategoryOfGallery: async (
+    slug: string
+  ): Promise<Omit<CategoryProps, "description"> | null> => {
+    try {
+      slug = cleanSlug(slug);
+      if (!slug) throw new Error("Gallery slug is required");
+
+      return await db("gallery as g")
+        .join("gallery_category as gc", "gc.gallery_id", "g.id")
+        .join("gallery_categories as gc2", "gc2.id", "gc.gallery_category_id")
+        .join(
+          "gallery_category_languages as gcl",
+          "gcl.gallery_category_id",
+          "gc2.id"
+        )
+        .join("gallery_languages as gl", "gl.gallery_id", "g.id")
+        .select("gc2.id", "gcl.slug", "gcl.name", "gc2.thumbnail")
+        .where("gl.slug", slug)
+        .andWhere("gcl.locale", "vi")
+        .orderBy("gc2.id", "desc")
+        .first();
+    } catch (error) {
+      console.error("getCategoryOfGallery:", error);
       return null;
     }
   },
