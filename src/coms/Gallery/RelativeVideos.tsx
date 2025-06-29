@@ -14,6 +14,7 @@ import axios from "axios";
 import { rest } from "@/lib/rest";
 import Image from "next/image";
 import Link from "next/link";
+import { IconPlay2 } from "../Icon/fill";
 
 interface RelativeVideosProps {
   slug: string;
@@ -114,13 +115,19 @@ const VideoItem = ({ video }: { video: IGalleryCollection }) => {
       href={`/gallery/${video.slug}`}
       className="w-full pb-2 lg:pb-4 @container/video-card"
     >
-      <Image
-        src={video.thumbnail}
-        alt={video.name}
-        width={312}
-        height={175}
-        className="w-full aspect-video rounded-[6px] object-cover"
-      />
+      <div className="relative">
+        <Image
+          src={video.thumbnail}
+          alt={video.name}
+          width={312}
+          height={175}
+          className="w-full aspect-video rounded-[6px] object-cover"
+        />
+        <div className="z-20 cursor-pointer absolute size-10 rounded-full bg-white/25 backdrop-blur-2xl top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 flex items-center justify-center @min-[300px]/video-card:size-12">
+          <IconPlay2 size={12} className="text-white" />
+        </div>
+      </div>
+
       <h6 className="mt-2.5 text-sm font-semibold text-gray-900 leading-[150%] tracking-[-1%] @min-[300px]/video-card:text-lg">
         {video?.name}
       </h6>
