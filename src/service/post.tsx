@@ -351,6 +351,24 @@ const PostService = {
       return [];
     }
   },
+
+  getRelativeVideos: async (slug: string): Promise<IGalleryCollection[]> => {
+    try {
+      const currentCategory = await PostService?.getCategoryOfGallery(slug);
+
+      if (!currentCategory) throw new Error("Category not found");
+
+      const result = await PostService?.getGalleryCollection(
+        currentCategory.id,
+        16
+      );
+
+      return result;
+    } catch (error) {
+      console.error("getRelativeVideos:", error);
+      return [];
+    }
+  },
 };
 
 export default PostService;
