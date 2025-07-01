@@ -4,6 +4,7 @@ import {
   CategoryProps,
   GalleryProps,
   IGalleryCollection,
+  IGalleryCollectionWithViewCount,
   INewestPost,
 } from "@/type/article";
 import db from "@/lib/db";
@@ -58,6 +59,7 @@ const PostService = {
       const result = await db("gallery as g")
         .join("gallery_languages as gl", "gl.gallery_id", "g.id")
         .join("users as u", "u.id", "g.user_id")
+        .join("views as v", "v.subject_id", "g.id")
         .select(
           "g.id",
           "gl.slug",
@@ -70,6 +72,7 @@ const PostService = {
           "g.published_at",
           "g.created_at",
           "g.updated_at",
+          "v.count as view_count",
           "g.user_id as author_id",
           "u.name as author_name"
         )
@@ -77,6 +80,7 @@ const PostService = {
         .andWhere("g.published_at", "<=", db.raw("NOW()"))
         .andWhere("gl.locale", "vi")
         .andWhere("gl.slug", slug)
+        .andWhere("v.subject_type", "Modules\\Gallery\\Models\\Gallery")
         .first();
 
       return {
@@ -406,6 +410,7 @@ const PostService = {
         )
         .where("gc2.id", categoryId)
         .andWhere("g.published", 1)
+        .andWhere("g.published_at", "<=", new Date().toISOString())
         .andWhere("gl.locale", "vi")
         .orderBy("g.published_at", "desc")
         .limit(limit);
@@ -422,18 +427,74 @@ const PostService = {
     }
   },
 
-  getRelativeVideos: async (slug: string): Promise<IGalleryCollection[]> => {
+  getRelativeVideos: async (
+    slug: string,
+    limit: number = 4
+  ): Promise<IGalleryCollectionWithViewCount[]> => {
     try {
       const currentCategory = await PostService?.getCategoryOfGallery(slug);
 
       if (!currentCategory) throw new Error("Category not found");
 
-      const result = await PostService?.getGalleryCollection(
-        currentCategory.id,
-        16
-      );
+      const currentGallery = await db("gallery as g")
+        .join("gallery_languages as gl", "gl.gallery_id", "g.id")
+        .select("gl.slug", "g.id", "g.published_at")
+        .where("gl.slug", slug)
+        .first();
 
-      return result;
+      if (!currentGallery) throw new Error("Gallery not found");
+
+      const getRelativeVideosQuery = (direction: "forward" | "backward") => {
+        return db("gallery as g")
+          .join("gallery_languages as gl", "gl.gallery_id", "g.id")
+          .join("gallery_category as gc", "gc.gallery_id", "g.id")
+          .join("gallery_categories as gc2", "gc2.id", "gc.gallery_category_id")
+          .join("views as v", "v.subject_id", "g.id")
+          .select(
+            "g.id",
+            "g.thumbnail",
+            "gl.name",
+            "gl.description",
+            "gl.slug",
+            "gl.content",
+            "g.published_at",
+            "v.count as view_count"
+          )
+          .where("gc2.id", currentCategory?.id)
+          .andWhere("g.published", 1)
+          .andWhere(
+            "g.published_at",
+            direction === "forward" ? "<=" : ">",
+            currentGallery?.published_at
+          )
+          .andWhere("g.published_at", "<=", db.raw("NOW()"))
+          .andWhere("gl.locale", "vi")
+          .andWhere("v.subject_type", "Modules\\Gallery\\Models\\Gallery")
+          .andWhere("gl.slug", "<>", currentGallery?.slug)
+          .orderBy("g.published_at", direction === "forward" ? "desc" : "asc");
+      };
+
+      // Lấy videos trước và sau
+      const [backwardVideos, forwardVideos] = await Promise.all([
+        getRelativeVideosQuery("backward").limit(Math.ceil(limit)),
+        getRelativeVideosQuery("forward").limit(Math.ceil(limit)),
+      ]);
+
+      // Kết hợp và sắp xếp kết quả
+      const combinedVideos = [...backwardVideos, ...forwardVideos]
+        .sort(
+          (a, b) =>
+            new Date(b.published_at).getTime() -
+            new Date(a.published_at).getTime()
+        )
+        .slice(0, limit);
+
+      return combinedVideos.map((item) => ({
+        ...item,
+        content: unserialize(item?.content, {
+          "Illuminate\\Support\\Collection": Collection,
+        })?.items?.link,
+      }));
     } catch (error) {
       console.error("getRelativeVideos:", error);
       return [];

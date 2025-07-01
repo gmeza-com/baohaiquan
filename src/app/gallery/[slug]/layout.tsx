@@ -1,8 +1,26 @@
 import GalleryDetailLayoutComponent from "@/coms/MasterLayout/GalleryDetailLayout";
+import PostService from "@/service/post";
+import { notFound } from "next/navigation";
 
-const GalleryDetailLayout = ({ children }: { children: React.ReactNode }) => {
+const GalleryDetailLayout = async ({
+  children,
+  params,
+}: {
+  children: React.ReactNode;
+  params: Promise<{ slug: string }>;
+}) => {
+  const { slug } = await params;
+
+  const cat = await PostService.getCategoryOfGallery(slug);
+
+  if (!cat) {
+    notFound();
+  }
+
   return (
-    <GalleryDetailLayoutComponent>{children}</GalleryDetailLayoutComponent>
+    <GalleryDetailLayoutComponent category={cat}>
+      {children}
+    </GalleryDetailLayoutComponent>
   );
 };
 

@@ -2,11 +2,14 @@ import CategoryService from "@/service/category";
 import Footer from "./Footer";
 import { getCategoryTree } from "@/lib/utils";
 import GalleryDetailHeader from "./GalleryDetailHeader";
+import { CategoryProps } from "@/type/article";
 
 const GalleryDetailLayout = async ({
   children,
+  category,
 }: {
   children: React.ReactNode;
+  category: Omit<CategoryProps, "description">;
 }) => {
   const categories = await CategoryService.getPostCategories();
 
@@ -15,7 +18,7 @@ const GalleryDetailLayout = async ({
 
   return (
     <div className="bg-gray-900">
-      <GalleryDetailHeader />
+      <GalleryDetailHeader category={category} />
       <main>{children}</main>
       <Footer categories={categoryTree} />
     </div>

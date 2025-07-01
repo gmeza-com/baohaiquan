@@ -35,6 +35,7 @@ export type GalleryProps = Pick<
   | "author_name"
 > & {
   content: GalleryContentType;
+  view_count: number;
 };
 
 export type CategoryProps = {
@@ -57,4 +58,8 @@ export type IGalleryCollection = Pick<
   "id" | "thumbnail" | "name" | "description" | "slug" | "published_at"
 > & {
   content: string;
+};
+
+export type IGalleryCollectionWithViewCount = IGalleryCollection & {
+  view_count: number;
 };
