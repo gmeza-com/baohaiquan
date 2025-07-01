@@ -201,3 +201,59 @@ export function extractLink(content: string): string | null {
     return null;
   }
 }
+
+/**
+ * Formats a number with Vietnamese locale (dots as thousand separators)
+ * @param num - Number to format
+ * @returns Formatted string with thousand separators
+ */
+export function formatNumber(num: number): string {
+  return num.toLocaleString("vi-VN");
+}
+
+/**
+ * Formats a number with custom thousand separator
+ * @param num - Number to format
+ * @param separator - Thousand separator (default: '.')
+ * @returns Formatted string with custom thousand separators
+ */
+export function formatNumberWithSeparator(
+  num: number,
+  separator: string = "."
+): string {
+  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, separator);
+}
+
+/**
+ * Formats a date to relative time in Vietnamese (e.g., "1 tháng trước", "2 giờ trước")
+ * @param date - Date to format (can be Date object, string, or timestamp)
+ * @returns Formatted relative time string in Vietnamese
+ */
+export function formatRelativeTime(date: Date | string | number): string {
+  const now = new Date();
+  const targetDate = new Date(date);
+  const diffInMs = now.getTime() - targetDate.getTime();
+  const diffInSeconds = Math.floor(diffInMs / 1000);
+  const diffInMinutes = Math.floor(diffInSeconds / 60);
+  const diffInHours = Math.floor(diffInMinutes / 60);
+  const diffInDays = Math.floor(diffInHours / 24);
+  const diffInWeeks = Math.floor(diffInDays / 7);
+  const diffInMonths = Math.floor(diffInDays / 30);
+  const diffInYears = Math.floor(diffInDays / 365);
+
+  if (diffInSeconds < 60) {
+    return "vừa xong";
+  } else if (diffInMinutes < 60) {
+    return `${diffInMinutes} phút trước`;
+  } else if (diffInHours < 24) {
+    return `${diffInHours} giờ trước`;
+  } else if (diffInDays < 7) {
+    return `${diffInDays} ngày trước`;
+  } else if (diffInWeeks < 4) {
+    return `${diffInWeeks} tuần trước`;
+  } else if (diffInMonths < 12) {
+    return `${diffInMonths} tháng trước`;
+  } else {
+    return `${diffInYears} năm trước`;
+  }
+}

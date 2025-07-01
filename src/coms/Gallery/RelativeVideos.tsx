@@ -54,7 +54,7 @@ const RelativeVideos = ({ slug }: RelativeVideosProps) => {
   if (isError || !slug) return null;
 
   return (
-    <div className="w-full  py-4 lg:py-10 xl:py-15">
+    <div className="w-full py-4 lg:py-10 xl:py-15">
       <div className="container mx-auto">
         <div className="flex items-center justify-between">
           <DecorTitle title="Video liên quan" />
