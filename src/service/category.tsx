@@ -305,6 +305,34 @@ const CategoryService = {
       return [];
     }
   },
+
+  getGalleryCategory: async (
+    slug: string
+  ): Promise<Omit<CategoryProps, "description"> | null> => {
+    try {
+      if (!db) throw new Error("Database connection is not initialized");
+
+      slug = cleanSlug(slug);
+      if (!slug) throw new Error("Category slug is required");
+
+      // fetch the category information by slug
+      const category = await db("gallery_categories as gc")
+        .join(
+          "gallery_category_languages as gcl",
+          "gcl.gallery_category_id",
+          "gc.id"
+        )
+        .select("gc.id", "gcl.slug", "gcl.name", "gc.thumbnail")
+        .where("gcl.slug", slug)
+        .andWhere("gcl.locale", "vi")
+        .first();
+
+      return category || null;
+    } catch (error) {
+      console.error("getGalleryCategory:", error);
+      return null;
+    }
+  },
 };
 
 export default CategoryService;
