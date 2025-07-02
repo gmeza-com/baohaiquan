@@ -22,7 +22,7 @@ const GalleryDetailHeader = ({ category }: GalleryDetailHeaderProps) => {
           />
         </Link>
         <Link
-          href={`/gallery/${category?.slug}`}
+          href={`/gallery/collections/${category?.slug}`}
           className="hidden lg:block text-white text-[1.75rem] font-playfair-display font-bold tracking-[0%] leading-[140%] "
         >
           {category?.name}

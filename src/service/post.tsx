@@ -4,6 +4,7 @@ import {
   CategoryProps,
   GalleryProps,
   IGalleryCollection,
+  IGalleryCollectionList,
   IGalleryCollectionWithViewCount,
   INewestPost,
 } from "@/type/article";
@@ -74,7 +75,8 @@ const PostService = {
           "g.updated_at",
           "v.count as view_count",
           "g.user_id as author_id",
-          "u.name as author_name"
+          "u.name as author_name",
+          "g.type"
         )
         .where("g.published", 1)
         .andWhere("g.published_at", "<=", db.raw("NOW()"))
@@ -424,6 +426,68 @@ const PostService = {
     } catch (error) {
       console.error("getGalleryTV:", error);
       return [];
+    }
+  },
+
+  getGalleryCollectionWithPagination: async (
+    categoryId: GalleryCategory,
+    limit: number,
+    page: number
+  ): Promise<{
+    data: IGalleryCollectionList[];
+    currentPage: number;
+    total: number;
+  }> => {
+    try {
+      const totalResult = await db("gallery as g")
+        .join("gallery_languages as gl", "gl.gallery_id", "g.id")
+        .join("gallery_category as gc", "gc.gallery_id", "g.id")
+        .join("gallery_categories as gc2", "gc2.id", "gc.gallery_category_id")
+        .where("gc2.id", categoryId)
+        .andWhere("g.published", 1)
+        .andWhere("g.published_at", "<=", new Date().toISOString())
+        .andWhere("gl.locale", "vi")
+        .count("g.id as count");
+
+      const total = Number(totalResult[0].count);
+
+      const offset = (page - 1) * limit;
+      const result = await db("gallery as g")
+        .join("gallery_languages as gl", "gl.gallery_id", "g.id")
+        .join("gallery_category as gc", "gc.gallery_id", "g.id")
+        .join("gallery_categories as gc2", "gc2.id", "gc.gallery_category_id")
+        .join("views as v", "v.subject_id", "g.id")
+        .select(
+          "g.id",
+          "g.thumbnail",
+          "gl.name",
+          "gl.description",
+          "gl.slug",
+          "gl.content",
+          "g.published_at",
+          "v.count as view_count",
+          "g.type"
+        )
+        .where("gc2.id", categoryId)
+        .andWhere("g.published", 1)
+        .andWhere("g.published_at", "<=", new Date().toISOString())
+        .andWhere("gl.locale", "vi")
+        .andWhere("v.subject_type", "Modules\\Gallery\\Models\\Gallery")
+        .orderBy("g.published_at", "desc")
+        .limit(limit)
+        .offset(offset);
+
+      const data = result.map((item) => ({
+        ...item,
+        content: unserialize(item?.content, {
+          "Illuminate\\Support\\Collection": Collection,
+        })?.items?.link,
+      }));
+
+      return { data, currentPage: page, total: total };
+    } catch (error) {
+      console.error("getGalleryCollectionWithPagination:", error);
+      return { data: [], currentPage: page, total: 0 };
     }
   },
 
