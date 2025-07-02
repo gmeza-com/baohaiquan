@@ -63,3 +63,7 @@ export type IGalleryCollection = Pick<
 export type IGalleryCollectionWithViewCount = IGalleryCollection & {
   view_count: number;
 };
+
+export type IGalleryCollectionList = IGalleryCollectionWithViewCount & {
+  type: string;
+};

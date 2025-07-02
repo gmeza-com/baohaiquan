@@ -4,6 +4,7 @@ import {
   CategoryProps,
   GalleryProps,
   IGalleryCollection,
+  IGalleryCollectionList,
   IGalleryCollectionWithViewCount,
   INewestPost,
 } from "@/type/article";
@@ -432,7 +433,7 @@ const PostService = {
     limit: number,
     page: number
   ): Promise<{
-    data: IGalleryCollectionWithViewCount[];
+    data: IGalleryCollectionList[];
     currentPage: number;
     total: number;
   }> => {
@@ -463,7 +464,8 @@ const PostService = {
           "gl.slug",
           "gl.content",
           "g.published_at",
-          "v.count as view_count"
+          "v.count as view_count",
+          "g.type"
         )
         .where("gc2.id", categoryId)
         .andWhere("g.published", 1)

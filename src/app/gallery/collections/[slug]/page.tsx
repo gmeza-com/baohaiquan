@@ -16,6 +16,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/shadcn/ui/pagination";
+import { IGalleryCollectionList } from "@/type/article";
 import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
@@ -79,40 +80,24 @@ const GalleryCollectionPage = async ({ params, searchParams }: PageProps) => {
         <DecorTitle title={cat?.name} />
         <div className="mt-6 xl:mt-9">
           <ul className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-4 xl:gap-x-7 gap-y-6 xl:gap-y-10">
-            {posts?.data?.map((item) => (
-              <li key={item?.id} className="w-full group cursor-pointer">
-                <Link href={`/gallery/${item?.slug}`}>
-                  <div className="w-full aspect-video rounded-[6px] overflow-hidden relative">
-                    <Image
-                      src={item?.thumbnail}
-                      alt={item?.name}
-                      width={312}
-                      height={175}
-                      className="size-full object-cover"
-                    />
-                    <div className="z-10 cursor-pointer absolute size-10 rounded-full bg-white/25 backdrop-blur-2xl bottom-3 left-3 flex items-center justify-center">
-                      <IconPlay2 size={15} className="text-white" />
-                    </div>
-                  </div>
-                  <div className="mt-2.5">
-                    <h6 className="text-gray-900 group-hover:underline leading-[150%] tracking-[-1%] font-semibold text-lg">
-                      {item?.name}
-                    </h6>
-                    <span className="mt-1.5 text-xsm text-gray-700 leading-[160%] tracking-[0%]">
-                      {formatNumberWithSeparator(item?.view_count)} lượt xem •{" "}
-                      {formatRelativeTime(item?.published_at)}
-                    </span>
-                  </div>
-                </Link>
-              </li>
-            ))}
+            {posts?.data?.map((item) =>
+              item?.type === "video" ? (
+                <VideoCard data={item} />
+              ) : item?.type === "audio" ? (
+                <AudioCard data={item} />
+              ) : (
+                <VideoCard data={item} isNormal />
+              )
+            )}
           </ul>
-          <PaginationComponent
-            slug={slug}
-            currentPage={currentPage}
-            totalPage={totalPage}
-            className="mt-14 md:mt-16"
-          />
+          {totalPage > 1 && (
+            <PaginationComponent
+              slug={slug}
+              currentPage={currentPage}
+              totalPage={totalPage}
+              className="mt-14 md:mt-16"
+            />
+          )}
         </div>
       </div>
     </div>
@@ -244,5 +229,80 @@ const PaginationComponent = ({
         </PaginationItem>
       </PaginationContent>
     </Pagination>
+  );
+};
+
+interface VideoCardProps {
+  data: IGalleryCollectionList;
+  isNormal?: boolean;
+}
+
+const VideoCard = ({ data, isNormal = false }: VideoCardProps) => {
+  return (
+    <li key={data?.id} className="w-full group cursor-pointer">
+      <Link href={`/gallery/${data?.slug}`}>
+        <div className="w-full aspect-video rounded-[6px] overflow-hidden relative">
+          <Image
+            src={data?.thumbnail}
+            alt={data?.name}
+            width={312}
+            height={175}
+            className="size-full object-cover"
+          />
+          {!isNormal && (
+            <div className="z-10 cursor-pointer absolute size-10 rounded-full bg-white/25 backdrop-blur-2xl bottom-3 left-3 flex items-center justify-center">
+              <IconPlay2 size={15} className="text-white" />
+            </div>
+          )}
+        </div>
+        <div className="mt-2.5">
+          <h6 className="text-gray-900 group-hover:underline leading-[150%] tracking-[-1%] font-semibold text-lg">
+            {data?.name}
+          </h6>
+          {!isNormal ? (
+            <span className="mt-1.5 text-xsm text-gray-700 leading-[160%] tracking-[0%]">
+              {formatNumberWithSeparator(data?.view_count)} lượt xem •{" "}
+              {formatRelativeTime(data?.published_at)}
+            </span>
+          ) : (
+            <p className="mt-1.5 text-xsm text-gray-700 leading-[160%] tracking-[0%]">
+              {data?.description}
+            </p>
+          )}
+        </div>
+      </Link>
+    </li>
+  );
+};
+
+const AudioCard: React.FC<VideoCardProps> = ({ data }) => {
+  return (
+    <li key={data?.id} className="w-full group cursor-pointer">
+      <Link href={`/gallery/${data?.slug}`}>
+        <div className="w-full aspect-video rounded-[6px] overflow-hidden relative bg-blue-100 flex items-center justify-center">
+          <div className="size-32 border-3 border-white shadow rounded-lg overflow-hidden">
+            <Image
+              src={data?.thumbnail}
+              alt={data?.name}
+              width={128}
+              height={128}
+              className="size-full object-cover"
+            />
+          </div>
+          <div className="z-10 cursor-pointer absolute size-10 shadow-2xl rounded-full bg-white backdrop-blur-2xl bottom-3 left-3 flex items-center justify-center">
+            <IconPlay2 size={15} className="text-blue-800" />
+          </div>
+        </div>
+        <div className="mt-2.5">
+          <h6 className="text-gray-900 group-hover:underline leading-[150%] tracking-[-1%] font-semibold text-lg">
+            {data?.name}
+          </h6>
+          <span className="mt-1.5 text-xsm text-gray-700 leading-[160%] tracking-[0%]">
+            {formatNumberWithSeparator(data?.view_count)} lượt phát •{" "}
+            {formatRelativeTime(data?.published_at)}
+          </span>
+        </div>
+      </Link>
+    </li>
   );
 };
