@@ -1,5 +1,5 @@
 import VideoPlayer from "@/coms/Home/VideoPlayer";
-import { IconClock, IconSignificantTV } from "@/coms/Icon/light";
+import { IconClock } from "@/coms/Icon/light";
 import { cleanSlug, formatNumberWithSeparator } from "@/lib/utils";
 import PostService from "@/service/post";
 import { CategoryProps, GalleryProps } from "@/type/article";
@@ -8,6 +8,11 @@ import ShareList from "@/coms/Article/ShareList";
 import MostViewArticles from "@/coms/Gallery/MostViewArticles";
 import dayjs from "dayjs";
 import RelativeVideoVertical from "@/coms/Gallery/RelativeVideoVertical";
+import GalleryDetailLayout from "@/coms/MasterLayout/GalleryDetailLayout";
+import { notFound } from "next/navigation";
+import clsx from "clsx";
+
+import AudioPlayer from "@/coms/Gallery/AudioPlayer";
 
 type PageProps = { params: Promise<{ slug: string }> };
 
@@ -52,6 +57,10 @@ const GalleryDetailPage = async ({ params }: PageProps) => {
     // }
   } catch (error) {}
 
+  if (!cat || !post) {
+    notFound();
+  }
+
   const videoUrl = post?.content?.link;
   const videoThumbnail = post?.thumbnail as string;
 
@@ -59,40 +68,69 @@ const GalleryDetailPage = async ({ params }: PageProps) => {
   const description = post?.description;
 
   return (
-    <div>
+    <GalleryDetailLayout category={cat}>
       <div className="w-full bg-gray-950 xl:pb-15 pb-6">
         <div className="container mx-auto grid lg:grid-cols-12 gap-4 md:gap-10 lg:gap-6 xl:gap-12">
-          <div className="xl:col-span-8 lg:col-span-9 pt-3">
-            <VideoPlayer
-              url={videoUrl}
-              thumbnail={videoThumbnail}
-              className="rounded-[6px]"
-            />
-            <h1 className="text-white font-bold text-3xl xl:text-[2rem] text-start leading-[130%] tracking-[-1%] mt-3 lg:mt-4 xl:mt-5">
-              {post?.name}
-            </h1>
+          <div
+            className={clsx(
+              "pt-3",
+              post?.type === "video"
+                ? "xl:col-span-8 lg:col-span-9"
+                : "lg:col-span-12"
+            )}
+          >
+            {post?.type === "video" && (
+              <>
+                <VideoPlayer
+                  url={videoUrl}
+                  thumbnail={videoThumbnail}
+                  className="rounded-[6px]"
+                />
+                <h1 className="text-white font-bold text-3xl xl:text-[2rem] text-start leading-[130%] tracking-[-1%] mt-3 lg:mt-4 xl:mt-5">
+                  {post?.name}
+                </h1>
 
-            <div className="w-full bg-gray-900 rounded-2xl xl:mt-6 mt-3 lg:mt-5 lg:pt-3 lg:pb-4 xl:px-5 px-4 pt-2 pb-3">
-              <p className="lg:text-base xl:text-lg font-semibold mt-1.5 text-gray-200 leading-[160%] tracking-[0%]">
-                {formatNumberWithSeparator(post?.view_count || 0)} lượt xem
-                <span className="text-gray-600"> • </span>
-                Ngày {dayjs(post?.published_at).format("DD/MM/YYYY")}
-              </p>
+                <div className="w-full bg-gray-900 rounded-2xl xl:mt-6 mt-3 lg:mt-5 lg:pt-3 lg:pb-4 xl:px-5 px-4 pt-2 pb-3">
+                  <p className="lg:text-base xl:text-lg font-semibold mt-1.5 text-gray-200 leading-[160%] tracking-[0%]">
+                    {formatNumberWithSeparator(post?.view_count || 0)} lượt xem
+                    <span className="text-gray-600"> • </span>
+                    Ngày {dayjs(post?.published_at).format("DD/MM/YYYY")}
+                  </p>
 
-              <p className="lg:text-base xl:text-lg font-normal mt-1.5 text-gray-200 leading-[160%] tracking-[0%]">
-                {cat?.name}
-                <br />
-                {post?.author_name}
-              </p>
-            </div>
+                  <p className="lg:text-base xl:text-lg font-normal mt-1.5 text-gray-200 leading-[160%] tracking-[0%]">
+                    {cat?.name}
+                    <br />
+                    {post?.author_name}
+                  </p>
+                </div>
 
-            {!!description && (
-              <p className="max-w-[568px] mx-auto w-full text-base md:text-lg lg:text-xl xl:text-[1.375rem] leading-[160%] tracking-[-1%] text-white md:mt-12 mt-8">
-                {description}
-              </p>
+                {!!description && (
+                  <p className="max-w-[568px] mx-auto w-full text-base md:text-lg lg:text-xl xl:text-[1.375rem] leading-[160%] tracking-[-1%] text-white md:mt-12 mt-8">
+                    {description}
+                  </p>
+                )}
+
+                <hr className="w-full max-w-[568px] mx-auto mt-8 border-white/25" />
+              </>
             )}
 
-            <hr className="w-full max-w-[568px] mx-auto mt-8 border-white/25" />
+            {post?.type === "audio" && (
+              <>
+                <div className="pt-16 pb-9">
+                  <h1 className="max-w-[616px] text-5xl font-bold text-center w-full mx-auto text-white leading-[125%] tracking-[-1%]">
+                    {post?.name}
+                  </h1>
+                </div>
+                <div className="w-full max-w-[568px] mx-auto pt-4 pb-9 text-white text-[1.375rem] leading-[160%] tracking-[-1%]">
+                  <p>{post?.description}</p>
+                </div>
+                <AudioPlayer
+                  src={post?.content?.link || ""}
+                  thumbnail={post?.thumbnail as string}
+                  title={post?.name || ""}
+                />
+              </>
+            )}
 
             {!!content && (
               <div
@@ -119,15 +157,20 @@ const GalleryDetailPage = async ({ params }: PageProps) => {
             </div>
           </div>
 
-          <div className="xl:col-span-4 lg:col-span-3 pt-3 md:w-full md:max-w-[568px] md:mx-auto">
-            <RelativeVideoVertical slug={slug} categorySlug={cat?.slug || ""} />
-          </div>
+          {post?.type === "video" && (
+            <div className="xl:col-span-4 lg:col-span-3 pt-3 md:w-full md:max-w-[568px] md:mx-auto">
+              <RelativeVideoVertical
+                slug={slug}
+                categorySlug={cat?.slug || ""}
+              />
+            </div>
+          )}
         </div>
       </div>
       <div className="bg-white">
         <MostViewArticles />
       </div>
-    </div>
+    </GalleryDetailLayout>
   );
 };
 

@@ -20,6 +20,8 @@ export type ArticleProps = {
 // TODO: add type for this
 export type GalleryContentType = any;
 
+export type GalleryType = "video" | "audio" | "album";
+
 export type GalleryProps = Pick<
   ArticleProps,
   | "id"
@@ -36,6 +38,7 @@ export type GalleryProps = Pick<
 > & {
   content: GalleryContentType;
   view_count: number;
+  type: GalleryType;
 };
 
 export type CategoryProps = {
@@ -65,5 +68,5 @@ export type IGalleryCollectionWithViewCount = IGalleryCollection & {
 };
 
 export type IGalleryCollectionList = IGalleryCollectionWithViewCount & {
-  type: string;
+  type: GalleryType;
 };

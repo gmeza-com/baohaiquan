@@ -460,3 +460,79 @@ export const IconPause: React.FC<IconSvgProps> = ({
     <path d="M216,48V208a16,16,0,0,1-16,16H160a16,16,0,0,1-16-16V48a16,16,0,0,1,16-16h40A16,16,0,0,1,216,48ZM96,32H56A16,16,0,0,0,40,48V208a16,16,0,0,0,16,16H96a16,16,0,0,0,16-16V48A16,16,0,0,0,96,32Z"></path>
   </svg>
 );
+
+export const IconSkipBack: React.FC<IconSvgProps> = ({
+  size,
+  width = 24,
+  height = 24,
+  fill = "currentColor",
+  ...props
+}) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={size || width}
+    height={size || height}
+    fill={fill}
+    viewBox="0 0 256 256"
+    {...props}
+  >
+    <path d="M208,47.88V208.12a16,16,0,0,1-24.43,13.43L64,146.77V216a8,8,0,0,1-16,0V40a8,8,0,0,1,16,0v69.23L183.57,34.45A15.95,15.95,0,0,1,208,47.88Z"></path>
+  </svg>
+);
+
+export const IconSkipForward: React.FC<IconSvgProps> = ({
+  size,
+  width = 24,
+  height = 24,
+  fill = "currentColor",
+  ...props
+}) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={size || width}
+    height={size || height}
+    fill={fill}
+    viewBox="0 0 256 256"
+    {...props}
+  >
+    <path d="M208,40V216a8,8,0,0,1-16,0V146.77L72.43,221.55A15.95,15.95,0,0,1,48,208.12V47.88A15.95,15.95,0,0,1,72.43,34.45L192,109.23V40a8,8,0,0,1,16,0Z"></path>
+  </svg>
+);
+
+export const IconRewind: React.FC<IconSvgProps> = ({
+  size,
+  width = 24,
+  height = 24,
+  fill = "currentColor",
+  ...props
+}) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={size || width}
+    height={size || height}
+    fill={fill}
+    viewBox="0 0 256 256"
+    {...props}
+  >
+    <path d="M232,71.84V184.16a15.92,15.92,0,0,1-24.48,13.34L128,146.86v37.3a15.92,15.92,0,0,1-24.48,13.34L15.33,141.34a15.8,15.8,0,0,1,0-26.68L103.52,58.5A15.91,15.91,0,0,1,128,71.84v37.3L207.52,58.5A15.91,15.91,0,0,1,232,71.84Z"></path>
+  </svg>
+);
+
+export const IconFastForward: React.FC<IconSvgProps> = ({
+  size,
+  width = 24,
+  height = 24,
+  fill = "currentColor",
+  ...props
+}) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={size || width}
+    height={size || height}
+    fill={fill}
+    viewBox="0 0 256 256"
+    {...props}
+  >
+    <path d="M256,128a15.76,15.76,0,0,1-7.33,13.34L160.48,197.5A15.91,15.91,0,0,1,136,184.16v-37.3L56.48,197.5A15.91,15.91,0,0,1,32,184.16V71.84A15.91,15.91,0,0,1,56.48,58.5L136,109.14V71.84A15.91,15.91,0,0,1,160.48,58.5l88.19,56.16A15.76,15.76,0,0,1,256,128Z"></path>
+  </svg>
+);

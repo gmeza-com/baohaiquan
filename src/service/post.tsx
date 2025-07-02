@@ -75,7 +75,8 @@ const PostService = {
           "g.updated_at",
           "v.count as view_count",
           "g.user_id as author_id",
-          "u.name as author_name"
+          "u.name as author_name",
+          "g.type"
         )
         .where("g.published", 1)
         .andWhere("g.published_at", "<=", db.raw("NOW()"))
