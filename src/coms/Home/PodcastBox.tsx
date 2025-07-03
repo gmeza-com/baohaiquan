@@ -146,7 +146,7 @@ const PodcastCard: React.FC<PodcastCardProps> = ({
       )}
     >
       <Link
-        href={`/gallery/collections/${slug}`}
+        href={`/gallery/${slug}`}
         className="flex-1 overflow-hidden"
       >
         <div className="size-12 bg-white flex items-center justify-center rounded-full">
