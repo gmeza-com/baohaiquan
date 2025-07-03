@@ -13,6 +13,7 @@ import clsx from "clsx";
 import dayjs from "@/lib/dayjs";
 
 import AudioPlayer from "@/coms/Gallery/AudioPlayer";
+import RelativePodcast from "@/coms/Gallery/RelativePodcast";
 
 type PageProps = { params: Promise<{ slug: string }> };
 
@@ -175,6 +176,12 @@ const GalleryDetailPage = async ({ params }: PageProps) => {
         </div>
       </div>
       <div className="bg-white">
+        {post.type === "audio" && (
+          <>
+            <RelativePodcast slug={slug} />
+            <hr className="w-full bg-blue-200 container mx-auto !p-0" />
+          </>
+        )}
         <MostViewArticles />
       </div>
     </GalleryDetailLayout>

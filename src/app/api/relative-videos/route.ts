@@ -5,10 +5,11 @@ export async function GET(request: NextRequest) {
   try {
     const p = request.nextUrl.searchParams;
     const slug = p.get("slug");
+    const limit = Number(p.get("limit")) || 4;
 
     if (!slug) throw new Error("Slug is required");
 
-    const result = await PostService?.getRelativeVideos(slug);
+    const result = await PostService?.getRelativeVideos(slug, limit);
 
     return NextResponse.json({ data: result, success: true }, { status: 200 });
   } catch (error) {
