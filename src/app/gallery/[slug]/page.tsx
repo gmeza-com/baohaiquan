@@ -153,7 +153,7 @@ const GalleryDetailPage = async ({ params }: PageProps) => {
                 <span className="text-white font-normal text-lg leading-[150%] tracking-[0%]">
                   Chia sẻ
                 </span>
-                <ShareList />
+                <ShareList url={`${process.env.NEXT_PUBLIC_APP}/gallery/${slug}`} />
               </div>
 
               <div className="w-full flex items-center justify-center mt-7 gap-2">
