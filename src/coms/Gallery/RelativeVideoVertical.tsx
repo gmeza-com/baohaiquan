@@ -80,8 +80,8 @@ const RelativeVideoVertical: React.FC<RelativeVideoVerticalProps> = ({
                   className="size-full object-cover w-[128px] aspect-[128/96] @max-[250px]/video-card:w-full @max-[250px]/video-card:aspect-video "
                 />
 
-                <div className="z-20 cursor-pointer absolute size-8 rounded-full bg-white/25 backdrop-blur-2xl top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 flex items-center justify-center @min-[300px]/video-card:size-12">
-                  <IconPlay2 size={12} className="text-white" />
+                <div className="z-20 cursor-pointer absolute size-10 rounded-full bg-white/25 backdrop-blur-2xl top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 flex items-center justify-center @min-[300px]/video-card:size-8">
+                  <IconPlay2 size={16} className="text-white" />
                 </div>
               </div>
 

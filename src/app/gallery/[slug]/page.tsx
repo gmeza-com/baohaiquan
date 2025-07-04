@@ -6,17 +6,22 @@ import { CategoryProps, GalleryProps } from "@/type/article";
 import DOMPurify from "isomorphic-dompurify";
 import ShareList from "@/coms/Article/ShareList";
 import MostViewArticles from "@/coms/Gallery/MostViewArticles";
-import dayjs from "dayjs";
 import RelativeVideoVertical from "@/coms/Gallery/RelativeVideoVertical";
 import GalleryDetailLayout from "@/coms/MasterLayout/GalleryDetailLayout";
 import { notFound } from "next/navigation";
 import clsx from "clsx";
+import dayjs from "@/lib/dayjs";
 
 import AudioPlayer from "@/coms/Gallery/AudioPlayer";
+import RelativePodcast from "@/coms/Gallery/RelativePodcast";
+import { ResolvingMetadata } from "next";
 
 type PageProps = { params: Promise<{ slug: string }> };
 
-export async function generateMetadata({ params }: PageProps) {
+export async function generateMetadata(
+  { params }: PageProps,
+  parent: ResolvingMetadata
+) {
   try {
     let { slug } = await params;
     slug = cleanSlug(slug);
@@ -25,11 +30,17 @@ export async function generateMetadata({ params }: PageProps) {
     // Fetch category information
     const post = await PostService.getGalleryFromSlug(slug);
 
+    // optionally access and extend (rather than replace) parent metadata
+    const previousImages = (await parent).openGraph?.images || [];
+
     if (post)
       return {
         title: post.name,
         description: post.description,
         icons: { icon: "/favicon.ico" },
+        openGraph: {
+          images: [post?.thumbnail, ...previousImages],
+        },
       };
   } catch (error) {
     return {
@@ -116,12 +127,12 @@ const GalleryDetailPage = async ({ params }: PageProps) => {
 
             {post?.type === "audio" && (
               <>
-                <div className="pt-16 pb-9">
-                  <h1 className="max-w-[616px] text-5xl font-bold text-center w-full mx-auto text-white leading-[125%] tracking-[-1%]">
+                <div className="pt-6 xl:pt-16 pb-6 xl:pb-9">
+                  <h1 className="max-w-[616px] text-4xl md:text-5xl font-bold text-center w-full mx-auto text-white leading-[125%] tracking-[-1%]">
                     {post?.name}
                   </h1>
                 </div>
-                <div className="w-full max-w-[568px] mx-auto pt-4 pb-9 text-white text-[1.375rem] leading-[160%] tracking-[-1%]">
+                <div className="w-full max-w-[568px] mx-auto pt-4 pb-9 text-white text-lg xl:text-[1.375rem] leading-[160%] tracking-[-1%]">
                   <p>{post?.description}</p>
                 </div>
                 <AudioPlayer
@@ -129,6 +140,13 @@ const GalleryDetailPage = async ({ params }: PageProps) => {
                   thumbnail={post?.thumbnail as string}
                   title={post?.name || ""}
                 />
+
+                <div className="text-white w-full max-w-[568px] mx-auto mt-6 xl:mt-8 pb-11 border-b border-white/25">
+                  <p className="mt-4 text-base xl:text-lg font-semibold">
+                    {formatNumberWithSeparator(post?.view_count || 0)} lượt phát
+                    • Ngày {dayjs(post?.published_at).format("DD/MM/YYYY")}
+                  </p>
+                </div>
               </>
             )}
 
@@ -145,13 +163,15 @@ const GalleryDetailPage = async ({ params }: PageProps) => {
                 <span className="text-white font-normal text-lg leading-[150%] tracking-[0%]">
                   Chia sẻ
                 </span>
-                <ShareList />
+                <ShareList
+                  url={`${process.env.NEXT_PUBLIC_APP}/gallery/${slug}`}
+                />
               </div>
 
               <div className="w-full flex items-center justify-center mt-7 gap-2">
                 <IconClock size={22} className="text-gray-700" />
-                <span className="text-gray-600 text-xsm">
-                  Thứ năm, 29/5/2025 05:23 (GMT+7)
+                <span className="text-gray-600 text-xsm capitalize">
+                  {dayjs(post.published_at).format("dddd, DD/MM/YYYY HH:mm")}
                 </span>
               </div>
             </div>
@@ -168,6 +188,12 @@ const GalleryDetailPage = async ({ params }: PageProps) => {
         </div>
       </div>
       <div className="bg-white">
+        {post.type === "audio" && (
+          <>
+            <RelativePodcast slug={slug} />
+            <hr className="w-full bg-blue-200 container mx-auto !p-0" />
+          </>
+        )}
         <MostViewArticles />
       </div>
     </GalleryDetailLayout>

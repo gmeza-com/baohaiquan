@@ -36,7 +36,9 @@ const GalleryDetailHeader = ({ category }: GalleryDetailHeaderProps) => {
             <span className="text-white/80 font-normal text-lg leading-[150%] tracking-[0%]">
               Chia sẻ
             </span>{" "}
-            <ShareList />
+            <ShareList
+              url={`${process.env.NEXT_PUBLIC_APP}/gallery/${category?.slug}`}
+            />
           </div>
         </div>
       </div>

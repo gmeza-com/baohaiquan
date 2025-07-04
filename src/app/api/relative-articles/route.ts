@@ -9,7 +9,7 @@ export async function GET(request: NextRequest) {
 
     if (!slug) throw new Error("Slug is required");
 
-    const result = await PostService?.getRelativeVideos(slug, limit);
+    const result = await PostService?.getRelativePosts(slug, limit);
 
     return NextResponse.json({ data: result, success: true }, { status: 200 });
   } catch (error) {
