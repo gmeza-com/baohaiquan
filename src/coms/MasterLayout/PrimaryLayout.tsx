@@ -1,28 +1,32 @@
 import { PropsWithChildren } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
-import { categoriesAPI } from "@/lib/api";
 import MenuService from "@/service/menu";
+import CategoryService from "@/service/category";
+import { getCategoryTree } from "@/lib/utils";
+import { CategoryTree } from "@/type/category";
 
 interface PrimaryLayoutProps extends PropsWithChildren {}
 
 const PrimaryLayout: React.FC<PrimaryLayoutProps> = async ({ children }) => {
   let menuItems: any[] = [];
-  let categories: any;
+  let categoryTree: CategoryTree[] = [];
 
   try {
     // menu items
     menuItems = await MenuService.getMenuItems();
 
     // categories
-    categories = await categoriesAPI.getCategories();
+    const categories = await CategoryService.getPostCategories();
+
+    categoryTree = getCategoryTree(categories);
   } catch (error) {}
 
   return (
     <>
       <Header menuItems={menuItems} />
       <main>{children}</main>
-      <Footer categories={categories?.data} />
+      <Footer categories={categoryTree} />
     </>
   );
 };
