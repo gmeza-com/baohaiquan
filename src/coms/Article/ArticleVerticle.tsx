@@ -1,12 +1,19 @@
 import { ArticleProps } from "@/type/article";
 import Link from "next/link";
 import Image from "next/image";
+import clsx from "clsx";
 
 const ArticleVerticle: React.FC<{
   post: ArticleProps;
   showDesc?: boolean;
   className?: string;
-}> = ({ post, showDesc = false, className = "font-bold" }) => {
+  thumbnailClassName?: string;
+}> = ({
+  post,
+  showDesc = false,
+  className = "font-bold",
+  thumbnailClassName,
+}) => {
   const { name, thumbnail, description, slug } = post;
   return (
     <div className="flex flex-col gap-6">
@@ -17,7 +24,7 @@ const ArticleVerticle: React.FC<{
           width={800}
           height={600}
           loading="lazy"
-          className="rounded w-full h-auto"
+          className={clsx("rounded w-full h-auto", thumbnailClassName)}
         />
       </Link>
       <div className={`${showDesc ? "md:px-6" : ""} gap-6 flex flex-col`}>

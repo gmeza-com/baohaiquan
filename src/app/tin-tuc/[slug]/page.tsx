@@ -4,6 +4,9 @@ import { ArticleProps, CategoryProps } from "@/type/article";
 import dayjs from "@/lib/dayjs";
 import DOMPurify from "isomorphic-dompurify";
 import { ResolvingMetadata } from "next";
+import ShareList from "@/coms/Article/ShareList";
+import { IconClock } from "@/coms/Icon/light";
+import RelativeArticle from "@/coms/Article/RelativeArticle";
 
 type PageProps = { params: Promise<{ slug: string }> };
 
@@ -91,6 +94,24 @@ const TinTucPage = async ({ params }: PageProps) => {
             }}
           />
         )}
+
+        <div className="max-w-[568px] mx-auto py-7">
+          <div className="flex w-full items-center justify-between p-3 bg-yellow-100 rounded-[0.75rem]">
+            <span className="text-gray-900 font-normal text-lg leading-[150%] tracking-[0%]">
+              Chia sẻ
+            </span>
+            <ShareList url={`${process.env.NEXT_PUBLIC_APP}/tin-tuc/${slug}`} />
+          </div>
+
+          <div className="w-full flex items-center justify-center mt-7 gap-2">
+            <IconClock size={22} className="text-gray-800" />
+            <span className="text-gray-900 text-xsm capitalize">
+              {dayjs(post?.published_at).format("dddd, DD/MM/YYYY HH:mm")}
+            </span>
+          </div>
+        </div>
+
+        <RelativeArticle slug={slug} catSlug={cat?.slug || ""} />
       </div>
     </div>
   );

@@ -564,6 +564,75 @@ const PostService = {
       return [];
     }
   },
+
+  getRelativePosts: async (
+    slug: string,
+    limit: number = 4
+  ): Promise<ArticleProps[]> => {
+    try {
+      const currentCategory = await PostService?.getCategoryOfPost(slug);
+
+      if (!currentCategory) throw new Error("Category not found");
+
+      const currentPost = await db("posts as p")
+        .join("post_languages as pl", "pl.post_id", "p.id")
+        .select("pl.slug", "p.id", "p.published_at")
+        .where("pl.slug", slug)
+        .first();
+
+      if (!currentPost) throw new Error("Post not found");
+
+      const getRelativePostsQuery = (direction: "forward" | "backward") => {
+        return db("posts as p")
+          .join("post_languages as pl", "pl.post_id", "p.id")
+          .join("post_category as pc", "pc.post_id", "p.id")
+          .join("post_categories as pcat", "pc.post_category_id", "pcat.id")
+          .join("views as v", "v.subject_id", "p.id")
+          .select(
+            "p.id",
+            "pl.slug",
+            "pl.name",
+            "pl.description",
+            "p.thumbnail",
+            "p.published_at",
+            "v.count as view_count"
+          )
+          .where("pc.post_category_id", currentCategory?.id)
+          .andWhere("p.published", 3)
+          .andWhere(
+            "p.published_at",
+            direction === "forward" ? "<=" : ">",
+            currentPost?.published_at
+          )
+          .andWhere("p.published_at", "<=", new Date().toISOString())
+          .andWhere("p.hide", 0)
+          .andWhere("pl.locale", "vi")
+          .andWhere("v.subject_type", "Modules\\News\\Models\\Post")
+          .andWhere("pl.slug", "<>", currentPost?.slug)
+          .orderBy("p.published_at", direction === "forward" ? "desc" : "asc");
+      };
+
+      // Lấy posts trước và sau
+      const [backwardPosts, forwardPosts] = await Promise.all([
+        getRelativePostsQuery("backward").limit(Math.ceil(limit)),
+        getRelativePostsQuery("forward").limit(Math.ceil(limit)),
+      ]);
+
+      // Kết hợp và sắp xếp kết quả
+      const combinedPosts = [...backwardPosts, ...forwardPosts]
+        .sort(
+          (a, b) =>
+            new Date(b.published_at).getTime() -
+            new Date(a.published_at).getTime()
+        )
+        .slice(0, limit);
+
+      return combinedPosts;
+    } catch (error) {
+      console.error("getRelativePosts:", error);
+      return [];
+    }
+  },
 };
 
 export default PostService;
