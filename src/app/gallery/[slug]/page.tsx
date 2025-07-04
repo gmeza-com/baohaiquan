@@ -14,10 +14,14 @@ import dayjs from "@/lib/dayjs";
 
 import AudioPlayer from "@/coms/Gallery/AudioPlayer";
 import RelativePodcast from "@/coms/Gallery/RelativePodcast";
+import { ResolvingMetadata } from "next";
 
 type PageProps = { params: Promise<{ slug: string }> };
 
-export async function generateMetadata({ params }: PageProps) {
+export async function generateMetadata(
+  { params }: PageProps,
+  parent: ResolvingMetadata
+) {
   try {
     let { slug } = await params;
     slug = cleanSlug(slug);
@@ -26,11 +30,17 @@ export async function generateMetadata({ params }: PageProps) {
     // Fetch category information
     const post = await PostService.getGalleryFromSlug(slug);
 
+    // optionally access and extend (rather than replace) parent metadata
+    const previousImages = (await parent).openGraph?.images || [];
+
     if (post)
       return {
         title: post.name,
         description: post.description,
         icons: { icon: "/favicon.ico" },
+        openGraph: {
+          images: [post?.thumbnail, ...previousImages],
+        },
       };
   } catch (error) {
     return {
@@ -153,7 +163,9 @@ const GalleryDetailPage = async ({ params }: PageProps) => {
                 <span className="text-white font-normal text-lg leading-[150%] tracking-[0%]">
                   Chia sẻ
                 </span>
-                <ShareList url={`${process.env.NEXT_PUBLIC_APP}/gallery/${slug}`} />
+                <ShareList
+                  url={`${process.env.NEXT_PUBLIC_APP}/gallery/${slug}`}
+                />
               </div>
 
               <div className="w-full flex items-center justify-center mt-7 gap-2">
