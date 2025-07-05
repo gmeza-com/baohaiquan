@@ -69,11 +69,8 @@ const RelativePodcast = ({ slug }: RelativePodcastProps) => {
           <CarouselContent>
             {isLoading &&
               Array.from({ length: 2 }).map((_, index) => (
-                <CarouselItem>
-                  <ul
-                    key={index}
-                    className="w-full grid grid-cols-2  md:grid-cols-4 gap-4 xl:gap-6"
-                  >
+                <CarouselItem key={index}>
+                  <ul className="w-full grid grid-cols-2  md:grid-cols-4 gap-4 xl:gap-6">
                     {Array.from({ length: 8 }).map((_, index) => (
                       <LoadingItem key={index} />
                     ))}
