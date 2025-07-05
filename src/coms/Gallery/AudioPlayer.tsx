@@ -10,7 +10,7 @@ import {
   IconPause,
 } from "../Icon/fill";
 import Image from "next/image";
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useEffect } from "react";
 
 interface AudioPlayerProps {
   src: string;
@@ -18,279 +18,144 @@ interface AudioPlayerProps {
   title: string;
 }
 
+const formatTime = (seconds: number) => {
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = Math.floor(seconds % 60);
+  return `${minutes}:${remainingSeconds.toString().padStart(2, "0")}`;
+};
+
 const AudioPlayer = ({ src, thumbnail, title }: AudioPlayerProps) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [audioSupported, setAudioSupported] = useState(true);
   const audioRef = useRef<HTMLAudioElement>(null);
+  const prevPlayState = useRef<"playing" | "paused">("paused");
+  const preventSetSlider = useRef<boolean>(false);
 
-  // Check if audio format is supported
-  const checkAudioSupport = useCallback(() => {
-    if (!src) {
-      setAudioSupported(false);
-      setError("No audio source provided");
-      return false;
-    }
+  const [sliderValue, setSliderValue] = useState(0);
 
-    const audio = audioRef.current;
-    if (!audio) return false;
+  /**
+   * functions
+   * ====================================================================
+   */
 
-    // Check if the audio can be played
-    const canPlay =
-      audio.canPlayType("audio/mpeg") ||
-      audio.canPlayType("audio/mp3") ||
-      audio.canPlayType("audio/wav") ||
-      audio.canPlayType("audio/ogg") ||
-      audio.canPlayType("audio/mp4");
-
-    if (canPlay === "") {
-      setAudioSupported(false);
-      setError("Audio format not supported by this browser");
-      return false;
-    }
-
-    return true;
-  }, [src]);
-
-  // Format time to MM:SS
-  const formatTime = (time: number) => {
-    if (isNaN(time) || time === Infinity) return "00:00";
-    const minutes = Math.floor(time / 60);
-    const seconds = Math.floor(time % 60);
-    return `${minutes.toString().padStart(2, "0")}:${seconds
-      .toString()
-      .padStart(2, "0")}`;
-  };
-
-  // Handle time update
-  const handleTimeUpdate = useCallback(() => {
-    if (audioRef.current) {
-      setCurrentTime(audioRef.current.currentTime);
-    }
-  }, []);
-
-  // Handle loaded metadata
-  const handleLoadedMetadata = useCallback(() => {
-    if (audioRef.current) {
-      const audioDuration = audioRef.current.duration;
-      setDuration(audioDuration);
-      setError(null);
-      setAudioSupported(true);
-    }
-  }, []);
-
-  // Handle play/pause
-  const togglePlayPause = async () => {
-    if (!audioRef.current) {
-      setError("Audio element not available");
-      return;
-    }
-
-    // Check audio support before playing
-    if (!checkAudioSupport()) {
-      return;
-    }
-
-    try {
-      setIsLoading(true);
-      setError(null);
-
-      if (isPlaying) {
-        audioRef.current.pause();
-        setIsPlaying(false);
-      } else {
-        const audio = audioRef.current;
-
-        // Check if audio is ready to play
-        // readyState values: 0=HAVE_NOTHING, 1=HAVE_METADATA, 2=HAVE_CURRENT_DATA, 3=HAVE_FUTURE_DATA, 4=HAVE_ENOUGH_DATA
-        if (audio.readyState < 1) {
-          // If audio hasn't loaded metadata yet, try to load it
-          audio.load();
-          setError("Loading audio metadata, please wait...");
-          setIsLoading(false);
-          return;
-        }
-
-        // If we have metadata but not enough data, wait a bit more
-        if (audio.readyState < 2) {
-          setError("Audio is still loading, please wait...");
-          setIsLoading(false);
-
-          // Wait a bit and try again
-          setTimeout(() => {
-            if (audio.readyState >= 2) {
-              setError(null);
-              togglePlayPause(); // Retry
-            }
-          }, 1000);
-          return;
-        }
-
-        // Try to play the audio
-        const playPromise = audio.play();
-
-        if (playPromise !== undefined) {
-          await playPromise;
-          setIsPlaying(true);
-        } else {
-          setIsPlaying(true);
-        }
-      }
-    } catch (err: any) {
-      // Handle specific error types
-      if (err.name === "NotSupportedError") {
-        setError("Audio format not supported or file is corrupted");
-      } else if (err.name === "NotAllowedError") {
-        setError("Audio playback was blocked by browser");
-      } else if (err.name === "NetworkError") {
-        setError("Network error while loading audio");
-      } else {
-        setError(`Failed to play audio: ${err.message || "Unknown error"}`);
-      }
-
-      setIsPlaying(false);
-      setAudioSupported(false);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  // Handle slider change
-  const handleSliderChange = (value: number[]) => {
-    if (audioRef.current && duration > 0) {
-      const newTime = (value[0] / 100) * duration;
-      audioRef.current.currentTime = newTime;
-      setCurrentTime(newTime);
-    }
-  };
-
-  // Handle skip forward/backward
   const handleSkip = (seconds: number) => {
     if (audioRef.current) {
-      const newTime = Math.max(
-        0,
-        Math.min(audioRef.current.currentTime + seconds, duration)
-      );
-      audioRef.current.currentTime = newTime;
+      audioRef.current.currentTime += seconds;
     }
   };
 
-  // Handle fast forward/rewind
   const handleFastForward = (seconds: number) => {
     if (audioRef.current) {
-      const newTime = Math.max(
-        0,
-        Math.min(audioRef.current.currentTime + seconds, duration)
-      );
-      audioRef.current.currentTime = newTime;
+      audioRef.current.currentTime += seconds;
     }
   };
 
-  // Calculate slider value
-  const sliderValue = duration > 0 ? (currentTime / duration) * 100 : 0;
+  const togglePlayPause = () => {
+    if (!audioRef.current) return;
 
-  // Handle audio end
-  const handleEnded = useCallback(() => {
-    setIsPlaying(false);
-    setCurrentTime(0);
-  }, []);
-
-  // Handle audio error
-  const handleError = useCallback((e: any) => {
-    const audio = audioRef.current;
-
-    setError("Failed to load audio file. Please check the audio source.");
-    setIsPlaying(false);
-    setIsLoading(false);
-    setAudioSupported(false);
-  }, []);
-
-  // Handle audio loading
-  const handleLoadStart = useCallback(() => {
-    setIsLoading(true);
-    setError(null);
-  }, []);
-
-  // Handle audio can play
-  const handleCanPlay = useCallback(() => {
-    setIsLoading(false);
-    setError(null);
-    setAudioSupported(true);
-  }, []);
-
-  // Handle audio can play through
-  const handleCanPlayThrough = useCallback(() => {
-    setIsLoading(false);
-    setError(null);
-    setAudioSupported(true);
-  }, []);
-
-  // Handle audio progress
-  const handleProgress = useCallback(() => {
-    const audio = audioRef.current;
-    if (audio && audio.buffered.length > 0) {
-      const bufferedEnd = audio.buffered.end(audio.buffered.length - 1);
-      const duration = audio.duration;
-      const progress = (bufferedEnd / duration) * 100;
+    if (isPlaying) {
+      audioRef.current.pause();
+      setIsPlaying(false);
+    } else {
+      audioRef.current.play().catch((error) => {
+        console.error("Error playing audio:", error);
+        setError("Failed to play audio");
+      });
+      setIsPlaying(true);
     }
-  }, []);
+  };
 
-  // Set up audio event listeners
+  /**
+   * useEffect
+   * ====================================================================
+   */
+
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
 
+    const handleTimeUpdate = (e: Event) => {
+      if (preventSetSlider.current) return;
+
+      setCurrentTime(audio.currentTime);
+      // Cập nhật slider value để đồng bộ với currentTime
+      setSliderValue((audio.currentTime / audio.duration) * 100);
+    };
+
+    const handleLoadedMetadata = (e: Event) => {
+      setDuration(audio?.duration);
+    };
+
+    const handleDurationChange = (e: Event) => {
+      setDuration(audio?.duration);
+    };
+
+    const handleCanPlay = () => {
+      setIsLoading(false);
+    };
+
+    const handleLoadStart = () => {
+      setIsLoading(true);
+      setError(null);
+    };
+
+    const handleError = () => {
+      setError("Failed to load audio");
+      setIsLoading(false);
+    };
+
+    const handleEnded = () => {
+      setIsPlaying(false);
+    };
+
     // Add event listeners
     audio.addEventListener("timeupdate", handleTimeUpdate);
     audio.addEventListener("loadedmetadata", handleLoadedMetadata);
-    audio.addEventListener("ended", handleEnded);
-    audio.addEventListener("error", handleError);
-    audio.addEventListener("loadstart", handleLoadStart);
+    audio.addEventListener("durationchange", handleDurationChange);
     audio.addEventListener("canplay", handleCanPlay);
-    audio.addEventListener("canplaythrough", handleCanPlayThrough);
-    audio.addEventListener("progress", handleProgress);
+    audio.addEventListener("loadstart", handleLoadStart);
+    audio.addEventListener("error", handleError);
+    audio.addEventListener("ended", handleEnded);
+
+    // Check if audio is already loaded
+    if (audio.readyState >= 1) {
+      setDuration(audio.duration);
+    }
+    if (audio.readyState >= 2) {
+      setIsLoading(false);
+    }
 
     // Cleanup function
     return () => {
       audio.removeEventListener("timeupdate", handleTimeUpdate);
       audio.removeEventListener("loadedmetadata", handleLoadedMetadata);
-      audio.removeEventListener("ended", handleEnded);
-      audio.removeEventListener("error", handleError);
-      audio.removeEventListener("loadstart", handleLoadStart);
+      audio.removeEventListener("durationchange", handleDurationChange);
       audio.removeEventListener("canplay", handleCanPlay);
-      audio.removeEventListener("canplaythrough", handleCanPlayThrough);
-      audio.removeEventListener("progress", handleProgress);
+      audio.removeEventListener("loadstart", handleLoadStart);
+      audio.removeEventListener("error", handleError);
+      audio.removeEventListener("ended", handleEnded);
     };
-  }, [
-    handleTimeUpdate,
-    handleLoadedMetadata,
-    handleEnded,
-    handleError,
-    handleLoadStart,
-    handleCanPlay,
-    handleCanPlayThrough,
-    handleProgress,
-  ]);
+  }, [src]);
 
-  // Reset state when src changes
+  // Handle initial load when component mounts
   useEffect(() => {
-    setCurrentTime(0);
-    setDuration(0);
-    setIsPlaying(false);
+    const audio = audioRef.current;
+    if (!audio || !src) return;
+
+    setIsLoading(true);
     setError(null);
-    setIsLoading(false);
-    setAudioSupported(true);
 
-    // Check audio support when src changes
-    setTimeout(() => {
-      checkAudioSupport();
-    }, 100);
-  }, [src, checkAudioSupport]);
+    // Force reload the audio
+    audio.load();
+  }, [src]);
 
-
+  /**
+   * render view
+   * ====================================================================
+   */
 
   return (
     <div className="w-full max-w-[660px] mx-auto bg-blue-600 rounded-3xl p-4 pb-7">
@@ -305,11 +170,7 @@ const AudioPlayer = ({ src, thumbnail, title }: AudioPlayerProps) => {
       </div>
 
       {/* Hidden audio element */}
-      <audio
-        ref={audioRef}
-        src={src}
-        preload="metadata"
-      />
+      <audio ref={audioRef} src={src} preload="metadata" />
 
       <div className="mt-6">
         {error && (
@@ -319,13 +180,28 @@ const AudioPlayer = ({ src, thumbnail, title }: AudioPlayerProps) => {
         )}
 
         <div className="">
-          <Slider
-            value={[sliderValue]}
-            max={100}
-            step={0.1}
-            onValueChange={handleSliderChange}
-            className="cursor-pointer"
-            disabled={isLoading || !!error || !audioSupported}
+          <SliderComponent
+            value={sliderValue}
+            disabled={isLoading || !!error}
+            onChange={(value) => {
+              if (audioRef.current && duration > 0) {
+                const newTime = (value / 100) * duration;
+                audioRef.current.currentTime = newTime;
+                setCurrentTime(newTime);
+              }
+            }}
+            onDragging={() => {
+              prevPlayState.current = isPlaying ? "playing" : "paused";
+
+              preventSetSlider.current = true;
+              audioRef.current?.pause();
+            }}
+            onDragEnd={() => {
+              preventSetSlider.current = false;
+              if (prevPlayState.current === "playing") {
+                audioRef.current?.play();
+              }
+            }}
           />
           <div className="flex items-center justify-between mt-0.5">
             <span className="text-white text-xsm">
@@ -340,14 +216,14 @@ const AudioPlayer = ({ src, thumbnail, title }: AudioPlayerProps) => {
             <button
               className="size-10 flex items-center justify-center hover:bg-white/10 rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               onClick={() => handleSkip(-10)}
-              disabled={isLoading || !!error || !audioSupported}
+              disabled={isLoading || !!error}
             >
               <IconSkipBack size={24} />
             </button>
             <button
               className="size-10 flex items-center justify-center hover:bg-white/10 rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               onClick={() => handleFastForward(-5)}
-              disabled={isLoading || !!error || !audioSupported}
+              disabled={isLoading || !!error}
             >
               <IconRewind size={24} />
             </button>
@@ -355,7 +231,7 @@ const AudioPlayer = ({ src, thumbnail, title }: AudioPlayerProps) => {
           <button
             className="size-[3.75rem] rounded-full bg-white flex items-center justify-center hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             onClick={togglePlayPause}
-            disabled={isLoading || !!error || !audioSupported}
+            disabled={isLoading || !!error}
           >
             {isLoading ? (
               <div className="size-6 border-2 border-blue-800 border-t-transparent rounded-full animate-spin" />
@@ -369,14 +245,14 @@ const AudioPlayer = ({ src, thumbnail, title }: AudioPlayerProps) => {
             <button
               className="size-10 flex items-center justify-center hover:bg-white/10 rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               onClick={() => handleFastForward(5)}
-              disabled={isLoading || !!error || !audioSupported}
+              disabled={isLoading || !!error}
             >
               <IconFastForward size={24} />
             </button>
             <button
               className="size-10 flex items-center justify-center hover:bg-white/10 rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               onClick={() => handleSkip(10)}
-              disabled={isLoading || !!error || !audioSupported}
+              disabled={isLoading || !!error}
             >
               <IconSkipForward size={24} />
             </button>
@@ -388,3 +264,57 @@ const AudioPlayer = ({ src, thumbnail, title }: AudioPlayerProps) => {
 };
 
 export default AudioPlayer;
+
+interface SliderComponentProps {
+  value: number;
+  disabled?: boolean;
+  onChange?: (value: number) => void;
+  onDragging?: () => void;
+  onDragEnd?: () => void;
+}
+
+const SliderComponent = ({
+  value,
+  disabled,
+  onChange,
+  onDragging,
+  onDragEnd,
+}: SliderComponentProps) => {
+  const [sliderValue, setSliderValue] = useState(value);
+  const [isDragging, setIsDragging] = useState(false);
+
+  const handleSliderChange = (value: number[]) => {
+    const newValue = value[0];
+    setSliderValue(newValue);
+    setIsDragging(true);
+    if (onDragging) {
+      onDragging();
+    }
+  };
+
+  const handleSliderEnd = () => {
+    setIsDragging(false);
+    if (onDragEnd) {
+      onDragEnd();
+    }
+    if (onChange) {
+      onChange(sliderValue);
+    }
+  };
+
+  useEffect(() => {
+    setSliderValue(value);
+  }, [value]);
+
+  return (
+    <Slider
+      value={[sliderValue]}
+      max={100}
+      step={0.1}
+      onValueChange={handleSliderChange}
+      onValueCommit={handleSliderEnd}
+      className="cursor-pointer"
+      disabled={disabled}
+    />
+  );
+};
