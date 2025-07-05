@@ -62,10 +62,10 @@ const GalleryDetailPage = async ({ params }: PageProps) => {
     post = await PostService.getGalleryFromSlug(slug);
     cat = await PostService.getCategoryOfGallery(slug);
 
-    // TODO: increment view count
-    // if (post && post.id) {
-    //   await PostService.increaseViewCount(post.id);
-    // }
+    // *: increment view count
+    if (post && post.id) {
+      await PostService.increaseViewCount(post.id);
+    }
   } catch (error) {}
 
   if (!cat || !post) {

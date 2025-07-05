@@ -83,11 +83,11 @@ const GalleryCollectionPage = async ({ params, searchParams }: PageProps) => {
           <ul className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-4 xl:gap-x-7 gap-y-6 xl:gap-y-10">
             {posts?.data?.map((item) =>
               item?.type === "video" ? (
-                <VideoCard data={item} />
+                <VideoCard key={item?.id} data={item} />
               ) : item?.type === "audio" ? (
-                <AudioCard data={item} />
+                <AudioCard key={item?.id} data={item} />
               ) : (
-                <VideoCard data={item} isNormal />
+                <VideoCard key={item?.id} data={item} isNormal />
               )
             )}
           </ul>
