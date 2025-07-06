@@ -136,13 +136,13 @@ var FLIPBOOK = FLIPBOOK || {};
       btnPrev: {
         enabled: !0,
         title: "Previous page",
-        icon: "fa-angle-left",
+        icon: "icon-caret-left",
         icon2: "chevron_left",
       },
       btnNext: {
         enabled: !0,
         title: "Next page",
-        icon: "fa-angle-right",
+        icon: "icon-caret-right",
         icon2: "chevron_right",
       },
       btnLast: {
@@ -154,13 +154,13 @@ var FLIPBOOK = FLIPBOOK || {};
       btnZoomIn: {
         enabled: !0,
         title: "Zoom in",
-        icon: "fa-plus",
+        icon: "icon-plus",
         icon2: "zoom_in",
       },
       btnZoomOut: {
         enabled: !0,
         title: "Zoom out",
-        icon: "fa-minus",
+        icon: "icon-minus",
         icon2: "zoom_out",
       },
       btnRotateLeft: { enabled: !1, title: "Rotate left", icon: "fas fa-undo" },
@@ -172,9 +172,9 @@ var FLIPBOOK = FLIPBOOK || {};
       btnAutoplay: {
         enabled: !0,
         title: "Autoplay",
-        icon: "fa-play",
+        icon: "icon-play",
         icon2: "play_arrow",
-        iconAlt: "fa-pause",
+        iconAlt: "icon-pause",
         iconAlt2: "pause",
       },
       btnSearch: {
@@ -192,39 +192,39 @@ var FLIPBOOK = FLIPBOOK || {};
       btnBookmark: {
         enabled: !0,
         title: "Bookmark",
-        icon: "fas fa-bookmark",
+        icon: "icon-bookmark-simple",
         icon2: "bookmark",
       },
       btnToc: {
         enabled: !0,
         title: "Table of Contents",
-        icon: "fa-list-ol",
+        icon: "icon-list-number",
         icon2: "toc",
       },
       btnThumbs: {
         enabled: !0,
         title: "Pages",
-        icon: "fa-th-large",
+        icon: "icon-squres-four",
         icon2: "view_module",
       },
       btnShare: {
         enabled: !0,
         title: "Share",
-        icon: "fa-link",
+        icon: "icon-link",
         icon2: "share",
         hideOnMobile: !0,
       },
       btnPrint: {
         enabled: !0,
         title: "Print",
-        icon: "fa-print",
+        icon: "icon-printer",
         icon2: "print",
         hideOnMobile: !0,
       },
       btnDownloadPages: {
         enabled: !0,
         title: "Download pages",
-        icon: "fa-download",
+        icon: "icon-download",
         icon2: "file_download",
         url: "images/pages.zip",
         name: "allPages.zip",
@@ -233,7 +233,7 @@ var FLIPBOOK = FLIPBOOK || {};
         forceDownload: !1,
         enabled: !0,
         title: "Download PDF",
-        icon: "fa-file",
+        icon: "icon-file",
         icon2: "picture_as_pdf",
         url: null,
         openInNewWindow: !0,
@@ -242,8 +242,8 @@ var FLIPBOOK = FLIPBOOK || {};
       btnSound: {
         enabled: !0,
         title: "Volume",
-        icon: "fa-volume-up",
-        iconAlt: "fa-volume-off",
+        icon: "icon-speaker-hight",
+        iconAlt: "icon-speaker-none",
         icon2: "volume_up",
         iconAlt2: "volume_mute",
         hideOnMobile: !0,
@@ -251,9 +251,9 @@ var FLIPBOOK = FLIPBOOK || {};
       btnExpand: {
         enabled: !0,
         title: "Toggle fullscreen",
-        icon: "fa-expand",
+        icon: "icon-arrows-out-simple",
         icon2: "fullscreen",
-        iconAlt: "fa-compress",
+        iconAlt: "icon-arrows-in-simple",
         iconAlt2: "fullscreen_exit",
       },
       btnClose: {
@@ -1715,6 +1715,15 @@ var FLIPBOOK = FLIPBOOK || {};
                   )
                   .attr("title", e.title)
                   .text(t ? e.iconAlt2 : e.icon2)
+              : "svg" == this.options.icons
+              ? M("<button>")
+                  .addClass("flipbook-icon-svg flipbook-menu-btn skin-color flipbook-btn-wrapper")
+                  .attr("title", e.title)
+                  .append(
+                    M("<img>")
+                      .attr("src", "/icon/" + (t ? e.iconAlt : e.icon) + ".svg")
+                      .attr("alt", e.title)
+                  )
               : M(C.createElement("span"))
                   .attr("aria-hidden", "true")
                   .addClass(t ? e.iconAlt : e.icon)
@@ -3585,15 +3594,15 @@ var FLIPBOOK = FLIPBOOK || {};
     (FLIPBOOK.flipbookSrc = FLIPBOOK.getFlipbookSrc()),
     (FLIPBOOK.iscrollSrc = FLIPBOOK.flipbookSrc.replace(
       "/flipbook.",
-      "/iscroll."
+      "/iscroll.min."
     )),
     (FLIPBOOK.threejsSrc = FLIPBOOK.flipbookSrc.replace(
       "/flipbook.",
-      "/three."
+      "/three.min."
     )),
     (FLIPBOOK.flipbookWebGlSrc = FLIPBOOK.flipbookSrc.replace(
       "/flipbook.",
-      "/flipbook.webgl."
+      "/flipbook.webgl.min."
     )),
     (FLIPBOOK.flipbookBook3Src = FLIPBOOK.flipbookSrc.replace(
       "/flipbook.",

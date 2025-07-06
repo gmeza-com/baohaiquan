@@ -449,3 +449,46 @@ export const IconClock: React.FC<IconSvgProps> = ({
     />
   </svg>
 );
+
+export const IconLoader2: React.FC<IconSvgProps> = ({
+  size,
+  width = 22,
+  height = 22,
+  fill = "currentColor",
+  ...props
+}) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={size || width}
+    height={size || height}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke={fill}
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    {...props}
+  >
+    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+    <path d="M12 3a9 9 0 1 0 9 9" />
+  </svg>
+);
+
+export const IconX: React.FC<IconSvgProps> = ({
+  size,
+  width = 22,
+  height = 22,
+  fill = "currentColor",
+  ...props
+}) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={size || width}
+    height={size || height}
+    fill={fill}
+    viewBox="0 0 256 256"
+    {...props}
+  >
+    <path d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z"></path>
+  </svg>
+);

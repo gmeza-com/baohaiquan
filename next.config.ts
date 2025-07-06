@@ -5,6 +5,7 @@ const nextConfig: NextConfig = {
   turbopack: {
     resolveExtensions: [".tsx", ".ts", ".jsx", ".js", ".mjs", ".json", ".css"],
   },
+  // reactStrictMode: false,
   async rewrites() {
     return [
       {
