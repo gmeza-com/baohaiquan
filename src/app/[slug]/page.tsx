@@ -2,6 +2,8 @@ import Pagination from "@/coms/common/Pagination";
 import AudioCard from "@/coms/Gallery/AudioCard";
 import DecorTitle from "@/coms/Home/DecorTitle";
 import { IconPlay2 } from "@/coms/Icon/fill";
+import PrimaryLayout from "@/coms/MasterLayout/PrimaryLayout";
+import navigateService from "@/lib/router";
 import {
   cleanSlug,
   formatNumberWithSeparator,
@@ -9,9 +11,7 @@ import {
 } from "@/lib/utils";
 import CategoryService from "@/service/category";
 import PostService from "@/service/post";
-
 import { IGalleryCollectionList } from "@/type/article";
-import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -20,6 +20,8 @@ type PageProps = {
   params: Promise<{ slug: string }>;
   searchParams: Promise<{ page?: string }>;
 };
+
+const ITEM_PER_PAGE = 12;
 
 export async function generateMetadata({ params }: PageProps) {
   try {
@@ -46,8 +48,6 @@ export async function generateMetadata({ params }: PageProps) {
   }
 }
 
-const ITEM_PER_PAGE = 12;
-
 const GalleryCollectionPage = async ({ params, searchParams }: PageProps) => {
   const { slug } = await params;
   const { page } = await searchParams;
@@ -69,32 +69,47 @@ const GalleryCollectionPage = async ({ params, searchParams }: PageProps) => {
   const totalPage = Math.ceil(posts?.total / ITEM_PER_PAGE);
 
   return (
-    <div className="container mx-auto">
-      <div className="pt-6 xl:pt-8 pb-16">
-        <DecorTitle title={cat?.name} />
-        <div className="mt-6 xl:mt-9">
-          <ul className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-4 xl:gap-x-7 gap-y-6 xl:gap-y-10">
-            {posts?.data?.map((item) =>
-              item?.type === "video" ? (
-                <VideoCard key={item?.id} data={item} />
-              ) : item?.type === "audio" ? (
-                <AudioCard key={item?.id} data={item} />
-              ) : (
-                <VideoCard key={item?.id} data={item} isNormal />
-              )
+    <PrimaryLayout>
+      <div className="container mx-auto">
+        <div className="pt-6 xl:pt-8 pb-16">
+          <DecorTitle title={cat?.name} />
+          <div className="mt-6 xl:mt-9">
+            <ul className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-4 xl:gap-x-7 gap-y-6 xl:gap-y-10">
+              {posts?.data?.map((item) =>
+                item?.type === "video" ? (
+                  <VideoCard
+                    key={item?.id}
+                    data={item}
+                    href={navigateService.getGalleryDetails(slug, item?.slug)}
+                  />
+                ) : item?.type === "audio" ? (
+                  <AudioCard
+                    key={item?.id}
+                    data={item}
+                    href={navigateService.getGalleryDetails(slug, item?.slug)}
+                  />
+                ) : (
+                  <VideoCard
+                    key={item?.id}
+                    data={item}
+                    isNormal
+                    href={navigateService.getGalleryDetails(slug, item?.slug)}
+                  />
+                )
+              )}
+            </ul>
+            {totalPage > 1 && (
+              <Pagination
+                url={navigateService.getGalleryCollection(slug)}
+                currentPage={currentPage}
+                totalPage={totalPage}
+                className="mt-14 md:mt-16"
+              />
             )}
-          </ul>
-          {totalPage > 1 && (
-            <Pagination
-              url={`/gallery/collections/${slug}`}
-              currentPage={currentPage}
-              totalPage={totalPage}
-              className="mt-14 md:mt-16"
-            />
-          )}
+          </div>
         </div>
       </div>
-    </div>
+    </PrimaryLayout>
   );
 };
 
@@ -103,12 +118,13 @@ export default GalleryCollectionPage;
 interface VideoCardProps {
   data: IGalleryCollectionList;
   isNormal?: boolean;
+  href: string;
 }
 
-const VideoCard = ({ data, isNormal = false }: VideoCardProps) => {
+const VideoCard = ({ data, isNormal = false, href }: VideoCardProps) => {
   return (
     <li key={data?.id} className="w-full group cursor-pointer">
-      <Link href={`/gallery/${data?.slug}`}>
+      <Link href={href}>
         <div className="w-full aspect-video rounded-[6px] overflow-hidden relative">
           <Image
             src={data?.thumbnail}

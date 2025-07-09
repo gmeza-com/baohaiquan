@@ -6,12 +6,13 @@ import { IconPlay2 } from "../Icon/fill";
 
 interface AudioCardProps {
   data: IGalleryCollectionList;
+  href: string;
 }
 
-const AudioCard: React.FC<AudioCardProps> = ({ data }) => {
+const AudioCard: React.FC<AudioCardProps> = ({ data, href }) => {
   return (
     <li key={data?.id} className="w-full group cursor-pointer">
-      <Link href={`/gallery/${data?.slug}`}>
+      <Link href={href}>
         <div className="w-full aspect-video rounded-[6px] overflow-hidden relative bg-blue-100 flex items-center justify-center">
           <div className="size-32 border-3 border-white shadow rounded-lg overflow-hidden">
             <Image

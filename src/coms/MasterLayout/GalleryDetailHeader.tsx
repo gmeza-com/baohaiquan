@@ -3,6 +3,7 @@ import Link from "next/link";
 import { IconShareNetwork } from "../Icon/light";
 import ShareList from "../Article/ShareList";
 import { CategoryProps } from "@/type/article";
+import navigateService from "@/lib/router";
 
 interface GalleryDetailHeaderProps {
   category: Omit<CategoryProps, "description">;
@@ -22,7 +23,7 @@ const GalleryDetailHeader = ({ category }: GalleryDetailHeaderProps) => {
           />
         </Link>
         <Link
-          href={`/gallery/collections/${category?.slug}`}
+          href={navigateService.getGalleryCollection(category?.slug)}
           className="hidden lg:block text-white text-[1.75rem] font-playfair-display font-bold tracking-[0%] leading-[140%] "
         >
           {category?.name}
@@ -37,7 +38,9 @@ const GalleryDetailHeader = ({ category }: GalleryDetailHeaderProps) => {
               Chia sẻ
             </span>{" "}
             <ShareList
-              url={`${process.env.NEXT_PUBLIC_APP}/gallery/${category?.slug}`}
+              url={`${
+                process.env.NEXT_PUBLIC_APP
+              }${navigateService.getGalleryCollection(category?.slug)}`}
             />
           </div>
         </div>

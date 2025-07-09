@@ -16,6 +16,7 @@ import { IGalleryCollection } from "@/type/article";
 import { Category } from "@/type/category";
 import Link from "next/link";
 import dynamic from "next/dynamic";
+import navigateService from "@/lib/router";
 
 const SoundWave = dynamic(() => import("./SoundWave"), {
   ssr: false,
@@ -38,7 +39,7 @@ const PodcastBox: React.FC<PodcastBoxProps> = ({ podcasts = [], category }) => {
           <div className="flex justify-between items-center">
             <DecorTitle
               title={category?.name}
-              link={`/gallery/collections/${category?.slug}`}
+              link={navigateService.getGalleryCollection(category?.slug)}
             />
             <div className="items-center gap-2 hidden md:flex">
               <NavButton onClick={() => api?.scrollPrev()} />
@@ -54,7 +55,10 @@ const PodcastBox: React.FC<PodcastBoxProps> = ({ podcasts = [], category }) => {
                 description={item.description}
                 image={item.thumbnail}
                 audioUrl={item.content}
-                slug={item.slug}
+                href={navigateService.getGalleryDetails(
+                  category?.slug,
+                  item?.slug
+                )}
               />
             ))}
           </div>
@@ -77,7 +81,10 @@ const PodcastBox: React.FC<PodcastBoxProps> = ({ podcasts = [], category }) => {
                     description={item.description}
                     image={item.thumbnail}
                     audioUrl={item.content}
-                    slug={item.slug}
+                    href={navigateService.getGalleryDetails(
+                      category?.slug,
+                      item?.slug
+                    )}
                   />
                 </CarouselItem>
               ))}
@@ -97,7 +104,7 @@ interface PodcastCardProps {
   description: string;
   image: string;
   audioUrl?: string;
-  slug: string;
+  href: string;
 }
 
 const PodcastCard: React.FC<PodcastCardProps> = ({
@@ -106,7 +113,7 @@ const PodcastCard: React.FC<PodcastCardProps> = ({
   description,
   image,
   audioUrl,
-  slug,
+  href,
 }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [audio, setAudio] = useState<HTMLAudioElement | null>(null);
@@ -145,10 +152,7 @@ const PodcastCard: React.FC<PodcastCardProps> = ({
         className
       )}
     >
-      <Link
-        href={`/gallery/${slug}`}
-        className="flex-1 overflow-hidden"
-      >
+      <Link href={href} className="flex-1 overflow-hidden">
         <div className="size-12 bg-white flex items-center justify-center rounded-full">
           <IconHeadphones size={36} className="text-blue-600" />
         </div>

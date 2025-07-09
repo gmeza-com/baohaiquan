@@ -15,6 +15,7 @@ import { rest } from "@/lib/rest";
 import Image from "next/image";
 import Link from "next/link";
 import { IconPlay2 } from "../Icon/fill";
+import navigateService from "@/lib/router";
 
 interface RelativeVideosProps {
   slug: string;
@@ -85,7 +86,7 @@ const RelativeVideos = ({ slug }: RelativeVideosProps) => {
                 <CarouselItem key={index}>
                   <div className="w-full grid grid-cols-2  md:grid-cols-4 gap-4 xl:gap-6">
                     {videos.slice(index * 8, (index + 1) * 8).map((video) => (
-                      <VideoItem key={video?.id} video={video} />
+                      <VideoItem key={video?.id} video={video} href={navigateService.getGalleryDetails(slug, video?.slug)} />
                     ))}
                   </div>
                 </CarouselItem>
@@ -109,10 +110,10 @@ const LoadingItem = () => {
   );
 };
 
-const VideoItem = ({ video }: { video: IGalleryCollection }) => {
+const VideoItem = ({ video, href }: { video: IGalleryCollection; href: string }) => {
   return (
     <Link
-      href={`/gallery/${video.slug}`}
+      href={href}
       className="w-full pb-2 lg:pb-4 @container/video-card"
     >
       <div className="relative">

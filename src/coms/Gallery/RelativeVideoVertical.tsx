@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { IconPlay2 } from "../Icon/fill";
 import Link from "next/link";
 import { formatNumberWithSeparator, formatRelativeTime } from "@/lib/utils";
+import navigateService from "@/lib/router";
 
 interface RelativeVideoVerticalProps {
   slug: string;
@@ -68,7 +69,7 @@ const RelativeVideoVertical: React.FC<RelativeVideoVerticalProps> = ({
         {videos.map((video) => (
           <li key={video.id} className="last:pb-0 pb-4 @container/video-card">
             <Link
-              href={`/gallery/${video.slug}`}
+              href={navigateService.getGalleryDetails(categorySlug, video?.slug)}
               className="flex @max-[250px]/video-card:flex-col gap-5 group"
             >
               <div className="relative shrink-0 rounded-[6px] overflow-hidden">
@@ -99,7 +100,7 @@ const RelativeVideoVertical: React.FC<RelativeVideoVerticalProps> = ({
         ))}
       </ul>
       <Link
-        href={`/gallery/collection/${categorySlug}`}
+        href={navigateService.getGalleryCollection(categorySlug)}
         className=" text-white text-xsm font-semibold bg-white/10 px-4 h-12 flex items-center justify-center rounded-[10px] mt-6"
       >
         Xem thêm
