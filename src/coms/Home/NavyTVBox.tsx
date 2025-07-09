@@ -5,6 +5,7 @@ import VideoPlayer from "./VideoPlayer";
 import Image from "next/image";
 import Link from "next/link";
 import { Category } from "@/type/category";
+import navigateService from "@/lib/router";
 
 interface NavyTVBoxProps {
   className?: string;
@@ -27,7 +28,7 @@ const NavyTVBox: React.FC<NavyTVBoxProps> = ({
           <DecorTitle
             title={category?.name || "Truyền hình hải quân"}
             textClassName="text-white"
-            link={`/gallery/collections/${category?.slug}`}
+            link={navigateService.getGalleryCollection(category?.slug)}
           />
           <div className="mt-5 md:mt-8 xl:mt-10 md:grid md:grid-cols-2 lg:grid-cols-5 xl:grid-cols-8 md:gap-5 xl:gap-12">
             <div className="lg:col-span-3 xl:col-span-5 @container/main-video">
@@ -39,7 +40,7 @@ const NavyTVBox: React.FC<NavyTVBoxProps> = ({
 
               <div className="mt-4 @min-[700px]/main-video:mt-5">
                 <Link
-                  href={`/gallery/${firstGallery?.slug}`}
+                  href={navigateService.getGalleryDetails(category?.slug, firstGallery?.slug)}
                   className="text-white hover:underline text-lg font-bold leading-[150%] tracking-[-1%] @min-[700px]/main-video:text-[2rem]"
                 >
                   {firstGallery?.name}
@@ -50,7 +51,7 @@ const NavyTVBox: React.FC<NavyTVBoxProps> = ({
               <div className="flex flex-col gap-3 xl:gap-4">
                 {otherGalleries.map((item, index) => (
                   <Link
-                    href={`/gallery/${item?.slug}`}
+                    href={navigateService.getGalleryDetails(category?.slug, item?.slug)}
                     key={index}
                     className={clsx(
                       "@container/video-item group w-full flex gap-5 pt-3 border-t border-blue-400 border-dashed first:border-t-0 first:pt-0"
@@ -77,7 +78,12 @@ const NavyTVBox: React.FC<NavyTVBoxProps> = ({
                 ))}
               </div>
 
-              <Link href={`/gallery/collections/truyen-hinh-hai-quan`} passHref>
+              <Link
+                href={navigateService.getGalleryCollection(
+                  "truyen-hinh-hai-quan"
+                )}
+                passHref
+              >
                 <button className="h-12 w-full mt-6 rounded-[10px] bg-white/10 text-white font-semibold leading-[160%] tracking-[0%]">
                   Xem thêm
                 </button>

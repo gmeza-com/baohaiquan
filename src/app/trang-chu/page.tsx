@@ -16,6 +16,7 @@ import { GalleryCategory } from "@/data/category";
 import CategoryService from "@/service/category";
 import Image from "next/image";
 import PodcastBox from "@/coms/Home/PodcastBox";
+import navigateService from "@/lib/router";
 
 const HomePage = async () => {
   const [
@@ -142,7 +143,9 @@ const HomePage = async () => {
           <div className="md:border-t md:border-blue-200 md:py-5  lg:pt-11 lg:pb-[5.25rem]">
             <DecorTitle
               title={hqMediaCategory?.name || "Hải quân Media"}
-              link={`/gallery/collections/${hqMediaCategory?.slug}`}
+              link={navigateService.getGalleryCollection(
+                hqMediaCategory?.slug ?? ""
+              )}
             />
             <div className="mt-8 xl:mt-10 grid grid-cols-1 gap-6 md:grid-cols-5 xl:grid-cols-4 xl:gap-10">
               <NavyMediaBox

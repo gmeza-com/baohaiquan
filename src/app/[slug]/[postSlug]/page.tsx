@@ -15,20 +15,21 @@ import dayjs from "@/lib/dayjs";
 import AudioPlayer from "@/coms/Gallery/AudioPlayer";
 import RelativePodcast from "@/coms/Gallery/RelativePodcast";
 import { ResolvingMetadata } from "next";
+import navigateService from "@/lib/router";
 
-type PageProps = { params: Promise<{ slug: string }> };
+type PageProps = { params: Promise<{ postSlug: string }> };
 
 export async function generateMetadata(
   { params }: PageProps,
   parent: ResolvingMetadata
 ) {
   try {
-    let { slug } = await params;
-    slug = cleanSlug(slug);
-    if (!slug) throw new Error("Slug is required");
+    let { postSlug } = await params;
+    postSlug = cleanSlug(postSlug);
+    if (!postSlug) throw new Error("Slug is required");
 
     // Fetch category information
-    const post = await PostService.getGalleryFromSlug(slug);
+    const post = await PostService.getGalleryFromSlug(postSlug);
 
     // optionally access and extend (rather than replace) parent metadata
     const previousImages = (await parent).openGraph?.images || [];
@@ -52,15 +53,15 @@ export async function generateMetadata(
 }
 
 const GalleryDetailPage = async ({ params }: PageProps) => {
-  let { slug } = await params;
+  let { postSlug } = await params;
   let post: GalleryProps | null = null;
   let cat: Omit<CategoryProps, "description"> | null = null;
   try {
-    slug = cleanSlug(slug);
-    if (!slug) throw new Error("Slug is required");
+    postSlug = cleanSlug(postSlug);
+    if (!postSlug) throw new Error("Slug is required");
 
-    post = await PostService.getGalleryFromSlug(slug);
-    cat = await PostService.getCategoryOfGallery(slug);
+    post = await PostService.getGalleryFromSlug(postSlug);
+    cat = await PostService.getCategoryOfGallery(postSlug);
 
     // *: increment view count
     if (post && post.id) {
@@ -164,7 +165,9 @@ const GalleryDetailPage = async ({ params }: PageProps) => {
                   Chia sẻ
                 </span>
                 <ShareList
-                  url={`${process.env.NEXT_PUBLIC_APP}/gallery/${slug}`}
+                  url={`${
+                    process.env.NEXT_PUBLIC_APP
+                  }${navigateService.getGalleryDetails(cat?.slug, postSlug)}`}
                 />
               </div>
 
@@ -180,7 +183,7 @@ const GalleryDetailPage = async ({ params }: PageProps) => {
           {post?.type === "video" && (
             <div className="xl:col-span-4 lg:col-span-3 pt-3 md:w-full md:max-w-[568px] md:mx-auto">
               <RelativeVideoVertical
-                slug={slug}
+                slug={postSlug}
                 categorySlug={cat?.slug || ""}
               />
             </div>
@@ -190,7 +193,7 @@ const GalleryDetailPage = async ({ params }: PageProps) => {
       <div className="bg-white">
         {post.type === "audio" && (
           <>
-            <RelativePodcast slug={slug} />
+            <RelativePodcast slug={postSlug} />
             <hr className="w-full bg-blue-200 container mx-auto !p-0" />
           </>
         )}
