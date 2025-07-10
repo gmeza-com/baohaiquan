@@ -84,7 +84,11 @@ const RelativePodcast = ({ slug }: RelativePodcastProps) => {
                 <CarouselItem key={index}>
                   <ul className="w-full grid grid-cols-2  md:grid-cols-4 gap-4 xl:gap-6">
                     {videos.slice(index * 8, (index + 1) * 8).map((video) => (
-                      <AudioCard key={video?.id} data={video} />
+                      <AudioCard
+                        key={video?.id}
+                        data={video}
+                        href={`/podcast/${video?.slug}`}
+                      />
                     ))}
                   </ul>
                 </CarouselItem>
