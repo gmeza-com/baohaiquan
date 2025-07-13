@@ -20,7 +20,7 @@ export type ArticleProps = {
 // TODO: add type for this
 export type GalleryContentType = any;
 
-export type GalleryType = "video" | "audio" | "album";
+export type GalleryType = "video" | "audio" | "album" | "longform";
 
 export type GalleryProps = Pick<
   ArticleProps,

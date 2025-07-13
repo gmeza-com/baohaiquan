@@ -74,30 +74,38 @@ const GalleryCollectionPage = async ({ params, searchParams }: PageProps) => {
         <div className="pt-6 xl:pt-8 pb-16">
           <DecorTitle title={cat?.name} />
           <div className="mt-6 xl:mt-9">
-            <ul className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-4 xl:gap-x-7 gap-y-6 xl:gap-y-10">
-              {posts?.data?.map((item) =>
-                item?.type === "video" ? (
-                  <VideoCard
-                    key={item?.id}
-                    data={item}
-                    href={navigateService.getGalleryDetails(slug, item?.slug)}
-                  />
-                ) : item?.type === "audio" ? (
-                  <AudioCard
-                    key={item?.id}
-                    data={item}
-                    href={navigateService.getGalleryDetails(slug, item?.slug)}
-                  />
-                ) : (
-                  <VideoCard
-                    key={item?.id}
-                    data={item}
-                    isNormal
-                    href={navigateService.getGalleryDetails(slug, item?.slug)}
-                  />
-                )
-              )}
-            </ul>
+            {posts?.total <= 0 ? (
+              <div className="flex items-center justify-center h-[300px]">
+                <p className="text-gray-700 text-lg leading-[160%] tracking-[0%]">
+                  Không có bài viết nào
+                </p>
+              </div>
+            ) : (
+              <ul className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-4 xl:gap-x-7 gap-y-6 xl:gap-y-10">
+                {posts?.data?.map((item) =>
+                  item?.type === "video" ? (
+                    <VideoCard
+                      key={item?.id}
+                      data={item}
+                      href={navigateService.getGalleryDetails(slug, item?.slug)}
+                    />
+                  ) : item?.type === "audio" ? (
+                    <AudioCard
+                      key={item?.id}
+                      data={item}
+                      href={navigateService.getGalleryDetails(slug, item?.slug)}
+                    />
+                  ) : (
+                    <VideoCard
+                      key={item?.id}
+                      data={item}
+                      isNormal
+                      href={navigateService.getGalleryDetails(slug, item?.slug)}
+                    />
+                  )
+                )}
+              </ul>
+            )}
             {totalPage > 1 && (
               <Pagination
                 url={navigateService.getGalleryCollection(slug)}

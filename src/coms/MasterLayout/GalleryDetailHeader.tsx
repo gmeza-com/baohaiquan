@@ -4,15 +4,29 @@ import { IconShareNetwork } from "../Icon/light";
 import ShareList from "../Article/ShareList";
 import { CategoryProps } from "@/type/article";
 import navigateService from "@/lib/router";
+import clsx from "clsx";
 
 interface GalleryDetailHeaderProps {
   category: Omit<CategoryProps, "description">;
+  postName?: string;
 }
 
-const GalleryDetailHeader = ({ category }: GalleryDetailHeaderProps) => {
+const GalleryDetailHeader = ({
+  category,
+  postName,
+}: GalleryDetailHeaderProps) => {
+  const isLongform = category?.slug === "longform";
+
   return (
     <header className="bg-gray-950/95 sticky top-0 z-50 backdrop-blur-3xl">
-      <div className="container grid grid-cols-[auto_1fr] lg:grid-cols-[1fr_auto_1fr] items-center">
+      <div
+        className={clsx(
+          "container grid items-center",
+          isLongform
+            ? "lg:grid-cols-[auto_1fr_auto] grid-cols-[auto_1fr] gap-12 overflow-hidden"
+            : "grid-cols-[auto_1fr] lg:grid-cols-[1fr_auto_1fr]"
+        )}
+      >
         <Link href="/">
           <Image
             src="/logo.svg"
@@ -22,12 +36,24 @@ const GalleryDetailHeader = ({ category }: GalleryDetailHeaderProps) => {
             className="h-10 w-auto lg:h-15"
           />
         </Link>
-        <Link
-          href={navigateService.getGalleryCollection(category?.slug)}
-          className="hidden lg:block text-white text-[1.75rem] font-playfair-display font-bold tracking-[0%] leading-[140%] "
-        >
-          {category?.name}
-        </Link>
+        {isLongform ? (
+          <div className="items-center gap-4 overflow-hidden hidden lg:flex">
+            <span className="text-xl font-bold text-white leading-[140%] tracking-[0%] font-playfair-display">
+              {category?.name}
+            </span>
+            <div className="w-px h-4 bg-white/50" />{" "}
+            <h1 className="text-white text-lg font-semibold leading-[150%] tracking-[0] truncate">
+              {postName}
+            </h1>
+          </div>
+        ) : (
+          <Link
+            href={navigateService.getGalleryCollection(category?.slug)}
+            className="hidden lg:block text-white text-[1.75rem] font-playfair-display font-bold tracking-[0%] leading-[140%] "
+          >
+            {category?.name}
+          </Link>
+        )}
 
         <div className="flex items-center justify-end gap-2">
           <button className="md:hidden">
