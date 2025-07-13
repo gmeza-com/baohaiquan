@@ -12,6 +12,7 @@ import db from "@/lib/db";
 import { unserialize } from "php-serialize";
 import { Collection } from "@/lib/php-erialize/Collection";
 import { GalleryCategory } from "@/data/category";
+import dayjs from "@/lib/dayjs";
 
 const PostService = {
   getPostFromSlug: async (slug: string): Promise<ArticleProps | null> => {
@@ -52,15 +53,21 @@ const PostService = {
     }
   },
 
-  getGalleryFromSlug: async (slug: string): Promise<GalleryProps | null> => {
+  getGalleryFromSlug: async (
+    slug: string,
+    catId: number
+  ): Promise<GalleryProps | null> => {
     try {
       slug = cleanSlug(slug);
       if (!slug) throw new Error("Gallery slug is required");
+
+      const now = dayjs().format("YYYY-MM-DD HH:mm:ss");
 
       const result = await db("gallery as g")
         .join("gallery_languages as gl", "gl.gallery_id", "g.id")
         .join("users as u", "u.id", "g.user_id")
         .join("views as v", "v.subject_id", "g.id")
+        .join("gallery_category as gc", "gc.gallery_id", "g.id")
         .select(
           "g.id",
           "gl.slug",
@@ -79,10 +86,11 @@ const PostService = {
           "g.type"
         )
         .where("g.published", 1)
-        .andWhere("g.published_at", "<=", db.raw("NOW()"))
+        .andWhere("g.published_at", "<=", now)
         .andWhere("gl.locale", "vi")
         .andWhere("gl.slug", slug)
         .andWhere("v.subject_type", "Modules\\Gallery\\Models\\Gallery")
+        .andWhere("gc.gallery_category_id", catId)
         .first();
 
       return {
@@ -412,7 +420,7 @@ const PostService = {
         )
         .where("gc2.id", categoryId)
         .andWhere("g.published", 1)
-        .andWhere("g.published_at", "<=", new Date().toISOString())
+        .andWhere("g.published_at", "<=", dayjs().format("YYYY-MM-DD HH:mm:ss"))
         .andWhere("gl.locale", "vi")
         .orderBy("g.published_at", "desc")
         .limit(limit);
@@ -439,13 +447,15 @@ const PostService = {
     total: number;
   }> => {
     try {
+      const now = dayjs().format("YYYY-MM-DD HH:mm:ss");
+
       const totalResult = await db("gallery as g")
         .join("gallery_languages as gl", "gl.gallery_id", "g.id")
         .join("gallery_category as gc", "gc.gallery_id", "g.id")
         .join("gallery_categories as gc2", "gc2.id", "gc.gallery_category_id")
         .where("gc2.id", categoryId)
         .andWhere("g.published", 1)
-        .andWhere("g.published_at", "<=", new Date().toISOString())
+        .andWhere("g.published_at", "<=", now)
         .andWhere("gl.locale", "vi")
         .count("g.id as count");
 
@@ -470,7 +480,7 @@ const PostService = {
         )
         .where("gc2.id", categoryId)
         .andWhere("g.published", 1)
-        .andWhere("g.published_at", "<=", new Date().toISOString())
+        .andWhere("g.published_at", "<=", now)
         .andWhere("gl.locale", "vi")
         .andWhere("v.subject_type", "Modules\\Gallery\\Models\\Gallery")
         .orderBy("g.published_at", "desc")

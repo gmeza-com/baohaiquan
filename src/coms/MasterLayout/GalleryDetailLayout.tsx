@@ -7,9 +7,11 @@ import { CategoryProps } from "@/type/article";
 const GalleryDetailLayout = async ({
   children,
   category,
+  postName,
 }: {
   children: React.ReactNode;
   category: Omit<CategoryProps, "description">;
+  postName?: string;
 }) => {
   const categories = await CategoryService.getPostCategories();
 
@@ -18,7 +20,7 @@ const GalleryDetailLayout = async ({
 
   return (
     <div className="bg-gray-900">
-      <GalleryDetailHeader category={category} />
+      <GalleryDetailHeader category={category} postName={postName} />
       <main>{children}</main>
       <Footer categories={categoryTree} />
     </div>

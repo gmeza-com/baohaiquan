@@ -55,48 +55,53 @@ const RelativePodcast = ({ slug }: RelativePodcastProps) => {
 
   if (isError || !slug) return null;
 
-  return (
-    <div className="w-full py-4 lg:py-10 xl:py-15">
-      <div className="container mx-auto">
-        <div className="flex items-center justify-between">
-          <DecorTitle title="Podcast liên quan" />
-          <div className="flex items-center gap-2">
-            <NavButton onClick={() => api?.scrollPrev()} />
-            <NavButton onClick={() => api?.scrollNext()} isRight />
-          </div>
-        </div>
-        <Carousel className="mt-6 lg:mt-8 xl:mt-10" setApi={setApi}>
-          <CarouselContent>
-            {isLoading &&
-              Array.from({ length: 2 }).map((_, index) => (
-                <CarouselItem key={index}>
-                  <ul className="w-full grid grid-cols-2  md:grid-cols-4 gap-4 xl:gap-6">
-                    {Array.from({ length: 8 }).map((_, index) => (
-                      <LoadingItem key={index} />
-                    ))}
-                  </ul>
-                </CarouselItem>
-              ))}
+  if (!isLoading && videos.length <= 0) return null;
 
-            {!isLoading &&
-              videos.length > 0 &&
-              Array.from({ length: slideCount }).map((_, index) => (
-                <CarouselItem key={index}>
-                  <ul className="w-full grid grid-cols-2  md:grid-cols-4 gap-4 xl:gap-6">
-                    {videos.slice(index * 8, (index + 1) * 8).map((video) => (
-                      <AudioCard
-                        key={video?.id}
-                        data={video}
-                        href={`/podcast/${video?.slug}`}
-                      />
-                    ))}
-                  </ul>
-                </CarouselItem>
-              ))}
-          </CarouselContent>
-        </Carousel>
+  return (
+    <>
+      <div className="w-full py-4 lg:py-10 xl:py-15">
+        <div className="container mx-auto">
+          <div className="flex items-center justify-between">
+            <DecorTitle title="Podcast liên quan" />
+            <div className="flex items-center gap-2">
+              <NavButton onClick={() => api?.scrollPrev()} />
+              <NavButton onClick={() => api?.scrollNext()} isRight />
+            </div>
+          </div>
+          <Carousel className="mt-6 lg:mt-8 xl:mt-10" setApi={setApi}>
+            <CarouselContent>
+              {isLoading &&
+                Array.from({ length: 2 }).map((_, index) => (
+                  <CarouselItem key={index}>
+                    <ul className="w-full grid grid-cols-2  md:grid-cols-4 gap-4 xl:gap-6">
+                      {Array.from({ length: 8 }).map((_, index) => (
+                        <LoadingItem key={index} />
+                      ))}
+                    </ul>
+                  </CarouselItem>
+                ))}
+
+              {!isLoading &&
+                videos.length > 0 &&
+                Array.from({ length: slideCount }).map((_, index) => (
+                  <CarouselItem key={index}>
+                    <ul className="w-full grid grid-cols-2  md:grid-cols-4 gap-4 xl:gap-6">
+                      {videos.slice(index * 8, (index + 1) * 8).map((video) => (
+                        <AudioCard
+                          key={video?.id}
+                          data={video}
+                          href={`/podcast/${video?.slug}`}
+                        />
+                      ))}
+                    </ul>
+                  </CarouselItem>
+                ))}
+            </CarouselContent>
+          </Carousel>
+        </div>
       </div>
-    </div>
+      <hr className="w-full bg-blue-200 container mx-auto !p-0" />
+    </>
   );
 };
 
