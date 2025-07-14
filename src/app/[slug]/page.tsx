@@ -131,7 +131,7 @@ interface VideoCardProps {
 
 const VideoCard = ({ data, isNormal = false, href }: VideoCardProps) => {
   return (
-    <li key={data?.id} className="w-full group cursor-pointer">
+    <li key={data?.id} className="w-full group cursor-pointer overflow-hidden">
       <Link href={href}>
         <div className="w-full aspect-video rounded-[6px] overflow-hidden relative">
           <Image

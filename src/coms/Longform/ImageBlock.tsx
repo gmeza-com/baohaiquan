@@ -13,7 +13,7 @@ const ImageBlock: React.FC<ImageBlockProps> = ({
   return (
     <div
       className={clsx(
-        stretched ? "w-full" : "container mx-auto !py-0",
+        stretched ? "w-full md:px-0" : "container mx-auto !py-0",
         className
       )}
     >
@@ -25,7 +25,7 @@ const ImageBlock: React.FC<ImageBlockProps> = ({
         className="size-full"
       />
       {!!caption && (
-        <figcaption className="text-center italic w-full mt-2 max-w-[660px] mx-auto text-blue-700 text-lg font-medium">
+        <figcaption className="text-center italic w-full mt-2 max-w-[660px] mx-auto text-blue-700 text-xs md:text-sm lg:text-base font-medium">
           {caption}
         </figcaption>
       )}

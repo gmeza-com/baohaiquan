@@ -13,7 +13,7 @@ const ParagraphBlock: React.FC<ParagraphBlockProps> = ({
   return (
     <div
       className={clsx(
-        "leading-[160%] tracking-[0%] py-4 w-full max-w-[568px] mx-auto text-lg text-gray-900",
+        "px-4 md:px-0 leading-[160%] tracking-[0%] py-4 w-full max-w-[568px] mx-auto text-base lg:text-lg text-gray-900",
         alignment === "center" && "text-center",
         alignment === "right" && "text-right",
         alignment === "justify" && "text-justify",
