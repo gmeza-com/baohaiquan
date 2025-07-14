@@ -46,3 +46,9 @@ export interface DelimiterBlock {
 export interface ColumnsBlock {
   cols: LongformType[];
 }
+
+export interface QuoteBlock {
+  text: string;
+  alignment: "left" | "center";
+  caption: string;
+}

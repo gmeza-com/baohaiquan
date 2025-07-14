@@ -9,6 +9,7 @@ import navigateService from "@/lib/router";
 import { IconClock } from "../Icon/light";
 import dayjs from "@/lib/dayjs";
 import MostViewArticles from "./MostViewArticles";
+import QuoteBlock from "../Longform/QuoteBlock";
 
 interface LongformDetailViewProps {
   post: GalleryProps;
@@ -44,6 +45,8 @@ const LongformDetailView = ({ post, cat }: LongformDetailViewProps) => {
         );
       case "columns":
         return <ColumnsBlock key={block.id} {...block.data} />;
+      case "quote":
+        return <QuoteBlock key={block.id} {...block.data} />;
       default:
         return null;
     }
@@ -52,7 +55,7 @@ const LongformDetailView = ({ post, cat }: LongformDetailViewProps) => {
   return (
     <div className="bg-white w-full flex flex-col gap-3">
       {content?.blocks?.map(renderBlock)}
-      <div className="max-w-[568px] mx-auto py-7 w-full">
+      <div className="max-w-[568px] mx-auto py-7 w-full px-4 md:px-0">
         <div className="flex w-full items-center justify-between p-3 bg-blue-50 rounded-[0.75rem]">
           <span className="text-gray-900 font-normal text-lg leading-[150%] tracking-[0%]">
             Chia sẻ
