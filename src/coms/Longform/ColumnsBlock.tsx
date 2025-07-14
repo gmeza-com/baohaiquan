@@ -1,7 +1,6 @@
 import type { ColumnsBlock } from "@/type/longform";
 import ParagraphBlock from "./ParagraphBlock";
 import HeaderBlock from "./HeaderBlock";
-import DelimiterBlock from "./DelimiterBlock";
 import ImageBlock from "./ImageBlock";
 import clsx from "clsx";
 

@@ -9,6 +9,7 @@ import navigateService from "@/lib/router";
 import { IconClock } from "../Icon/light";
 import dayjs from "@/lib/dayjs";
 import MostViewArticles from "./MostViewArticles";
+import QuoteBlock from "../Longform/QuoteBlock";
 
 interface LongformDetailViewProps {
   post: GalleryProps;
@@ -44,6 +45,8 @@ const LongformDetailView = ({ post, cat }: LongformDetailViewProps) => {
         );
       case "columns":
         return <ColumnsBlock key={block.id} {...block.data} />;
+      case "quote":
+        return <QuoteBlock key={block.id} {...block.data} />;
       default:
         return null;
     }
