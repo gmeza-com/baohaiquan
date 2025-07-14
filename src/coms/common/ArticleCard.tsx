@@ -7,7 +7,8 @@ export interface ArticleCardProps {
   description: string;
   image: string;
   className?: string;
-  slug: string;
+  href: string;
+  label?: string;
 }
 
 const ArticleCard: React.FC<ArticleCardProps> = ({
@@ -15,22 +16,31 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
   description,
   image,
   className,
-  slug,
+  href,
+  label,
 }) => {
   return (
     <Link
-      href={`/tin-tuc/${slug}`}
+      href={href}
       className={clsx("@container/card cursor-pointer", className)}
     >
       <div className="flex flex-col @min-[750px]/card:flex-row-reverse @min-[750px]/card:bg-blue-50 @min-[750px]/card:p-4 @min-[750px]/card:rounded-[12px] @min-[750px]/card:gap-7 pb-5">
-        <Image
-          src={image}
-          alt={title}
-          className="w-full aspect-video object-cover rounded-[6px] @min-[750px]/card:aspect-[480/360] @min-[750px]/card:w-3/5 @min-[750px]/card:rounded-[4px]"
-          width={480}
-          height={360}
-          loading="lazy"
-        />
+        <div className="relative rounded-[6px] @min-[750px]/card:rounded-[4px] overflow-hidden">
+          <Image
+            src={image}
+            alt={title}
+            className="w-full aspect-video object-cover @min-[750px]/card:aspect-[480/360] @min-[750px]/card:w-3/5 "
+            width={480}
+            height={360}
+            loading="lazy"
+          />
+          {label && (
+            <div className="absolute bottom-0 left-0 px-4 py-1.5 text-xl font-bold font-playfair-display text-white bg-blue-900/40 rounded-tr-[12px] backdrop-blur-xl leading-[140%] tracking-[0%]">
+              {label}
+            </div>
+          )}
+        </div>
+
         <div className="mt-4 @min-[750px]/card:mt-0 @min-[750px]/card:flex-1">
           <p className="hover:underline hover:text-blue-700 text-gray-900 text-lg font-bold leading-[150%] tracking-[-1%] @min-[750px]/card:text-[1.375rem] @min-[750px]/card:leading-[140%]">
             {title}

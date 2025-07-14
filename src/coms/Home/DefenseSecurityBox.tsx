@@ -6,6 +6,7 @@ import { ArticleProps } from "@/type/article";
 import Link from "next/link";
 import SubCategoryTab from "./SubCategoryTab";
 import Image from "next/image";
+import navigateService from "@/lib/router";
 
 interface DefenseSecurityBoxProps {
   categoryTree: CategoryTree;
@@ -44,7 +45,7 @@ const DefenseSecurityBox: React.FC<DefenseSecurityBoxProps> = ({
           {articles.length > 0 && (
             <div className="mt-5 lg:mt-8 xl:mt-10 flex flex-col gap-3 md:gap-6 xl:gap-12 md:grid md:grid-cols-2 lg:grid-cols-5 xl:grid-cols-8 divide-y divide-blue-200 divide-dashed md:divide-none">
               <ArticleCard
-                slug={articles?.[0]?.slug ?? ""}
+                href={navigateService.getPostDetails(articles?.[0]?.slug)}
                 title={articles?.[0]?.name ?? ""}
                 description={articles?.[0]?.description ?? ""}
                 image={articles?.[0]?.thumbnail ?? ""}
@@ -54,7 +55,7 @@ const DefenseSecurityBox: React.FC<DefenseSecurityBoxProps> = ({
                 {articles?.slice(1).map((article, index) => (
                   <ArticleCompactHorizontalCard
                     key={article?.id}
-                    slug={article?.slug ?? ""}
+                    href={navigateService.getPostDetails(article?.slug)}
                     title={article?.name ?? ""}
                     image={article?.thumbnail ?? ""}
                   />
@@ -72,18 +73,18 @@ export default DefenseSecurityBox;
 
 type OtherArticleCardProps = Pick<
   ArticleCardProps,
-  "title" | "image" | "className" | "slug"
+  "title" | "image" | "className" | "href"
 >;
 
 const ArticleCompactHorizontalCard: React.FC<OtherArticleCardProps> = ({
   title,
   image,
   className,
-  slug,
+  href,
 }) => {
   return (
     <Link
-      href={`/tin-tuc/${slug}`}
+      href={href}
       className="@container/card border-b border-blue-200 border-dashed last:border-b-0 cursor-pointer"
     >
       <div className={clsx("pr-1 pb-4 flex gap-5 items-start ", className)}>
