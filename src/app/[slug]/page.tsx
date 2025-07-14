@@ -1,5 +1,6 @@
 import Pagination from "@/coms/common/Pagination";
 import AudioCard from "@/coms/Gallery/AudioCard";
+import NewspaperCard from "@/coms/Gallery/NewspaperCard";
 import DecorTitle from "@/coms/Home/DecorTitle";
 import { IconPlay2 } from "@/coms/Icon/fill";
 import PrimaryLayout from "@/coms/MasterLayout/PrimaryLayout";
@@ -68,6 +69,42 @@ const GalleryCollectionPage = async ({ params, searchParams }: PageProps) => {
 
   const totalPage = Math.ceil(posts?.total / ITEM_PER_PAGE);
 
+  const renderItem = (item: IGalleryCollectionList) => {
+    switch (item?.type) {
+      case "video":
+        return (
+          <VideoCard
+            key={item?.id}
+            data={item}
+            isNormal
+            href={navigateService.getGalleryDetails(slug, item?.slug)}
+          />
+        );
+
+      case "audio":
+        return (
+          <AudioCard
+            key={item?.id}
+            data={item}
+            href={navigateService.getGalleryDetails(slug, item?.slug)}
+          />
+        );
+
+      case "album":
+        return <NewspaperCard key={item?.id} item={item} catId={cat?.id} />;
+
+      default:
+        return (
+          <VideoCard
+            key={item?.id}
+            data={item}
+            isNormal
+            href={navigateService.getGalleryDetails(slug, item?.slug)}
+          />
+        );
+    }
+  };
+
   return (
     <PrimaryLayout>
       <div className="container mx-auto">
@@ -82,28 +119,7 @@ const GalleryCollectionPage = async ({ params, searchParams }: PageProps) => {
               </div>
             ) : (
               <ul className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-4 xl:gap-x-7 gap-y-6 xl:gap-y-10">
-                {posts?.data?.map((item) =>
-                  item?.type === "video" ? (
-                    <VideoCard
-                      key={item?.id}
-                      data={item}
-                      href={navigateService.getGalleryDetails(slug, item?.slug)}
-                    />
-                  ) : item?.type === "audio" ? (
-                    <AudioCard
-                      key={item?.id}
-                      data={item}
-                      href={navigateService.getGalleryDetails(slug, item?.slug)}
-                    />
-                  ) : (
-                    <VideoCard
-                      key={item?.id}
-                      data={item}
-                      isNormal
-                      href={navigateService.getGalleryDetails(slug, item?.slug)}
-                    />
-                  )
-                )}
+                {posts?.data?.map(renderItem)}
               </ul>
             )}
             {totalPage > 1 && (

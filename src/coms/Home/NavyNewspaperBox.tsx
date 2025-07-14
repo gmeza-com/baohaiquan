@@ -3,6 +3,7 @@ import DecorTitle from "./DecorTitle";
 import dayjs from "dayjs";
 import Link from "next/link";
 import Image from "next/image";
+import navigateService from "@/lib/router";
 
 type NavyNewspaperBoxProps = {
   gallery: IGalleryCollection;
@@ -11,10 +12,15 @@ type NavyNewspaperBoxProps = {
 const NavyNewspaperBox: React.FC<NavyNewspaperBoxProps> = ({ gallery }) => {
   return (
     <div className="">
-      <DecorTitle title="đọc báo in" link="/bao-in-hai-quan-3d" />
+      <DecorTitle
+        title="đọc báo in"
+        link={navigateService.getGalleryCollection("bao-in")}
+      />
       <div className="@container/newspaper-box mt-5">
         <Link
-          href="/bao-in-hai-quan-3d"
+          href={`${navigateService.getGalleryCollection("bao-in")}?newspaper=${
+            gallery?.slug
+          }`}
           className="bg-blue-50 group px-3 pt-4 pb-3 rounded-[7px] grid grid-cols-1 gap-3 @min-[340px]/newspaper-box:grid-cols-2 @min-[340px]/newspaper-box:gap-6 @min-[340px]/newspaper-box:py-2 @min-[340px]/newspaper-box:ps-2 @min-[340px]/newspaper-box:pe-4"
         >
           <div className="@min-[340px]/newspaper-box:col-start-2 @min-[340px]/newspaper-box:row-start-1 @min-[340px]/newspaper-box:flex @min-[340px]/newspaper-box:flex-col @min-[340px]/newspaper-box:justify-center">

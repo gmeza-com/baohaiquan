@@ -10,12 +10,14 @@ interface FlipbookModalProps {
   isOpen: boolean;
   onClose: () => void;
   slug: string;
+  catId: number;
 }
 
 export default function FlipbookModal({
   isOpen,
   onClose,
   slug,
+  catId,
 }: FlipbookModalProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
@@ -49,7 +51,11 @@ export default function FlipbookModal({
 
         const res = await axios.get<
           AxiosResponse<{ data: GalleryProps; success: boolean }>
-        >(`/api/gallery/${slug}`);
+        >(`/api/gallery/${slug}`, {
+          params: {
+            catId: catId,
+          },
+        });
 
         // Convert object data to array format
         const contentData = (res?.data?.data as any)?.content as Record<
@@ -66,8 +72,6 @@ export default function FlipbookModal({
             thumb: item?.picture,
             title: item?.title,
           }));
-
-        console.log("contentArr", contentArr);
 
         setPages(contentArr);
       } catch (error) {
