@@ -293,6 +293,10 @@ div.article-wrapper img {
   border: solid 1px var(--color-white);
 }
 
+div.article-wrapper table img {
+  margin: 0 !important;
+}
+
 @media (max-width: 879px) {
   div.article-wrapper img {
     margin-left: auto !important;
@@ -335,7 +339,8 @@ div.article-wrapper p {
 
 /* Sound wave animations for podcast */
 @keyframes sound-wave {
-  0%, 100% {
+  0%,
+  100% {
     transform: scaleY(0.3);
     opacity: 0.3;
   }
@@ -346,7 +351,8 @@ div.article-wrapper p {
 }
 
 @keyframes sound-wave-pulse {
-  0%, 100% {
+  0%,
+  100% {
     transform: scaleY(0.5);
     opacity: 0.4;
   }
