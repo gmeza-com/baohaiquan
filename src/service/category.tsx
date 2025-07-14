@@ -1,7 +1,9 @@
+import { DB_DATE_TIME_FORMAT } from "@/lib/constant";
 import db from "@/lib/db";
 import { cleanSlug, isOn } from "@/lib/utils";
 import { ArticleProps, CategoryProps } from "@/type/article";
 import { Category } from "@/type/category";
+import dayjs from "@/lib/dayjs";
 
 const CategoryService = {
   getCatIdFromSlug: async (slug: string): Promise<number | null> => {
@@ -42,6 +44,8 @@ const CategoryService = {
       slug = cleanSlug(slug);
       if (!slug) throw new Error("Category slug is required");
 
+      const now = dayjs().format(DB_DATE_TIME_FORMAT);
+
       // fetch the category-id by slug
       const catId = await CategoryService.getCatIdFromSlug(slug);
       if (!catId) throw new Error("Category not found");
@@ -70,7 +74,7 @@ const CategoryService = {
         )
         .where("pc.post_category_id", catId)
         .andWhere("p.published", 3)
-        .andWhere("p.published_at", "<=", new Date().toISOString())
+        .andWhere("p.published_at", "<=", now)
         .andWhere("p.hide", 0)
         .andWhere("pl.locale", "vi");
 
@@ -105,6 +109,8 @@ const CategoryService = {
       const catId = await CategoryService.getCatIdFromSlug(slug);
       if (!catId) throw new Error("Category not found");
 
+      const now = dayjs().format(DB_DATE_TIME_FORMAT);
+
       // fetch articles in the category, excluding specified IDs
       let fetcher = db("posts as p")
         .join("post_languages as pl", "p.id", "pl.post_id")
@@ -130,12 +136,12 @@ const CategoryService = {
         .where("pc.post_category_id", catId)
         .andWhere("p.featured", 1)
         .andWhere("p.published", 3)
-        .andWhere("p.published_at", "<=", new Date().toISOString());
+        .andWhere("p.published_at", "<=", now);
 
       if (checkDate) {
         fetcher = fetcher
-          .andWhere("p.featured_started_at", "<=", new Date().toISOString())
-          .andWhere("p.featured_ended_at", ">=", new Date().toISOString());
+          .andWhere("p.featured_started_at", "<=", now)
+          .andWhere("p.featured_ended_at", ">=", now);
       }
 
       return fetcher
@@ -165,6 +171,8 @@ const CategoryService = {
       const catId = await CategoryService.getCatIdFromSlug(slug);
       if (!catId) throw new Error("Category not found");
 
+      const now = dayjs().format(DB_DATE_TIME_FORMAT);
+
       // fetch articles in the category, excluding specified IDs
       return await db("posts as p")
         .join("post_languages as pl", "p.id", "pl.post_id")
@@ -191,7 +199,7 @@ const CategoryService = {
         .where("pc.post_category_id", catId)
         .andWhere("p.featured", 1)
         .andWhere("p.published", 3)
-        .andWhere("p.published_at", "<=", new Date().toISOString())
+        .andWhere("p.published_at", "<=", now)
         .andWhere("p.hide", 0)
         .andWhere("pl.locale", "vi")
         .orderBy("v.count", "desc")

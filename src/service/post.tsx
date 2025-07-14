@@ -14,12 +14,15 @@ import { unserialize } from "php-serialize";
 import { Collection } from "@/lib/php-erialize/Collection";
 import { GalleryCategory } from "@/data/category";
 import dayjs from "@/lib/dayjs";
+import { DB_DATE_TIME_FORMAT } from "@/lib/constant";
 
 const PostService = {
   getPostFromSlug: async (slug: string): Promise<ArticleProps | null> => {
     try {
       slug = cleanSlug(slug);
       if (!slug) throw new Error("Post slug is required");
+
+      const now = dayjs().format(DB_DATE_TIME_FORMAT);
 
       return await db("posts as p")
         .join("post_languages as pl", "p.id", "pl.post_id")
@@ -43,7 +46,7 @@ const PostService = {
           "u.name as author_name"
         )
         .where("p.published", 3)
-        .andWhere("p.published_at", "<=", new Date().toISOString())
+        .andWhere("p.published_at", "<=", now)
         .andWhere("p.hide", 0)
         .andWhere("pl.locale", "vi")
         .andWhere("pl.slug", slug)
@@ -62,7 +65,7 @@ const PostService = {
       slug = cleanSlug(slug);
       if (!slug) throw new Error("Gallery slug is required");
 
-      const now = dayjs().format("YYYY-MM-DD HH:mm:ss");
+      const now = dayjs().format(DB_DATE_TIME_FORMAT);
 
       const result = await db("gallery as g")
         .join("gallery_languages as gl", "gl.gallery_id", "g.id")
@@ -179,11 +182,13 @@ const PostService = {
     includeCategory: boolean = false
   ): Promise<INewestPost[]> => {
     try {
+      const now = dayjs().format(DB_DATE_TIME_FORMAT);
+
       let query = db("posts as p")
         .join("post_languages as pl", "p.id", "pl.post_id")
         .select("p.id", "pl.slug", "pl.name", "pl.description", "p.thumbnail")
         .where("p.published", 3)
-        .andWhere("p.published_at", "<=", new Date().toISOString())
+        .andWhere("p.published_at", "<=", now)
         .andWhere("p.hide", 0)
         .andWhere("pl.locale", "vi");
 
@@ -240,7 +245,7 @@ const PostService = {
 
   getFeaturedPosts: async (limit: number): Promise<ArticleProps[]> => {
     try {
-      const now = dayjs().format("YYYY-MM-DD HH:mm:ss");
+      const now = dayjs().format(DB_DATE_TIME_FORMAT);
 
       const result = await db("posts as p")
         .join("post_languages as pl", "p.id", "pl.post_id")
@@ -293,6 +298,8 @@ const PostService = {
     limit: number
   ): Promise<ArticleProps[]> => {
     try {
+      const now = dayjs().format(DB_DATE_TIME_FORMAT);
+
       // Tối ưu: Tạo 2 subqueries riêng biệt cho posts và galleries theo category
       const postSubquery = db("views as v")
         .join("posts as p", "v.subject_id", "p.id")
@@ -300,7 +307,7 @@ const PostService = {
         .join("post_category as pc", "pc.post_id", "p.id")
         .where("v.subject_type", "Modules\\News\\Models\\Post")
         .andWhere("p.published", 3)
-        .andWhere("p.published_at", "<=", new Date().toISOString())
+        .andWhere("p.published_at", "<=", now)
         .andWhere("p.hide", 0)
         .andWhere("pl.locale", "vi")
         .andWhere("pc.post_category_id", categoryId)
@@ -321,7 +328,7 @@ const PostService = {
         .join("gallery_category as gc", "gc.gallery_id", "g.id")
         .where("v.subject_type", "Modules\\Gallery\\Models\\Gallery")
         .andWhere("g.published", 1)
-        .andWhere("g.published_at", "<=", new Date().toISOString())
+        .andWhere("g.published_at", "<=", now)
         // .andWhere("g.hide", 0)
         .andWhere("gl.locale", "vi")
         .andWhere("gc.gallery_category_id", categoryId)
@@ -351,13 +358,15 @@ const PostService = {
 
   getMostViewedPosts: async (limit: number): Promise<ArticleProps[]> => {
     try {
+      const now = dayjs().format(DB_DATE_TIME_FORMAT);
+
       // Tối ưu: Tạo 2 subqueries riêng biệt, sau đó union và limit
       const postSubquery = db("views as v")
         .join("posts as p", "v.subject_id", "p.id")
         .join("post_languages as pl", "pl.post_id", "p.id")
         .where("v.subject_type", "Modules\\News\\Models\\Post")
         .andWhere("p.published", 3)
-        .andWhere("p.published_at", "<=", new Date().toISOString())
+        .andWhere("p.published_at", "<=", now)
         .andWhere("p.hide", 0)
         .andWhere("pl.locale", "vi")
         .select([
@@ -376,7 +385,7 @@ const PostService = {
         .join("gallery_languages as gl", "g.id", "gl.gallery_id")
         .where("v.subject_type", "Modules\\Gallery\\Models\\Gallery")
         .andWhere("g.published", 1)
-        .andWhere("g.published_at", "<=", new Date().toISOString())
+        .andWhere("g.published_at", "<=", now)
         // .andWhere("g.hide", 0)
         .andWhere("gl.locale", "vi")
         .select([
@@ -423,7 +432,7 @@ const PostService = {
         )
         .where("gc2.id", categoryId)
         .andWhere("g.published", 1)
-        .andWhere("g.published_at", "<=", dayjs().format("YYYY-MM-DD HH:mm:ss"))
+        .andWhere("g.published_at", "<=", dayjs().format(DB_DATE_TIME_FORMAT))
         .andWhere("gl.locale", "vi")
         .orderBy("g.published_at", "desc")
         .limit(limit);
@@ -450,7 +459,7 @@ const PostService = {
     total: number;
   }> => {
     try {
-      const now = dayjs().format("YYYY-MM-DD HH:mm:ss");
+      const now = dayjs().format(DB_DATE_TIME_FORMAT);
 
       const totalResult = await db("gallery as g")
         .join("gallery_languages as gl", "gl.gallery_id", "g.id")
@@ -522,7 +531,7 @@ const PostService = {
       if (!currentGallery) throw new Error("Gallery not found");
 
       const getRelativeVideosQuery = (direction: "forward" | "backward") => {
-        const now = dayjs().format("YYYY-MM-DD HH:mm:ss");
+        const now = dayjs().format(DB_DATE_TIME_FORMAT);
         return db("gallery as g")
           .join("gallery_languages as gl", "gl.gallery_id", "g.id")
           .join("gallery_category as gc", "gc.gallery_id", "g.id")
@@ -562,8 +571,7 @@ const PostService = {
       const combinedVideos = [...backwardVideos, ...forwardVideos]
         .sort(
           (a, b) =>
-            new Date(b.published_at).getTime() -
-            new Date(a.published_at).getTime()
+            dayjs(b.published_at).valueOf() - dayjs(a.published_at).valueOf()
         )
         .slice(0, limit);
 
@@ -597,6 +605,8 @@ const PostService = {
       if (!currentPost) throw new Error("Post not found");
 
       const getRelativePostsQuery = (direction: "forward" | "backward") => {
+        const now = dayjs().format(DB_DATE_TIME_FORMAT);
+
         return db("posts as p")
           .join("post_languages as pl", "pl.post_id", "p.id")
           .join("post_category as pc", "pc.post_id", "p.id")
@@ -618,7 +628,7 @@ const PostService = {
             direction === "forward" ? "<=" : ">",
             currentPost?.published_at
           )
-          .andWhere("p.published_at", "<=", new Date().toISOString())
+          .andWhere("p.published_at", "<=", now)
           .andWhere("p.hide", 0)
           .andWhere("pl.locale", "vi")
           .andWhere("v.subject_type", "Modules\\News\\Models\\Post")
@@ -636,8 +646,7 @@ const PostService = {
       const combinedPosts = [...backwardPosts, ...forwardPosts]
         .sort(
           (a, b) =>
-            new Date(b.published_at).getTime() -
-            new Date(a.published_at).getTime()
+            dayjs(b.published_at).valueOf() - dayjs(a.published_at).valueOf()
         )
         .slice(0, limit);
 
@@ -648,7 +657,7 @@ const PostService = {
     }
   },
   getMediaBox: async (limit: number = 5): Promise<IMediaBox[]> => {
-    const now = dayjs().format("YYYY-MM-DD HH:mm:ss");
+    const now = dayjs().format(DB_DATE_TIME_FORMAT);
 
     try {
       // Posts subquery for 'infographics' and 'phong-su-anh' categories
@@ -662,7 +671,8 @@ const PostService = {
           "p.published_at",
           "p.thumbnail",
           db.raw(
-            `(p.featured = 1 AND ${now} BETWEEN p.featured_started_at AND p.featured_ended_at) AS is_featured_now`
+            `(p.featured = 1 AND ? BETWEEN p.featured_started_at AND p.featured_ended_at) AS is_featured_now`,
+            [now]
           ),
           "p5.slug",
           "p5.name",

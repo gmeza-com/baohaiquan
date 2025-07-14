@@ -25,11 +25,11 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
       className={clsx("@container/card cursor-pointer", className)}
     >
       <div className="flex flex-col @min-[750px]/card:flex-row-reverse @min-[750px]/card:bg-blue-50 @min-[750px]/card:p-4 @min-[750px]/card:rounded-[12px] @min-[750px]/card:gap-7 pb-5">
-        <div className="relative rounded-[6px] @min-[750px]/card:rounded-[4px] overflow-hidden">
+        <div className="relative rounded-[6px] @min-[750px]/card:rounded-[4px] overflow-hidden w-full @min-[750px]/card:w-3/5">
           <Image
             src={image}
             alt={title}
-            className="w-full aspect-video object-cover @min-[750px]/card:aspect-[480/360] @min-[750px]/card:w-3/5 "
+            className="w-full aspect-video object-cover @min-[750px]/card:aspect-[480/360]"
             width={480}
             height={360}
             loading="lazy"
