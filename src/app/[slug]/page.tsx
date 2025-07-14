@@ -1,6 +1,7 @@
 import Pagination from "@/coms/common/Pagination";
 import AudioCard from "@/coms/Gallery/AudioCard";
 import NewspaperCard from "@/coms/Gallery/NewspaperCard";
+import NewspaperListener from "@/coms/Gallery/NewspaperListener";
 import DecorTitle from "@/coms/Home/DecorTitle";
 import { IconPlay2 } from "@/coms/Icon/fill";
 import PrimaryLayout from "@/coms/MasterLayout/PrimaryLayout";
@@ -133,6 +134,7 @@ const GalleryCollectionPage = async ({ params, searchParams }: PageProps) => {
           </div>
         </div>
       </div>
+      <NewspaperListener catId={cat?.id} />
     </PrimaryLayout>
   );
 };

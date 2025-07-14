@@ -257,3 +257,7 @@ export function formatRelativeTime(date: Date | string | number): string {
     return `${diffInYears} năm trước`;
   }
 }
+
+export const cleanTextSearch = (text: string): string => {
+  return text.trim();
+};
