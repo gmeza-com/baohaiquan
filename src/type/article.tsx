@@ -70,3 +70,12 @@ export type IGalleryCollectionWithViewCount = IGalleryCollection & {
 export type IGalleryCollectionList = IGalleryCollectionWithViewCount & {
   type: GalleryType;
 };
+
+export type IMediaBox = Pick<
+  ArticleProps,
+  "id" | "published_at" | "thumbnail" | "slug" | "name" | "description"
+> & {
+  category_slug: string;
+  is_featured_now: number;
+  category_name: string;
+};

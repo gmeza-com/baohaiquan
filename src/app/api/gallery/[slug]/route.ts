@@ -1,15 +1,33 @@
 import PostService from "@/service/post";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(request: NextRequest) {
+export async function GET(
+  request: NextRequest,
+  { params }: Readonly<{ params: Promise<{ slug: string }> }>
+) {
   try {
-    const slug = request.nextUrl.pathname.split("/").pop();
+    const { slug } = await params;
 
-    if (!slug) {
-      return NextResponse.json({ error: "Slug is required" }, { status: 400 });
+    const catId = request.nextUrl.searchParams.get("catId");
+
+    if (!slug || !catId) {
+      return NextResponse.json(
+        { error: "Slug and catId are required" },
+        { status: 400 }
+      );
     }
 
-    const galleryResult = await PostService.getGalleryFromSlug(slug);
+    if (Number.isNaN(Number(catId))) {
+      return NextResponse.json(
+        { error: "CatId must be a number" },
+        { status: 400 }
+      );
+    }
+
+    const galleryResult = await PostService.getGalleryFromSlug(
+      slug,
+      Number(catId)
+    );
 
     if (!galleryResult) {
       return NextResponse.json({ error: "Gallery not found" }, { status: 404 });

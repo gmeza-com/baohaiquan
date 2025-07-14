@@ -17,6 +17,7 @@ import CategoryService from "@/service/category";
 import Image from "next/image";
 import PodcastBox from "@/coms/Home/PodcastBox";
 import navigateService from "@/lib/router";
+import MediaBox from "@/coms/Home/MediaBox";
 
 const HomePage = async () => {
   const [
@@ -30,6 +31,7 @@ const HomePage = async () => {
     galleryCategories,
     hqNewsPaperContent,
     hqPodcast,
+    mediaBox,
   ] = await Promise.all([
     PostService.getNewestPosts(6),
     PostService.getFeaturedPosts(10),
@@ -41,6 +43,7 @@ const HomePage = async () => {
     CategoryService.getGalleryCategories(),
     PostService.getGalleryCollection(GalleryCategory.HQ_NEWS_PAPER, 1),
     PostService.getGalleryCollection(GalleryCategory.HQ_PODCAST, 8),
+    PostService.getMediaBox(5),
   ]);
 
   const hqMediaCategory = galleryCategories.find(
@@ -107,7 +110,7 @@ const HomePage = async () => {
       />
 
       {/* TODO: coming soon */}
-      {/* <MediaBox /> */}
+      <MediaBox data={mediaBox} />
 
       <div className="container mx-auto">
         <div className="-m-4 md:m-0 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:gap-12 md:gap-x-6 md:gap-y-16 md:py-5 lg:pt-11 lg:pb-[5.25rem] md:border-t border-blue-200">

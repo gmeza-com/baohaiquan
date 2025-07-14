@@ -30,6 +30,7 @@ import {
   AccordionContent,
   AccordionTrigger,
 } from "@/shadcn/ui/accordion";
+import navigateService from "@/lib/router";
 
 interface HeaderProps {
   menuItems: any[];
@@ -86,14 +87,16 @@ const Header: React.FC<HeaderProps> = async ({ menuItems }) => {
           {/* Desktop Header */}
           <div className="hidden xl:flex justify-end items-center gap-1 pt-2">
             <Link
-              href="/bao-in-hai-quan-3d"
+              href={navigateService.getGalleryCollection("bao-in")}
               className="pl-2 pr-3 py-1 rounded bg-blue-600 hover:bg-blue-500 transition flex text-sm items-center gap-2 uppercase text-white font-normal leading-[160%] tracking-[0%] align-middle"
             >
               <IconNewspaper size={20} className="text-white/90" />
               Báo In
             </Link>
             <Link
-              href="/truyen-hinh-hai-quan"
+              href={navigateService.getGalleryCollection(
+                "truyen-hinh-hai-quan"
+              )}
               className="pl-2 pr-3 py-1 rounded bg-blue-600 hover:bg-blue-500 transition flex items-center gap-2 uppercase text-white font-normal text-sm leading-[160%] tracking-[0%] align-middle"
             >
               <IconTelevisionSimple size={20} className="text-white/90" />
@@ -174,14 +177,22 @@ const Header: React.FC<HeaderProps> = async ({ menuItems }) => {
                   <ul className="flex flex-col gap-1 text-white">
                     <li>
                       <NavMenuLink asChild>
-                        <Link href="/bao-in-hai-quan-3d" className="truncate">
+                        <Link
+                          href={navigateService.getGalleryCollection("bao-in")}
+                          className="truncate"
+                        >
                           Báo In
                         </Link>
                       </NavMenuLink>
                     </li>
                     <li>
                       <NavMenuLink asChild>
-                        <Link href="/truyen-hinh-hai-quan" className="truncate">
+                        <Link
+                          href={navigateService.getGalleryCollection(
+                            "truyen-hinh-hai-quan"
+                          )}
+                          className="truncate"
+                        >
                           Truyền Hình Hải Quân
                         </Link>
                       </NavMenuLink>
@@ -261,14 +272,19 @@ const MenuSidebar: React.FC<{ data: any[] }> = ({ data }) => {
             })}
           </Accordion>
           <div className="border-b">
-            <Link className="py-4 block font-medium" href="/bao-in-hai-quan-3d">
+            <Link
+              className="py-4 block font-medium"
+              href={navigateService.getGalleryCollection("bao-in")}
+            >
               Báo In
             </Link>
           </div>
           <div>
             <Link
               className="py-4 block font-medium"
-              href="/truyen-hinh-hai-quan"
+              href={navigateService.getGalleryCollection(
+                "truyen-hinh-hai-quan"
+              )}
             >
               Truyền Hình Hải Quân
             </Link>
