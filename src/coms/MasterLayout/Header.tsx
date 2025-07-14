@@ -31,6 +31,7 @@ import {
   AccordionTrigger,
 } from "@/shadcn/ui/accordion";
 import navigateService from "@/lib/router";
+import SearchButton from "./SearchButton";
 
 interface HeaderProps {
   menuItems: any[];
@@ -75,12 +76,11 @@ const Header: React.FC<HeaderProps> = async ({ menuItems }) => {
               <img src="/logo.svg" alt="Logo" className="w-[216px]" />
             </Link>
             <div className="flex items-center justify-end">
-              <a
-                href="/tim-kiem"
-                className="p-2 rounded cursor-pointer hover:bg-blue-600 transition lg:hidden"
-              >
-                <IconMagnifyingGlass className="text-white/90" size={24} />
-              </a>
+              <SearchButton>
+                <button className="p-2 rounded cursor-pointer hover:bg-blue-600 transition lg:hidden">
+                  <IconMagnifyingGlass className="text-white/90" size={24} />
+                </button>
+              </SearchButton>
             </div>
           </div>
 
@@ -102,12 +102,11 @@ const Header: React.FC<HeaderProps> = async ({ menuItems }) => {
               <IconTelevisionSimple size={20} className="text-white/90" />
               Truyền Hình Hải Quân
             </Link>
-            <a
-              href="/tim-kiem"
-              className="p-1 rounded cursor-pointer hover:bg-blue-500 transition"
-            >
-              <IconMagnifyingGlass size={20} className="text-white/90" />
-            </a>
+            <SearchButton sideOffset={-25}>
+              <button className="p-1 rounded cursor-pointer hover:bg-blue-500 transition">
+                <IconMagnifyingGlass size={20} className="text-white/90" />
+              </button>
+            </SearchButton>
           </div>
 
           {/* Nav menu for wide screen */}
