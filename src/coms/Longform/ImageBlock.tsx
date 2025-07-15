@@ -9,12 +9,15 @@ const ImageBlock: React.FC<ImageBlockProps> = ({
   file,
   stretched,
   className,
+  size,
 }) => {
   return (
     <div
       className={clsx(
-        stretched ? "w-full md:px-0" : "container mx-auto !py-0",
-        className
+        className,
+        size === "large" && "w-full md:px-0",
+        size === "normal" && "container mx-auto !py-0",
+        size === "small" && "w-full max-w-[568px] mx-auto px-4 md:px-0"
       )}
     >
       <Image

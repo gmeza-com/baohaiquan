@@ -23,12 +23,15 @@ export interface ParagraphBlock {
 export type ImageBlockFile = {
   url: string;
 };
-
 export interface ImageBlock {
   caption: string;
   file: ImageBlockFile;
+  /**
+   * @deprecated - use size instead
+   */
   stretched: boolean;
   className?: string;
+  size: "small" | "normal" | "large";
 }
 
 export interface HeaderBlock {
