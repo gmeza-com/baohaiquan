@@ -132,7 +132,7 @@ const HomePage = async () => {
             )}
 
             <LinkedWebsiteBox />
-            <QuangCaoCotBen slug="ads-sidebar" />
+            <QuangCaoCotBen slug="quang-cao-cot-ben-1" />
           </div>
         </div>
       </div>
