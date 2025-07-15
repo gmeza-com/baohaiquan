@@ -1,4 +1,5 @@
 import db from "@/lib/db";
+import { TestCollection } from "@/lib/php-erialize/TestCollection";
 import { IWidget } from "@/type/widget";
 import { unserialize } from "php-serialize";
 
@@ -14,7 +15,15 @@ const WidgetService = {
       throw new Error("Widget not found");
     }
 
-    return { ...res, content: unserialize(res.content) };
+    return {
+      ...res,
+      content:
+        res?.type === "link_widget"
+          ? unserialize(res.content, {
+              "Illuminate\\Support\\Collection": TestCollection,
+            }).getItems()
+          : unserialize(res.content),
+    };
   },
 
   getPublishedWidget: async (): Promise<Pick<IWidget, "id" | "slug">[]> => {
