@@ -15,7 +15,7 @@ const AudioCard: React.FC<AudioCardProps> = ({ data, href }) => {
       <Link href={href}>
         <div className="w-full aspect-video rounded-[6px] overflow-hidden relative bg-blue-100 flex items-center justify-center">
           <div className="size-32 border-3 border-white shadow rounded-lg overflow-hidden">
-            <Image
+            <img
               src={data?.thumbnail}
               alt={data?.name}
               width={128}
