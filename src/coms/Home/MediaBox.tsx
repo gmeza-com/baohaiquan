@@ -113,7 +113,7 @@ const ArticleCompactVerticalCard: React.FC<ArticleCompactVerticalCardProps> = ({
       <div className="@container/card">
         <div className="flex flex-col gap-2.5">
           <div className="relative rounded-[6px] overflow-hidden">
-            <Image
+            <img
               src={image}
               alt={title}
               className="w-full aspect-video  object-cover"
