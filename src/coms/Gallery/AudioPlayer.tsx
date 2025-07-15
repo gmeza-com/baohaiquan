@@ -160,7 +160,7 @@ const AudioPlayer = ({ src, thumbnail, title }: AudioPlayerProps) => {
   return (
     <div className="w-full max-w-[660px] mx-auto bg-blue-600 rounded-3xl p-4 pb-7">
       <div className="w-full aspect-[628/471] bg-white rounded-[8px] overflow-hidden">
-        <Image
+        <img
           src={thumbnail}
           alt={title}
           width={628}
