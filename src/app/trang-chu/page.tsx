@@ -14,10 +14,13 @@ import { Metadata } from "next";
 import PostService from "@/service/post";
 import { GalleryCategory } from "@/data/category";
 import CategoryService from "@/service/category";
-import Image from "next/image";
 import PodcastBox from "@/coms/Home/PodcastBox";
 import navigateService from "@/lib/router";
 import MediaBox from "@/coms/Home/MediaBox";
+import ChuChayTrangChu from "@/coms/Home/ChuChayTrangChu";
+import QuangCaoCotBen from "@/coms/Home/QuangCaoCotBen";
+import QuangCaoChenGiua from "@/coms/Home/QuangCaoChenGiua";
+import WidgetService from "@/service/widget";
 
 const HomePage = async () => {
   const [
@@ -32,6 +35,7 @@ const HomePage = async () => {
     hqNewsPaperContent,
     hqPodcast,
     mediaBox,
+    publishedWidgets,
   ] = await Promise.all([
     PostService.getNewestPosts(6),
     PostService.getFeaturedPosts(10),
@@ -44,6 +48,7 @@ const HomePage = async () => {
     PostService.getGalleryCollection(GalleryCategory.HQ_NEWS_PAPER, 1),
     PostService.getGalleryCollection(GalleryCategory.HQ_PODCAST, 8),
     PostService.getMediaBox(5),
+    WidgetService.getPublishedWidget(),
   ]);
 
   const hqMediaCategory = galleryCategories.find(
@@ -74,43 +79,42 @@ const HomePage = async () => {
 
   return (
     <div>
+      {publishedWidgets?.some((item) => item.slug === "homepage-banner") && (
+        <ChuChayTrangChu />
+      )}
+
       <HeadlineBlock newestPosts={newestPosts} featuredPosts={featuredPosts} />
 
-      <div className="pb-12">
-        <div className="container mx-auto">
-          <img
-            src="/images/home/hero-banner.webp"
-            alt="banner"
-            className="w-full max-w-[50rem] mx-auto"
-            loading="lazy"
-          />
-        </div>
-      </div>
+      {publishedWidgets?.some(
+        (item) => item.slug === `quang-cao-chen-giua-${1}`
+      ) && <QuangCaoChenGiua index={1} />}
+
       {/* Block 1 trong categoryTree */}
       <ShortBox
         categoryTree={categoryTree?.[0]}
         articles={categoriesData?.[0]}
       />
-      <div className="pb-10 md:pb-[72px]">
-        <div className="container mx-auto">
-          <Image
-            src="/images/home/hero-banner-2.webp"
-            alt="banner"
-            className="w-full md:rounded-[12px]"
-            loading="lazy"
-            width={1320}
-            height={172}
-          />
-        </div>
-      </div>
+
+      {publishedWidgets?.some(
+        (item) => item.slug === `quang-cao-chen-giua-${2}`
+      ) && <QuangCaoChenGiua index={2} />}
+
       {/* Block 2 trong categoryTree */}
       <DefenseSecurityBox
         categoryTree={categoryTree?.[1]}
         articles={categoriesData?.[1]}
       />
 
+      {publishedWidgets?.some(
+        (item) => item.slug === `quang-cao-chen-giua-${3}`
+      ) && <QuangCaoChenGiua index={3} />}
+
       {/* TODO: coming soon */}
       <MediaBox data={mediaBox} />
+
+      {publishedWidgets?.some(
+        (item) => item.slug === `quang-cao-chen-giua-${4}`
+      ) && <QuangCaoChenGiua index={4} />}
 
       <div className="container mx-auto">
         <div className="-m-4 md:m-0 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:gap-12 md:gap-x-6 md:gap-y-16 md:py-5 lg:pt-11 lg:pb-[5.25rem] md:border-t border-blue-200">
@@ -128,19 +132,15 @@ const HomePage = async () => {
             )}
 
             <LinkedWebsiteBox />
-            <img
-              src="/images/home/100-nam.jpg"
-              className="w-full"
-              loading="lazy"
-            />
-            <img
-              src="/images/home/cong-ty-xay-lap-thanh-an.jpg"
-              className="w-full"
-              loading="lazy"
-            />
+            <QuangCaoCotBen slug="ads-sidebar" />
           </div>
         </div>
       </div>
+
+      {publishedWidgets?.some(
+        (item) => item.slug === `quang-cao-chen-giua-${5}`
+      ) && <QuangCaoChenGiua index={5} />}
+
       <div className="py-5 md:p-0 border-t border-blue-200 md:border-0">
         <div className="container mx-auto">
           <div className="md:border-t md:border-blue-200 md:py-5  lg:pt-11 lg:pb-[5.25rem]">
@@ -156,28 +156,26 @@ const HomePage = async () => {
                 galleries={hqVideo}
               />
               <div className="md:col-span-2 xl:col-span-1">
-                <img
-                  src="/images/home/mb-ads.jpg"
-                  alt="MB Ads"
-                  className="w-full"
-                  loading="lazy"
-                />
-                <img
-                  src="/images/home/viettel-ads.jpg"
-                  alt="Viettel Ads"
-                  className="w-full mt-6"
-                  loading="lazy"
-                />
+                <QuangCaoCotBen slug="quang-cao-cot-ben-2" />
               </div>
             </div>
           </div>
         </div>
       </div>
+
+      {publishedWidgets?.some(
+        (item) => item.slug === `quang-cao-chen-giua-${6}`
+      ) && <QuangCaoChenGiua index={6} />}
+
       {/* Block 3 trong categoryTree */}
       <DefenseSecurityBox
         categoryTree={categoryTree?.[2]}
         articles={categoriesData?.[2]}
       />
+
+      {publishedWidgets?.some(
+        (item) => item.slug === `quang-cao-chen-giua-${7}`
+      ) && <QuangCaoChenGiua index={7} />}
 
       {/* Block 4 trong categoryTree */}
       <DefenseSecurityBox
@@ -185,7 +183,10 @@ const HomePage = async () => {
         articles={categoriesData?.[3]}
       />
 
-      {/* TODO: coming soon */}
+      {publishedWidgets?.some(
+        (item) => item.slug === `quang-cao-chen-giua-${8}`
+      ) && <QuangCaoChenGiua index={8} />}
+
       <PodcastBox
         podcasts={hqPodcast}
         category={
@@ -196,17 +197,29 @@ const HomePage = async () => {
         }
       />
 
+      {publishedWidgets?.some(
+        (item) => item.slug === `quang-cao-chen-giua-${9}`
+      ) && <QuangCaoChenGiua index={9} />}
+
       {/* Block 5 trong categoryTree */}
       <DefenseSecurityBox
         categoryTree={categoryTree?.[4]}
         articles={categoriesData?.[4]}
       />
 
+      {publishedWidgets?.some(
+        (item) => item.slug === `quang-cao-chen-giua-${10}`
+      ) && <QuangCaoChenGiua index={10} />}
+
       {/* Block 6 trong categoryTree */}
       <DefenseSecurityBox
         categoryTree={categoryTree?.[5]}
         articles={categoriesData?.[5]}
       />
+
+      {publishedWidgets?.some(
+        (item) => item.slug === `quang-cao-chen-giua-${11}`
+      ) && <QuangCaoChenGiua index={11} />}
 
       <NavyTVBox
         className="mb-10"
@@ -227,13 +240,22 @@ const HomePage = async () => {
       {/* Block 12 trong categoryTree */}
       {/* Block 13 trong categoryTree */}
       {categoryTree?.slice(6).map((item, index) => (
-        <DefenseSecurityBox
-          key={item?.id}
-          categoryTree={item}
-          articles={categoriesData?.[6 + index]}
-          hideBorder={index === 0}
-        />
+        <div key={item?.id}>
+          {publishedWidgets?.some(
+            (item) => item.slug === `quang-cao-chen-giua-${12 + index}`
+          ) && <QuangCaoChenGiua index={12 + index} />}
+
+          <DefenseSecurityBox
+            categoryTree={item}
+            articles={categoriesData?.[6 + index]}
+            hideBorder={index === 0}
+          />
+        </div>
       ))}
+
+      {publishedWidgets?.some(
+        (item) => item.slug === "quang-cao-chen-cuoi"
+      ) && <QuangCaoChenGiua index={-1} />}
     </div>
   );
 };
