@@ -77,9 +77,9 @@ const Header: React.FC<HeaderProps> = async ({ menuItems }) => {
             </Link>
             <div className="flex items-center justify-end">
               <SearchButton>
-                <button className="p-2 rounded cursor-pointer hover:bg-blue-600 transition lg:hidden">
+                <div className="p-2 rounded cursor-pointer hover:bg-blue-600 transition lg:hidden">
                   <IconMagnifyingGlass className="text-white/90" size={24} />
-                </button>
+                </div>
               </SearchButton>
             </div>
           </div>
@@ -103,9 +103,9 @@ const Header: React.FC<HeaderProps> = async ({ menuItems }) => {
               Truyền Hình Hải Quân
             </Link>
             <SearchButton sideOffset={-25}>
-              <button className="p-1 rounded cursor-pointer hover:bg-blue-500 transition">
+              <div className="p-1 rounded cursor-pointer hover:bg-blue-500 transition">
                 <IconMagnifyingGlass size={20} className="text-white/90" />
-              </button>
+              </div>
             </SearchButton>
           </div>
 

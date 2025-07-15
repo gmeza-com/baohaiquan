@@ -170,6 +170,16 @@ body {
   --text-xsm: 0.9375rem;
   --breakpoint-xlg: 75rem;
   --breakpoint-xxl: 82.5rem;
+
+  --animate-marquee: marquee 25s linear infinite;
+  @keyframes marquee {
+    0% {
+      transform: translateX(100%);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
 }
 
 @theme inline {
@@ -308,6 +318,15 @@ div.article-wrapper p {
   margin: 2rem auto;
   max-width: 568px;
 }
+
+/* -- customize insert ads --------------------- */
+
+.insert-ads {
+  img {
+    @apply mx-auto;
+  }
+}
+
 /* -- end customize article display ------------------ */
 
 .menu-up-arrow::after {
