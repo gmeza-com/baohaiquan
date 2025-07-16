@@ -152,7 +152,7 @@ const VideoCard = ({ data, isNormal = false, href }: VideoCardProps) => {
     <li key={data?.id} className="w-full group cursor-pointer overflow-hidden">
       <Link href={href}>
         <div className="w-full aspect-video rounded-[6px] overflow-hidden relative">
-          <Image
+          <img
             src={data?.thumbnail}
             alt={data?.name}
             width={312}

@@ -20,7 +20,7 @@ const ImageBlock: React.FC<ImageBlockProps> = ({
         size === "small" && "w-full max-w-[568px] mx-auto px-4 md:px-0"
       )}
     >
-      <Image
+      <img
         src={file.url}
         alt={caption}
         width={1440}

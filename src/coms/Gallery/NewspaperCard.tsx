@@ -1,7 +1,6 @@
 "use client";
 
 import dayjs from "dayjs";
-import Image from "next/image";
 import { useState } from "react";
 import FlipbookModal from "./FlipbookModal";
 
@@ -26,7 +25,7 @@ const NewspaperCard = ({ item, catId }: NewspaperCardProps) => {
       <li key={item?.id} className="" onClick={handleCardClick}>
         <div className="w-full aspect-[3/4] cursor-pointer bg-blue-50 rounded-[12px] flex items-center justify-center">
           <div className="w-[73%] aspect-[3/4] relative group">
-            <Image
+            <img
               src={item?.thumbnail}
               alt={item?.name}
               width={227}
