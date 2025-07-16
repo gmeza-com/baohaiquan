@@ -38,9 +38,12 @@ const GalleryDetailHeader = ({
         </Link>
         {isLongform ? (
           <div className="items-center gap-4 overflow-hidden hidden lg:flex">
-            <span className="text-xl font-bold text-white leading-[140%] tracking-[0%] font-playfair-display">
+            <Link
+              href={navigateService.getGalleryCollection(category?.slug)}
+              className="text-xl font-bold text-white leading-[140%] tracking-[0%] font-playfair-display"
+            >
               {category?.name}
-            </span>
+            </Link>
             <div className="w-px h-4 bg-white/50" />{" "}
             <h1 className="text-white text-lg font-semibold leading-[150%] tracking-[0] truncate">
               {postName}
