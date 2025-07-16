@@ -64,51 +64,55 @@ const TinTucPage = async ({ params }: PageProps) => {
   return (
     <div>
       <div className="bg-yellow-50">
-        <div className="mx-auto max-w-[860px]">
-          <div className="max-w-[660px] text-center mx-auto pt-6 pb-12">
-            {isOn(cat) && (
-              <a
-                href={`/danh-muc/${cat?.slug}`}
-                className="uppercase text-sm hover:underline"
-              >
-                {cat?.name}
-              </a>
-            )}
-            {post && (
-              <>
-                <h1 className="text-5xl mt-5 mb-6 font-bold">
-                  {stripHtml(post?.name)}
-                </h1>
-                <p>
-                  <span className="font-semibold">{post.author_name}</span> •{" "}
-                  <span className="capitalize opacity-80">
-                    {dayjs(post.published_at).format("dddd, DD/MM/YYYY HH:mm")}
-                  </span>
-                </p>
-              </>
-            )}
-          </div>
-          {post?.content && (
-            <div
-              className="article-wrapper"
-              dangerouslySetInnerHTML={{
-                __html: DOMPurify.sanitize(post.content),
-              }}
-            />
-          )}
-
-          <div className="max-w-[568px] mx-auto py-7">
-            <div className="flex w-full items-center justify-between p-3 bg-yellow-100 rounded-[0.75rem]">
-              <span className="text-gray-900 font-normal text-lg leading-[150%] tracking-[0%]">
-                Chia sẻ
-              </span>
-              <ShareList
-                url={`${process.env.NEXT_PUBLIC_APP}/tin-tuc/${slug}`}
-              />
+        <div className="container">
+          <div className="mx-auto max-w-[860px]">
+            <div className="max-w-[660px] text-center mx-auto pt-6 pb-12">
+              {isOn(cat) && (
+                <a
+                  href={`/danh-muc/${cat?.slug}`}
+                  className="uppercase text-sm hover:underline"
+                >
+                  {cat?.name}
+                </a>
+              )}
+              {post && (
+                <>
+                  <h1 className="text-5xl mt-5 mb-6 font-bold">
+                    {stripHtml(post?.name)}
+                  </h1>
+                  <p>
+                    <span className="font-semibold">{post.author_name}</span> •{" "}
+                    <span className="capitalize opacity-80">
+                      {dayjs(post.published_at).format(
+                        "dddd, DD/MM/YYYY HH:mm"
+                      )}
+                    </span>
+                  </p>
+                </>
+              )}
             </div>
-          </div>
+            {post?.content && (
+              <div
+                className="article-wrapper"
+                dangerouslySetInnerHTML={{
+                  __html: DOMPurify.sanitize(post.content),
+                }}
+              />
+            )}
 
-          <RelativeArticle slug={slug} catSlug={cat?.slug || ""} />
+            <div className="max-w-[568px] mx-auto py-7">
+              <div className="flex w-full items-center justify-between p-3 bg-yellow-100 rounded-[0.75rem]">
+                <span className="text-gray-900 font-normal text-lg leading-[150%] tracking-[0%]">
+                  Chia sẻ
+                </span>
+                <ShareList
+                  url={`${process.env.NEXT_PUBLIC_APP}/tin-tuc/${slug}`}
+                />
+              </div>
+            </div>
+
+            <RelativeArticle slug={slug} catSlug={cat?.slug || ""} />
+          </div>
         </div>
       </div>
       <MixBox />
