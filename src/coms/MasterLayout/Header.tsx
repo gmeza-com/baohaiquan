@@ -134,7 +134,10 @@ const MenuSidebar: React.FC<{ data: any[] }> = ({ data }) => {
         </SheetHeader>
         <div className="px-6 font-myriad-pro text-lg">
           <div className="border-b">
-            <Link className="py-4 block font-medium" href="/">
+            <Link
+              className="py-4 block font-medium focus-within:text-blue-700"
+              href="/"
+            >
               Trang Chủ
             </Link>
           </div>
@@ -149,7 +152,7 @@ const MenuSidebar: React.FC<{ data: any[] }> = ({ data }) => {
                   <AccordionTrigger>
                     <Link
                       href={`/danh-muc/${item.attributes.category_slug}`}
-                      className="truncate no-underline"
+                      className="truncate no-underline focus-within:text-blue-700"
                     >
                       {item.name}
                     </Link>
@@ -160,7 +163,7 @@ const MenuSidebar: React.FC<{ data: any[] }> = ({ data }) => {
                         <li key={child.id}>
                           <Link
                             href={`/danh-muc/${child.attributes.category_slug}`}
-                            className="truncate block cursor-pointer py-1"
+                            className="truncate block cursor-pointer py-1 focus-within:text-blue-700"
                           >
                             {child.name}
                           </Link>
