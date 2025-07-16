@@ -106,13 +106,6 @@ const TinTucPage = async ({ params }: PageProps) => {
                 url={`${process.env.NEXT_PUBLIC_APP}/tin-tuc/${slug}`}
               />
             </div>
-
-            <div className="w-full flex items-center justify-center mt-7 gap-2">
-              <IconClock size={22} className="text-gray-800" />
-              <span className="text-gray-900 text-xsm capitalize">
-                {dayjs(post?.published_at).format("dddd, DD/MM/YYYY HH:mm")}
-              </span>
-            </div>
           </div>
 
           <RelativeArticle slug={slug} catSlug={cat?.slug || ""} />
