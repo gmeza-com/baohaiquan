@@ -97,7 +97,7 @@ const LinkedWebsiteBox = () => {
                 key={website.url}
                 className="bg-white border border-blue-100 flex items-center justify-center px-2 aspect-[139/80] overflow-hidden rounded-[12px] py-4"
               >
-                <Image
+                <img
                   src={website.language?.["vi"]?.image}
                   alt={website.url}
                   className="size-full object-contain"
