@@ -18,7 +18,7 @@ const ArticleVerticle: React.FC<{
   return (
     <div className="flex flex-col gap-6">
       <Link href={`/tin-tuc/${slug}`}>
-        <Image
+        <img
           src={thumbnail}
           alt={name}
           width={800}

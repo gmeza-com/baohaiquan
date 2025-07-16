@@ -73,7 +73,7 @@ const RelativeVideoVertical: React.FC<RelativeVideoVerticalProps> = ({
               className="flex @max-[250px]/video-card:flex-col gap-5 group"
             >
               <div className="relative shrink-0 rounded-[6px] overflow-hidden">
-                <Image
+                <img
                   src={video?.thumbnail}
                   alt={video?.name}
                   width={128}

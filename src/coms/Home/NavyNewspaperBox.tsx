@@ -34,7 +34,7 @@ const NavyNewspaperBox: React.FC<NavyNewspaperBoxProps> = ({ gallery }) => {
               Đọc ngay
             </button>
           </div>
-          <Image
+          <img
             src={gallery?.thumbnail}
             alt={gallery?.name}
             width={276}

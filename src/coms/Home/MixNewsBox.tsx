@@ -50,7 +50,7 @@ const MixNewsItem: React.FC<MixNewsItemProps> = ({
       className={clsx("@container/mix-news-item group", className)}
     >
       <div className="flex items-start gap-5 @min-[624px]/mix-news-item:gap-6">
-        <Image
+        <img
           src={image}
           alt={title}
           className="w-[135px] @min-[624px]/mix-news-item:w-[234px] aspect-video rounded-[6px] object-cover"

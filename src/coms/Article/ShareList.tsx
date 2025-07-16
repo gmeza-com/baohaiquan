@@ -72,7 +72,7 @@ const ShareList: React.FC<ShareListProps> = ({
           onClick={() => handleShare(item.key)}
           aria-label={`Share on ${item.name}`}
         >
-          <Image
+          <img
             src={item.icon}
             alt={item.name}
             width={40}

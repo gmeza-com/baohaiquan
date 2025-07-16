@@ -55,7 +55,7 @@ const MostViewArticles = () => {
                       href={`/tin-tuc/${category?.most_viewed?.[0]?.slug}`}
                       className="flex items-start gap-5 @min-[320px]:flex-row flex-col"
                     >
-                      <Image
+                      <img
                         src={category?.most_viewed?.[0]?.thumbnail || ""}
                         alt={category?.most_viewed?.[0]?.name || ""}
                         width={244}

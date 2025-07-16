@@ -71,7 +71,7 @@ const NavyMediaItem: React.FC<NavyMediaItemProps> = ({
         <div className="absolute h-full w-[4px] top-0 left-0 bg-blue-500 @min-[900px]/navy-media-box:hidden" />
       )}
       <div className="relative shrink-0">
-        <Image
+        <img
           src={image}
           className="object-cover w-[120px] aspect-video rounded-[6px] mt-1"
           width={120}

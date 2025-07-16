@@ -17,7 +17,7 @@ const HighlightArticleCard: React.FC<HighlightArticleCardProps> = ({
       href={`tin-tuc/${data?.slug}`}
       className={clsx("group flex flex-col gap-4 lg:gap-6", className)}
     >
-      <Image
+      <img
         src={data?.thumbnail}
         alt={data?.name}
         className="w-full object-cover aspect-video md:rounded-[8px]"

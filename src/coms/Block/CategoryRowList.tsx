@@ -31,7 +31,7 @@ const CategoryRowList: React.FC<{ posts: any[] }> = ({ posts }) => {
         {isOn(items[0]) && (
           <div className="border-b border-dashed border-b-blue-200">
             <a href={`/tin-tuc/${items[0].slug}`}>
-              <Image
+              <img
                 src={items[0].thumbnail}
                 alt={items[0].name}
                 width={400}

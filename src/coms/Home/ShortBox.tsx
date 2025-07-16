@@ -97,7 +97,7 @@ const Card: React.FC<CardProps> = ({ title, image, className, slug }) => {
           "relative bg-blue-200 overflow-hidden rounded-[11.03px] @container/card"
         )}
       >
-        <Image
+        <img
           src={image}
           className="size-full aspect-[9/16] object-cover group-hover:scale-110 transition-transform duration-300"
           alt={title}

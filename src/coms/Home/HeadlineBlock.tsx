@@ -28,7 +28,7 @@ const HeadlineBlock: React.FC<HeadlineBlockProps> = ({
               href={`/tin-tuc/${firstFeaturedPost?.slug}`}
               className="group flex items-start flex-col gap-2.5 pb-5 border-b border-stroke-light border-dashed"
             >
-              <Image
+              <img
                 src={firstFeaturedPost?.thumbnail}
                 alt={firstFeaturedPost?.name}
                 className="w-full object-cover aspect-video rounded-[0.375rem]"
@@ -45,7 +45,7 @@ const HeadlineBlock: React.FC<HeadlineBlockProps> = ({
                 href={`/tin-tuc/${item?.slug}`}
                 className="group flex items-start gap-5 border-b border-stroke-light border-dashed pb-4 last:border-b-0 lg:gap-3"
               >
-                <Image
+                <img
                   src={item?.thumbnail}
                   alt={item?.name}
                   className="w-36 object-cover aspect-video rounded-[0.375rem] shrink-0 lg:w-28"

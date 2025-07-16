@@ -10,7 +10,7 @@ const ArticleHorizontal: React.FC<{
   return (
     <div className="grid grid-cols-7 gap-4">
       <Link href={`/tin-tuc/${slug}`} className="col-span-3">
-        <Image
+        <img
           src={thumbnail}
           alt={name}
           width={400}

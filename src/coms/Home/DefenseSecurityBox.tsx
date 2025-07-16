@@ -88,7 +88,7 @@ const ArticleCompactHorizontalCard: React.FC<OtherArticleCardProps> = ({
       className="@container/card border-b border-blue-200 border-dashed last:border-b-0 cursor-pointer"
     >
       <div className={clsx("pr-1 pb-4 flex gap-5 items-start ", className)}>
-        <Image
+        <img
           src={image}
           alt={title}
           className="w-[135px] aspect-video rounded-[6px] @min-[400px]/card:w-[128px] @min-[400px]/card:aspect-[128/96]"

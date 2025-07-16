@@ -117,7 +117,7 @@ const VideoItem = ({ video, href }: { video: IGalleryCollection; href: string })
       className="w-full pb-2 lg:pb-4 @container/video-card"
     >
       <div className="relative">
-        <Image
+        <img
           src={video.thumbnail}
           alt={video.name}
           width={312}

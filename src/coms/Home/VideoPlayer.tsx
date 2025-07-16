@@ -35,7 +35,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
       )}
     >
       {!isPlaying && !isPlayed && (
-        <Image
+        <img
           src={thumbnail}
           alt="thumbnail"
           width={width}

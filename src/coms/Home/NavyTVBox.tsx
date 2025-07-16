@@ -58,7 +58,7 @@ const NavyTVBox: React.FC<NavyTVBoxProps> = ({
                     )}
                   >
                     <div className="relative shrink-0">
-                      <Image
+                      <img
                         src={item?.thumbnail}
                         alt={item?.name}
                         width={128}
