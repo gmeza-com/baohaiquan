@@ -12,6 +12,7 @@ import clsx from "clsx";
 import { IconCaretRight } from "../Icon/light";
 import { ArticleProps } from "@/type/article";
 import CarouselNavButton from "./CarouselNavButton";
+import AutoPlay from "embla-carousel-autoplay";
 
 interface HighlightArticleCarouselProps {
   posts: ArticleProps[];
@@ -44,6 +45,11 @@ const HighlightArticleCarousel: React.FC<HighlightArticleCarouselProps> = ({
         opts={{
           loop: true,
         }}
+        plugins={[
+          AutoPlay({
+            delay: 5000,
+          }),
+        ]}
       >
         <CarouselContent>
           {posts.map((item, index) => (
