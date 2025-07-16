@@ -21,6 +21,7 @@ import ChuChayTrangChu from "@/coms/Home/ChuChayTrangChu";
 import QuangCaoCotBen from "@/coms/Home/QuangCaoCotBen";
 import QuangCaoChenGiua from "@/coms/Home/QuangCaoChenGiua";
 import WidgetService from "@/service/widget";
+import OptionService from "@/service/options";
 
 const HomePage = async () => {
   const [
@@ -50,6 +51,9 @@ const HomePage = async () => {
     PostService.getMediaBox(5),
     WidgetService.getPublishedWidget(),
   ]);
+
+  // increase site_view when access to this page
+  OptionService.increaseSiteView();
 
   const hqMediaCategory = galleryCategories.find(
     (item) => item.id === GalleryCategory.HQ_VIDEO
