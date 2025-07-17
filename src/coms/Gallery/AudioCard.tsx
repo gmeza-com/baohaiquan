@@ -11,8 +11,8 @@ interface AudioCardProps {
 
 const AudioCard: React.FC<AudioCardProps> = ({ data, href }) => {
   return (
-    <li key={data?.id} className="w-full group cursor-pointer">
-      <Link href={href}>
+    <li key={data?.id} className="w-full cursor-pointer">
+      <Link href={href} className="group">
         <div className="w-full aspect-video rounded-[6px] overflow-hidden relative bg-blue-100 flex items-center justify-center">
           <div className="size-32 border-3 border-white shadow rounded-lg overflow-hidden">
             <img
@@ -28,7 +28,7 @@ const AudioCard: React.FC<AudioCardProps> = ({ data, href }) => {
           </div>
         </div>
         <div className="mt-2.5">
-          <h6 className="text-gray-900 group-hover:underline leading-[150%] tracking-[-1%] font-semibold text-lg">
+          <h6 className="text-gray-900 group-focus:text-blue-700 group-hover:underline leading-[150%] tracking-[-1%] font-semibold text-lg">
             {data?.name}
           </h6>
           <span className="mt-1.5 text-xsm text-gray-700 leading-[160%] tracking-[0%]">

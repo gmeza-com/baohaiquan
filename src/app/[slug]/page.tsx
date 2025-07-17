@@ -77,7 +77,6 @@ const GalleryCollectionPage = async ({ params, searchParams }: PageProps) => {
           <VideoCard
             key={item?.id}
             data={item}
-            isNormal
             href={navigateService.getGalleryDetails(slug, item?.slug)}
           />
         );
@@ -99,7 +98,6 @@ const GalleryCollectionPage = async ({ params, searchParams }: PageProps) => {
           <VideoCard
             key={item?.id}
             data={item}
-            isNormal
             href={navigateService.getGalleryDetails(slug, item?.slug)}
           />
         );
@@ -150,14 +148,14 @@ interface VideoCardProps {
 const VideoCard = ({ data, isNormal = false, href }: VideoCardProps) => {
   return (
     <li key={data?.id} className="w-full group cursor-pointer overflow-hidden">
-      <Link href={href}>
+      <Link href={href} className="group">
         <div className="w-full aspect-video rounded-[6px] overflow-hidden relative">
           <img
             src={data?.thumbnail}
             alt={data?.name}
             width={312}
             height={175}
-            className="size-full object-cover"
+            className="size-full object-cover group-focus:scale-105 transition-transform"
           />
           {!isNormal && (
             <div className="z-10 cursor-pointer absolute size-10 rounded-full bg-white/25 backdrop-blur-2xl bottom-3 left-3 flex items-center justify-center">
@@ -166,7 +164,7 @@ const VideoCard = ({ data, isNormal = false, href }: VideoCardProps) => {
           )}
         </div>
         <div className="mt-2.5">
-          <h6 className="text-gray-900 group-hover:underline leading-[150%] tracking-[-1%] font-semibold text-lg">
+          <h6 className="text-gray-900 group-focus:text-blue-700 group-hover:underline leading-[150%] tracking-[-1%] font-semibold text-lg">
             {data?.name}
           </h6>
           {!isNormal ? (
