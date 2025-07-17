@@ -122,7 +122,7 @@ const HomePage = async () => {
 
       <div className="container mx-auto">
         <div className="-m-4 md:m-0 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:gap-12 md:gap-x-6 md:gap-y-16 md:py-5 lg:pt-11 lg:pb-[5.25rem] md:border-t border-blue-200">
-          <div className="px-4 pt-9 pb-5 md:p-0 md:sticky lg:top-4 md:top-[5.375rem] md:self-start">
+          <div className="px-4 pt-9 pb-5 md:p-0 md:sticky lg:top-20 md:top-[5.375rem] md:self-start">
             <TrendingNewsBox posts={mostViewedPosts} />
           </div>
           <div className="md:col-span-2 md:row-start-1 lg:col-start-2 xl:col-start-2">
@@ -130,7 +130,7 @@ const HomePage = async () => {
               <MixNewsBox posts={newestPosts2} />
             </div>
           </div>
-          <div className="flex flex-col gap-12 px-4 py-9 md:p-0 border-t border-blue-200 md:border-none md:sticky lg:top-4 md:top-[5.375rem] md:self-start">
+          <div className="flex flex-col gap-12 px-4 py-9 md:p-0 border-t border-blue-200 md:border-none md:sticky lg:top-20 md:top-[5.375rem] md:self-start">
             {!!hqNewsPaperContent?.[0] && (
               <NavyNewspaperBox gallery={hqNewsPaperContent?.[0]} />
             )}
