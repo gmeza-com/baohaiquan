@@ -9,7 +9,10 @@ const ArticleHorizontal: React.FC<{
   const { name, thumbnail, slug, description } = post;
   return (
     <div className="grid grid-cols-7 gap-4">
-      <Link href={`/tin-tuc/${slug}`} className="col-span-3">
+      <Link
+        href={`/tin-tuc/${slug}`}
+        className="col-span-3 focus:scale-95 transition-transform"
+      >
         <img
           src={thumbnail}
           alt={name}
@@ -23,7 +26,7 @@ const ArticleHorizontal: React.FC<{
         <h3 className="font-bold col-span-4">
           <Link
             href={`/tin-tuc/${slug}`}
-            className="hover:underline hover:text-blue-700 line-clamp-3 transition-colors duration-200"
+            className="hover:underline hover:text-blue-700 focus:text-blue-700 line-clamp-3 transition-colors duration-200"
           >
             {name}
           </Link>

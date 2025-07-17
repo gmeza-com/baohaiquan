@@ -17,7 +17,10 @@ const ArticleVerticle: React.FC<{
   const { name, thumbnail, description, slug } = post;
   return (
     <div className="flex flex-col gap-6">
-      <Link href={`/tin-tuc/${slug}`}>
+      <Link
+        href={`/tin-tuc/${slug}`}
+        className="focus:scale-95 transition-transform"
+      >
         <img
           src={thumbnail}
           alt={name}
@@ -31,7 +34,7 @@ const ArticleVerticle: React.FC<{
         <h3 className={className}>
           <Link
             href={`/tin-tuc/${slug}`}
-            className="hover:underline hover:text-blue-700 transition-colors duration-200 line-clamp-4"
+            className="hover:underline hover:text-blue-700 focus:text-blue-700 transition-colors duration-200 line-clamp-4"
           >
             {name}
           </Link>

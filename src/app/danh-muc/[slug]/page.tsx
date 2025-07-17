@@ -9,6 +9,7 @@ import { ArticleProps } from "@/type/article";
 import { GalleryCategory } from "@/data/category";
 import PostService from "@/service/post";
 import CategoryRowList from "@/coms/Block/CategoryRowList";
+import QuangCaoCotBen from "@/coms/Home/QuangCaoCotBen";
 
 type PageProps = { params: Promise<{ slug: string }> };
 
@@ -87,7 +88,7 @@ const DanhMucPage = async ({ params }: PageProps) => {
       {isOn(features) && <CategoryFeature posts={features} />}
       <div className="grid grid-cols-4 gap-6 mt-21 pb-12 mb-12 border-b-2 border-b-blue-200">
         <div className="col-span-4 md:col-span-2 lg:col-span-1 row-start-2 lg:row-start-1">
-          <div className="sticky top-24 lg:top-6">
+          <div className="sticky top-24 lg:top-20">
             <CategoryMostRead slug={slug} quantity={8} />
           </div>
         </div>
@@ -99,21 +100,12 @@ const DanhMucPage = async ({ params }: PageProps) => {
           />
         </div>
         <div className="col-span-4 md:col-span-2 lg:col-span-1 md:row-start-2 row-start-3 lg:row-start-1">
-          <div className="sticky top-24 lg:top-6 flex gap-6 flex-col">
+          <div className="sticky top-24 lg:top-20 flex gap-6 flex-col">
             {!!hqNewsPaperContent?.[0] && (
               <NavyNewspaperBox gallery={hqNewsPaperContent?.[0]} />
             )}
             <LinkedWebsiteBox />
-            <img
-              src="/images/home/100-nam.jpg"
-              className="w-full"
-              loading="lazy"
-            />
-            <img
-              src="/images/home/cong-ty-xay-lap-thanh-an.jpg"
-              className="w-full"
-              loading="lazy"
-            />
+            <QuangCaoCotBen slug="quang-cao-cot-ben-1" />
           </div>
         </div>
       </div>

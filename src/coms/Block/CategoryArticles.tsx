@@ -7,6 +7,7 @@ import { Button } from "@/shadcn/ui/button";
 import { useState } from "react";
 import { rest } from "@/lib/rest";
 import { isOn } from "@/lib/utils";
+import axios from "axios";
 
 const CategoryArticles: React.FC<{
   slug: string;
@@ -23,7 +24,9 @@ const CategoryArticles: React.FC<{
     try {
       setLoading(true);
       const params = { offset, slug, excludes: excludes?.join(",") || "" };
-      const { status, data } = await rest.get("/danh-muc", { params });
+      const { status, data: resData } = await axios.get("/api/danh-muc", { params });
+
+      const data = resData?.data;
 
       if (status == 200) {
         if (isOn(data)) {

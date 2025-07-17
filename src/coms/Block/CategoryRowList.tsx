@@ -30,7 +30,10 @@ const CategoryRowList: React.FC<{ posts: any[] }> = ({ posts }) => {
       <div>
         {isOn(items[0]) && (
           <div className="border-b border-dashed border-b-blue-200">
-            <a href={`/tin-tuc/${items[0].slug}`}>
+            <a
+              href={`/tin-tuc/${items[0].slug}`}
+              className="focus:scale-95 transition-transform"
+            >
               <img
                 src={items[0].thumbnail}
                 alt={items[0].name}
@@ -42,7 +45,7 @@ const CategoryRowList: React.FC<{ posts: any[] }> = ({ posts }) => {
             </a>
             <a
               href={`/tin-tuc/${items[0].slug}`}
-              className="font-bold my-3 line-clamp-2"
+              className="font-bold my-3 line-clamp-2 focus:text-blue-700"
             >
               {items[0].name}
             </a>
@@ -58,7 +61,7 @@ const CategoryRowList: React.FC<{ posts: any[] }> = ({ posts }) => {
             >
               <a
                 href={`/tin-tuc/${post.slug}`}
-                className="line-clamp-2 font-medium"
+                className="line-clamp-2 font-medium focus:text-blue-700"
               >
                 {post.name}
               </a>
@@ -88,7 +91,9 @@ const CategoryRowList: React.FC<{ posts: any[] }> = ({ posts }) => {
             >
               <div className="p-1">
                 <h5 className="truncate mb-6 text-lg font-bold text-blue-700 border-l-4 border-l-blue-400 leading-4 pl-3">
-                  <a href={`/danh-muc/${cat.slug}`}>{cat.name}</a>
+                  <a href={`/danh-muc/${cat.slug}`} className="focus:underline">
+                    {cat.name}
+                  </a>
                 </h5>
                 <Posts items={cat.posts} />
               </div>

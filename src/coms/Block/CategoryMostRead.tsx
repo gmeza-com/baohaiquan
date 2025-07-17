@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import DecorTitle from "../Home/DecorTitle";
 import { Skeleton } from "@/shadcn/ui/skeleton";
 import ArticleNumeric from "../Article/ArticleNumeric";
+import axios from "axios";
 
 const CategoryMostRead: React.FC<{
   slug: string;
@@ -20,10 +21,10 @@ const CategoryMostRead: React.FC<{
     try {
       setLoading(true);
       const params = { slug, offset: 0, limit: quantity };
-      const url = "/danh-muc/doc-nhieu";
-      const { status, data } = await rest.get(url, { params });
-      if (status === 200 && isOn(data)) {
-        setItems(data);
+      const url = "/api/danh-muc/doc-nhieu";
+      const { status, data } = await axios.get(url, { params });
+      if (status === 200 && isOn(data?.data)) {
+        setItems(data?.data);
       }
     } catch (error) {
       console.error("Error fetching most read articles:", error);
