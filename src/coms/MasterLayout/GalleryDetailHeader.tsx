@@ -5,6 +5,7 @@ import ShareList from "../Article/ShareList";
 import { CategoryProps } from "@/type/article";
 import navigateService from "@/lib/router";
 import clsx from "clsx";
+import { Popover, PopoverContent, PopoverTrigger } from "@/shadcn/ui/popover";
 
 interface GalleryDetailHeaderProps {
   category: Omit<CategoryProps, "description">;
@@ -59,9 +60,24 @@ const GalleryDetailHeader = ({
         )}
 
         <div className="flex items-center justify-end gap-2">
-          <button className="md:hidden">
-            <IconShareNetwork className="text-white" />
-          </button>
+          <Popover>
+            <PopoverTrigger>
+              <div className="md:hidden">
+                <IconShareNetwork className="text-white" />
+              </div>
+            </PopoverTrigger>
+            <PopoverContent className="flex items-center justify-between px-3 py-2">
+              <span className="text-black font-normal text-lg leading-[150%] tracking-[0%]">
+                Chia sẻ
+              </span>{" "}
+              <ShareList
+                url={`${
+                  process.env.NEXT_PUBLIC_APP
+                }${navigateService.getGalleryCollection(category?.slug)}`}
+              />
+            </PopoverContent>
+          </Popover>
+
           <div className="hidden md:flex items-center gap-6">
             <span className="text-white/80 font-normal text-lg leading-[150%] tracking-[0%]">
               Chia sẻ
