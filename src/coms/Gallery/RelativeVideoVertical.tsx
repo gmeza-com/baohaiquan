@@ -69,7 +69,10 @@ const RelativeVideoVertical: React.FC<RelativeVideoVerticalProps> = ({
         {videos.map((video) => (
           <li key={video.id} className="last:pb-0 pb-4 @container/video-card">
             <Link
-              href={navigateService.getGalleryDetails(categorySlug, video?.slug)}
+              href={navigateService.getGalleryDetails(
+                categorySlug,
+                video?.slug
+              )}
               className="flex @max-[250px]/video-card:flex-col gap-5 group"
             >
               <div className="relative shrink-0 rounded-[6px] overflow-hidden">
@@ -87,7 +90,7 @@ const RelativeVideoVertical: React.FC<RelativeVideoVerticalProps> = ({
               </div>
 
               <div>
-                <h6 className="group-hover:underline text-white text-lg font-semibold leading-[150%] tracking-[-1%]">
+                <h6 className="group-hover:underline group-focus:underline text-white text-lg font-semibold leading-[150%] tracking-[-1%]">
                   {video?.name}
                 </h6>
                 <span className="text-gray-600 text-xsm leading-[160%] tracking-[0%] mt-1.5">

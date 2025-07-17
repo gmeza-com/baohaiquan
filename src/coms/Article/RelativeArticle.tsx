@@ -73,7 +73,7 @@ const RelativeArticle: React.FC<RelativeArticleProps> = ({ slug, catSlug }) => {
       {renderContent()}
       <Link
         href={`/danh-muc/${catSlug}`}
-        className="w-full flex items-center justify-center bg-yellow-200 rounded-[0.75rem] h-12 mt-7 text-gray-900 font-semibold text-xsm leading-[160%] tracking-[0%]"
+        className="w-full flex items-center active:scale-95 focus:ring-1 transition-transform justify-center bg-yellow-200 rounded-[0.75rem] h-12 mt-7 text-gray-900 font-semibold text-xsm leading-[160%] tracking-[0%]"
       >
         Xem thêm
       </Link>

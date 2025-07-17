@@ -43,8 +43,8 @@ const MostViewArticles = () => {
               <div key={category.id}>
                 <div className="flex items-center gap-3">
                   <div className="h-6 w-1 rounded-full bg-sky-400" />
-                  <Link href={`/danh-muc/${category.slug}`}>
-                    <h3 className="text-blue-700 text-xl font-semibold truncate">
+                  <Link href={`/danh-muc/${category.slug}`} className="group">
+                    <h3 className="text-blue-700 text-xl font-semibold truncate group-focus:underline">
                       {category.name}
                     </h3>
                   </Link>
@@ -53,7 +53,7 @@ const MostViewArticles = () => {
                   <li className="pb-6 @container/most-view-article">
                     <Link
                       href={`/tin-tuc/${category?.most_viewed?.[0]?.slug}`}
-                      className="flex items-start gap-5 @min-[320px]:flex-row flex-col"
+                      className="flex items-start group gap-5 @min-[320px]:flex-row flex-col"
                     >
                       <img
                         src={category?.most_viewed?.[0]?.thumbnail || ""}
@@ -62,7 +62,7 @@ const MostViewArticles = () => {
                         height={137}
                         className="aspect-video rounded-[6px] @min-[320px]:w-[136px] w-full object-cover shrink-0"
                       />
-                      <h6 className="text-gray-900 font-semibold @min-[320px]:text-base text-lg">
+                      <h6 className="text-gray-900 group-focus:text-blue-700 font-semibold @min-[320px]:text-base text-lg">
                         {category?.most_viewed?.[0]?.name}
                       </h6>
                     </Link>
@@ -71,7 +71,7 @@ const MostViewArticles = () => {
                     <li key={article.id} className="pt-3 pb-4">
                       <Link
                         href={`/tin-tuc/${article.slug}`}
-                        className="font-medium text-xsm text-gray-900"
+                        className="font-medium text-xsm text-gray-900 focus:text-blue-700"
                       >
                         {article.name}
                       </Link>

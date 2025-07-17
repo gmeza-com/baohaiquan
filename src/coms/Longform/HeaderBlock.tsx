@@ -31,7 +31,7 @@ const HeaderBlock: React.FC<HeaderBlockProps> = ({
 
   return createElement(`h${level}`, {
     className: clsx(
-      "leading-[140%] tracking-[0%] py-4 w-full max-w-[568px] mx-auto text-gray-900",
+      "px-4 md:px-0 leading-[140%] tracking-[0%] py-4 w-full max-w-[568px] mx-auto text-gray-900",
       getHeaderStyles(level),
       alignment === "center" && "text-center",
       alignment === "right" && "text-right",
