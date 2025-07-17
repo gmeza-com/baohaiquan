@@ -30,7 +30,10 @@ const DecorTitle: React.FC<DecorTitleProps> = ({
     <div className={clsx("flex items-center gap-4 lg:gap-5", className)}>
       <IconBadge size={26} className="shrink-0" />
       {link ? (
-        <Link href={link} className="hover:opacity-80 transition-opacity">
+        <Link
+          href={link}
+          className="hover:opacity-80 transition-opacity focus:underline text-blue-700"
+        >
           {titleElement}
         </Link>
       ) : (

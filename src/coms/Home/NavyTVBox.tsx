@@ -40,8 +40,11 @@ const NavyTVBox: React.FC<NavyTVBoxProps> = ({
 
               <div className="mt-4 @min-[700px]/main-video:mt-5">
                 <Link
-                  href={navigateService.getGalleryDetails(category?.slug, firstGallery?.slug)}
-                  className="text-white hover:underline text-lg font-bold leading-[150%] tracking-[-1%] @min-[700px]/main-video:text-[2rem]"
+                  href={navigateService.getGalleryDetails(
+                    category?.slug,
+                    firstGallery?.slug
+                  )}
+                  className="text-white hover:underline text-lg font-bold leading-[150%] focus:underline tracking-[-1%] @min-[700px]/main-video:text-[2rem]"
                 >
                   {firstGallery?.name}
                 </Link>
@@ -51,7 +54,10 @@ const NavyTVBox: React.FC<NavyTVBoxProps> = ({
               <div className="flex flex-col gap-3 xl:gap-4">
                 {otherGalleries.map((item, index) => (
                   <Link
-                    href={navigateService.getGalleryDetails(category?.slug, item?.slug)}
+                    href={navigateService.getGalleryDetails(
+                      category?.slug,
+                      item?.slug
+                    )}
                     key={index}
                     className={clsx(
                       "@container/video-item group w-full flex gap-5 pt-3 border-t border-blue-400 border-dashed first:border-t-0 first:pt-0"
@@ -71,7 +77,7 @@ const NavyTVBox: React.FC<NavyTVBoxProps> = ({
                       </div>
                     </div>
 
-                    <h6 className="group-hover:underline @min-[400px]/video-item:text-lg flex-1 text-white font-semibold leading-[150%] tracking-[0%]">
+                    <h6 className="group-hover:underline group-focus:underline @min-[400px]/video-item:text-lg flex-1 text-white font-semibold leading-[150%] tracking-[0%]">
                       {item?.name}
                     </h6>
                   </Link>
@@ -84,7 +90,7 @@ const NavyTVBox: React.FC<NavyTVBoxProps> = ({
                 )}
                 passHref
               >
-                <button className="h-12 w-full mt-6 rounded-[10px] bg-white/10 text-white font-semibold leading-[160%] tracking-[0%]">
+                <button className="h-12 w-full active:scale-95 focus:ring-1 transition-transform mt-6 rounded-[10px] bg-white/10 text-white font-semibold leading-[160%] tracking-[0%]">
                   Xem thêm
                 </button>
               </Link>

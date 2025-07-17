@@ -55,9 +55,14 @@ const MediaBox: React.FC<MediaBoxProps> = ({ data }) => {
               {mediaTypes.map((item) => (
                 <li
                   key={item.title}
-                  className="text-nowrap pe-4 lg:pe-5 lg:text-lg font-semibold text-blue-700"
+                  className="text-nowrap pe-4 lg:pe-5 lg:text-lg font-semibold"
                 >
-                  <Link href={item.href}>{item.title}</Link>
+                  <Link
+                    href={item.href}
+                    className="focus:underline text-blue-700"
+                  >
+                    {item.title}
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -109,7 +114,7 @@ const ArticleCompactVerticalCard: React.FC<ArticleCompactVerticalCardProps> = ({
   label,
 }) => {
   return (
-    <Link href={href}>
+    <Link href={href} className="group">
       <div className="@container/card">
         <div className="flex flex-col gap-2.5">
           <div className="relative rounded-[6px] overflow-hidden">
@@ -128,9 +133,9 @@ const ArticleCompactVerticalCard: React.FC<ArticleCompactVerticalCardProps> = ({
             )}
           </div>
 
-          <p className="text-gray-900 line-clamp-4 text-base @min-[250px]/card:text-lg font-semibold leading-[150%] tracking-[0%]">
+          <h6 className="text-gray-900 group-focus:text-blue-700 group-active:text-blue-700 line-clamp-4 text-base @min-[250px]/card:text-lg font-semibold leading-[150%] tracking-[0%]">
             {title}
-          </p>
+          </h6>
         </div>
       </div>
     </Link>

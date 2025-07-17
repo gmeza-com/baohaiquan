@@ -40,7 +40,7 @@ const NavyNewspaperBox: React.FC<NavyNewspaperBoxProps> = ({ gallery }) => {
             width={276}
             height={385}
             loading="lazy"
-            className="w-full bg-white rounded-[8px] border-blue-100 border shadow-[0_4px_12px_rgba(0,71,141,0.06),_0_2px_4px_rgba(0,0,0,0.02)]"
+            className="w-full bg-white rounded-[8px] border-blue-100 group-focus:scale-95 transition-transform border shadow-[0_4px_12px_rgba(0,71,141,0.06),_0_2px_4px_rgba(0,0,0,0.02)]"
           />
         </Link>
       </div>

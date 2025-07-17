@@ -35,7 +35,7 @@ const HeadlineBlock: React.FC<HeadlineBlockProps> = ({
                 width={294}
                 height={165}
               />
-              <h5 className="group-hover:underline group-hover:text-blue-700 text-lg font-bold text-gray-900 tracking-[-1%] leading-[150%] line-clamp-2">
+              <h5 className="group-hover:underline group-focus:text-blue-700 group-hover:text-blue-700 text-lg font-bold text-gray-900 tracking-[-1%] leading-[150%] line-clamp-2">
                 {firstFeaturedPost?.name}
               </h5>
             </Link>
@@ -52,7 +52,7 @@ const HeadlineBlock: React.FC<HeadlineBlockProps> = ({
                   width={120}
                   height={68}
                 />
-                <h6 className="group-hover:underline group-hover:text-blue-700 flex-1 text-base lg:text-[0.9375rem] font-semibold text-gray-900 tracking-[-1%] leading-[150%] line-clamp-3">
+                <h6 className="group-hover:underline group-focus:text-blue-700 group-hover:text-blue-700 flex-1 text-base lg:text-[0.9375rem] font-semibold text-gray-900 tracking-[-1%] leading-[150%] line-clamp-3">
                   {item?.name}
                 </h6>
               </Link>

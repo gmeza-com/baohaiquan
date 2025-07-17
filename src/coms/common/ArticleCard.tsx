@@ -22,7 +22,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
   return (
     <Link
       href={href}
-      className={clsx("@container/card cursor-pointer", className)}
+      className={clsx("@container/card cursor-pointer group", className)}
     >
       <div className="flex flex-col @min-[750px]/card:flex-row-reverse @min-[750px]/card:bg-blue-50 @min-[750px]/card:p-4 @min-[750px]/card:rounded-[12px] @min-[750px]/card:gap-7 pb-5">
         <div className="relative rounded-[6px] @min-[750px]/card:rounded-[4px] overflow-hidden w-full @min-[750px]/card:w-3/5">
@@ -42,7 +42,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
         </div>
 
         <div className="mt-4 @min-[750px]/card:mt-0 @min-[750px]/card:flex-1">
-          <p className="hover:underline hover:text-blue-700 text-gray-900 text-lg font-bold leading-[150%] tracking-[-1%] @min-[750px]/card:text-[1.375rem] @min-[750px]/card:leading-[140%]">
+          <p className="hover:underline hover:text-blue-700 group-focus:text-blue-700 text-gray-900 text-lg font-bold leading-[150%] tracking-[-1%] @min-[750px]/card:text-[1.375rem] @min-[750px]/card:leading-[140%]">
             {title}
           </p>
           <p className="mt-1.5 line-clamp-4 text-xsm font-normal text-gray-700 leading-[160%] tracking-[0%] @min-[750px]/card:mt-3">

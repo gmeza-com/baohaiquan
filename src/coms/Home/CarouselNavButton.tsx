@@ -15,7 +15,7 @@ const CarouselNavButton: React.FC<NavButtonProps> = ({
     <button
       {...props}
       className={clsx(
-        "size-10 flex items-center justify-center bg-white border-[1.25px] rounded-full border-blue-200 text-blue-700 cursor-pointer pointer-events-auto",
+        "size-10 flex active:scale-90 transition-transform items-center justify-center bg-white border-[1.25px] rounded-full border-blue-200 text-blue-700 cursor-pointer pointer-events-auto",
         className
       )}
     >

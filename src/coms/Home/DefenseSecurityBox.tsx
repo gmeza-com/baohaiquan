@@ -85,7 +85,7 @@ const ArticleCompactHorizontalCard: React.FC<OtherArticleCardProps> = ({
   return (
     <Link
       href={href}
-      className="@container/card border-b border-blue-200 border-dashed last:border-b-0 cursor-pointer"
+      className="@container/card border-b border-blue-200 border-dashed last:border-b-0 cursor-pointer group"
     >
       <div className={clsx("pr-1 pb-4 flex gap-5 items-start ", className)}>
         <img
@@ -96,7 +96,7 @@ const ArticleCompactHorizontalCard: React.FC<OtherArticleCardProps> = ({
           height={96}
           loading="lazy"
         />
-        <p className="hover:underline hover:text-blue-700 text-gray-900 text-base @min-[400px]/card:text-lg font-semibold leading-[150%] tracking-[-1%]">
+        <p className="hover:underline hover:text-blue-700 group-focus:text-blue-700 text-gray-900 text-base @min-[400px]/card:text-lg font-semibold leading-[150%] tracking-[-1%]">
           {title}
         </p>
       </div>

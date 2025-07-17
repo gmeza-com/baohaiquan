@@ -62,7 +62,7 @@ const MixNewsItem: React.FC<MixNewsItemProps> = ({
           <span className="hover:underline hidden @min-[624px]/mix-news-item:block text-xsm font-medium leading-[160%] tracking-[0%] text-gray-700 mb-1">
             {category?.name}
           </span>
-          <h6 className="group-hover:underline group-hover:text-blue-700 text-base font-semibold leading-[150%] tracking-[-1%] text-gray-900 @min-[624px]/mix-news-item:text-lg @min-[624px]/mix-news-item:tracking-[0%]">
+          <h6 className="group-hover:underline group-hover:text-blue-700 group-focus:text-blue-700 text-base font-semibold leading-[150%] tracking-[-1%] text-gray-900 @min-[624px]/mix-news-item:text-lg @min-[624px]/mix-news-item:tracking-[0%]">
             {title}
           </h6>
           <p className="hidden @min-[624px]/mix-news-item:block text-xsm leading-[160%] tracking-[0%] text-gray-700 mt-2.5 line-clamp-2">

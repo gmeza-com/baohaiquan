@@ -152,11 +152,11 @@ const PodcastCard: React.FC<PodcastCardProps> = ({
         className
       )}
     >
-      <Link href={href} className="flex-1 overflow-hidden">
+      <Link href={href} className="flex-1 overflow-hidden group">
         <div className="size-12 bg-white flex items-center justify-center rounded-full">
           <IconHeadphones size={36} className="text-blue-600" />
         </div>
-        <p className="text-white leading-[140%] tracking-[-1%] font-bold mt-4 text-[1.375rem] line-clamp-1">
+        <p className="text-white group-focus:underline leading-[140%] tracking-[-1%] font-bold mt-4 text-[1.375rem] line-clamp-1">
           {title}
         </p>
         <p className="text-white/80 text-xsm font-normal mt-2 leading-[160%] tracking-[0%] line-clamp-4">

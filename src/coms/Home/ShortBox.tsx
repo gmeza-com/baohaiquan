@@ -99,7 +99,7 @@ const Card: React.FC<CardProps> = ({ title, image, className, slug }) => {
       >
         <img
           src={image}
-          className="size-full aspect-[9/16] object-cover group-hover:scale-110 transition-transform duration-300"
+          className="size-full aspect-[9/16] object-cover group-focus:scale-110 group-hover:scale-110 transition-transform duration-300"
           alt={title}
           width={251}
           height={435}
@@ -111,7 +111,7 @@ const Card: React.FC<CardProps> = ({ title, image, className, slug }) => {
           className="h-1/2 bg-gradient-to-b from-transparent from-0% via-[rgba(0,56,112,0.25)] via-50% to-[rgba(0,56,112,0.5)] to-100%"
         />
         <div className="absolute bottom-0 w-full z-20 px-2.5 pb-4 pt-2 @min-[187px]/card:px-5 @min-[187px]/card:pb-6 @min-[246px]/card:px-6 @min-[246px]/card:pb-7">
-          <p className="text-white text-center text-base font-bold line-clamp-4 @min-[174px]/card:text-lg @min-[187px]/card:text-xl @min-[246px]/card:text-[1.375rem]">
+          <p className="text-white text-center group-focus:underline text-base font-bold line-clamp-4 @min-[174px]/card:text-lg @min-[187px]/card:text-xl @min-[246px]/card:text-[1.375rem]">
             {title}
           </p>
         </div>

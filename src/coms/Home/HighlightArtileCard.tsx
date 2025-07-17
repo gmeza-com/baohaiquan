@@ -25,7 +25,7 @@ const HighlightArticleCard: React.FC<HighlightArticleCardProps> = ({
         height={375}
       />
       <div className="px-4 lg:px-6 flex flex-col gap-2.5 lg:gap-4">
-        <h4 className="group-hover:underline group-hover:text-blue-700 text-xl font-bold leading-[140%] text-gray-900 tracking-[-1%] lg:text-[2rem] lg:leading-[130%]">
+        <h4 className="group-hover:underline group-focus:text-blue-700 group-hover:text-blue-700 text-xl font-bold leading-[140%] text-gray-900 tracking-[-1%] lg:text-[2rem] lg:leading-[130%]">
           {data?.name}
         </h4>
         <p className="text-[15px] font-normal leading-[160%] text-gray-700 tracking-[0%]">

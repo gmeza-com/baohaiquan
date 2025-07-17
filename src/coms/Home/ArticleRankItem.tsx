@@ -22,7 +22,7 @@ const ArticleRankItem: React.FC<ArticleRankItemProps> = ({
             {number}
           </div>
         </span>
-        <h6 className="group-hover:underline group-hover:text-blue-700 font-semibold text-gray-900 tracking-[-1%] leading-[150%] lg:text-xsm line-clamp-3">
+        <h6 className="group-hover:underline group-focus:text-blue-700 group-hover:text-blue-700 font-semibold text-gray-900 tracking-[-1%] leading-[150%] lg:text-xsm line-clamp-3">
           {title}
         </h6>
       </Link>
