@@ -8,10 +8,11 @@ export async function middleware(request: NextRequest) {
   const requestHeaders = new Headers(request.headers);
   requestHeaders.set("x-pathname", path);
 
-  const { next, rewrite } = NextResponse;
+  // const { next, rewrite } = NextResponse;
+  const { next } = NextResponse;
 
-  if (path.startsWith("/storage/"))
-    return rewrite(new URL(path, "https://baohaiquanvietnam.vn"));
+  // if (path.startsWith("/storage/"))
+  //   return rewrite(new URL(path, "https://baohaiquanvietnam.vn"));
 
   return next({ headers: requestHeaders });
 }
@@ -19,6 +20,6 @@ export async function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     "/((?!static|.*\\..*|_next).*)", // Match all pages except static files
-    "/storage/:path*", // Match all uploads
+    // "/storage/:path*", // Match all uploads
   ],
 };
