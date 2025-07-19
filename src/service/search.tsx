@@ -44,6 +44,7 @@ const SearchService = {
         .where("p.published", 3)
         .andWhere("p.published_at", "<=", new Date().toISOString())
         .andWhere("p.hide", 0)
+        .andWhere("p.status", 0)
         .andWhere("pl.locale", "vi")
         .andWhereRaw(
           `MATCH(pl.name, pl.content) AGAINST(? IN BOOLEAN MODE) > 10`,
@@ -62,6 +63,7 @@ const SearchService = {
         .where("p.published", 3)
         .andWhere("p.published_at", "<=", new Date().toISOString())
         .andWhere("p.hide", 0)
+        .andWhere("p.status", 0)
         .andWhere("pl.locale", "vi")
         .andWhereRaw(
           `MATCH(pl.name, pl.content) AGAINST(? IN BOOLEAN MODE) > 10`,
