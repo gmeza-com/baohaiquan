@@ -171,13 +171,15 @@ body {
   --breakpoint-xlg: 75rem;
   --breakpoint-xxl: 82.5rem;
 
-  --animate-marquee: marquee 25s linear infinite;
+  --animate-marquee: marquee 18s linear infinite;
   @keyframes marquee {
     0% {
       transform: translateX(100%);
+      right: 0;
     }
     100% {
       transform: translateX(-100%);
+      right: 50%;
     }
   }
 }

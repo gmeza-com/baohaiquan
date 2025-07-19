@@ -49,9 +49,15 @@ const ChuChayTrangChu = () => {
   if (!!data?.content && !content) return null;
 
   return (
-    <div className="container overflow-hidden">
+    <div className="container overflow-hidden relative">
       <div
-        className="animate-marquee whitespace-nowrap"
+        className="whitespace-nowrap absolute w-fit animate-marquee"
+        dangerouslySetInnerHTML={{
+          __html: DOMPurify.sanitize(content as string),
+        }}
+      />
+      <div
+        className="whitespace-nowrap w-fit opacity-0"
         dangerouslySetInnerHTML={{
           __html: DOMPurify.sanitize(content as string),
         }}
