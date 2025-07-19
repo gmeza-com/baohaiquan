@@ -90,7 +90,7 @@ const NavyTVBox: React.FC<NavyTVBoxProps> = ({
                 )}
                 passHref
               >
-                <button className="h-12 w-full active:scale-95 focus:ring-1 transition-transform mt-6 rounded-[10px] bg-white/10 text-white font-semibold leading-[160%] tracking-[0%]">
+                <button className="h-12 cursor-pointer hover:bg-white/20 w-full active:scale-95 focus:ring-1 transition-transform mt-6 rounded-[10px] bg-white/10 text-white font-semibold leading-[160%] tracking-[0%]">
                   Xem thêm
                 </button>
               </Link>
