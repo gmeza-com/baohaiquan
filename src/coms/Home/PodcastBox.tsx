@@ -17,6 +17,7 @@ import { Category } from "@/type/category";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import navigateService from "@/lib/router";
+import NavButtonPodcast from "./NavButtonPodcast";
 
 const SoundWave = dynamic(() => import("./SoundWave"), {
   ssr: false,
@@ -42,8 +43,8 @@ const PodcastBox: React.FC<PodcastBoxProps> = ({ podcasts = [], category }) => {
               link={navigateService.getGalleryCollection(category?.slug)}
             />
             <div className="items-center gap-2 hidden md:flex">
-              <NavButton onClick={() => api?.scrollPrev()} />
-              <NavButton isRight onClick={() => api?.scrollNext()} />
+              <NavButtonPodcast onClick={() => api?.scrollPrev()} />
+              <NavButtonPodcast isRight onClick={() => api?.scrollNext()} />
             </div>
           </div>
           <div className="flex overflow-x-auto gap-6 mt-5 -mx-4 px-4 md:hidden">
