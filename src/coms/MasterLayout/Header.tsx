@@ -1,19 +1,6 @@
 import { IconList, IconMagnifyingGlass, IconMenu2 } from "@/coms/Icon/light";
-import {
-  IconHome,
-  IconNewspaper,
-  IconTelevisionSimple,
-} from "@/coms/Icon/fill";
+import { IconNewspaper, IconTelevisionSimple } from "@/coms/Icon/fill";
 
-import {
-  NavMenu,
-  NavMenuContent,
-  NavMenuItem,
-  NavMenuLink,
-  NavMenuList,
-  NavMenuTrigger,
-  navigationMenuTriggerStyle,
-} from "@/shadcn/ui/nav-menu";
 import Link from "next/link";
 import { headers } from "next/headers";
 import { isOn } from "@/lib/utils";

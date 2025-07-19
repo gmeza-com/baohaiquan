@@ -76,21 +76,23 @@ const MediaBox: React.FC<MediaBoxProps> = ({ data }) => {
               className="border-b border-blue-200 border-dashed md:border-none"
               label={firstItem?.category_name}
             />
-            <ul className="grid grid-cols-2 gap-x-4 gap-y-6 xl:gap-6">
-              {restItems.map((article) => {
-                const href = getHref(article);
+            <div className="w-full h-full overflow-hidden relative">
+              <ul className="grid grid-cols-2 gap-x-4 gap-y-6 xl:gap-6 custom-scrollbar absolute w-full overflow-y-auto h-full">
+                {restItems.map((article) => {
+                  const href = getHref(article);
 
-                return (
-                  <ArticleCompactVerticalCard
-                    key={article?.id}
-                    title={article?.name}
-                    image={article?.thumbnail}
-                    href={href}
-                    label={article?.category_name}
-                  />
-                );
-              })}
-            </ul>
+                  return (
+                    <ArticleCompactVerticalCard
+                      key={article?.id}
+                      title={article?.name}
+                      image={article?.thumbnail}
+                      href={href}
+                      label={article?.category_name}
+                    />
+                  );
+                })}
+              </ul>
+            </div>
           </div>
         </div>
       </div>
