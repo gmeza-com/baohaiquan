@@ -1,5 +1,11 @@
 import { IconList, IconMagnifyingGlass, IconMenu2 } from "@/coms/Icon/light";
-import { IconNewspaper, IconTelevisionSimple } from "@/coms/Icon/fill";
+import {
+  IconBrandFacebook,
+  IconBrandYoutube,
+  IconBrandZalo,
+  IconNewspaper,
+  IconTelevisionSimple,
+} from "@/coms/Icon/fill";
 
 import Link from "next/link";
 import { headers } from "next/headers";
@@ -21,6 +27,7 @@ import navigateService from "@/lib/router";
 import SearchButton from "./SearchButton";
 import HeadNavMenu from "./HeadNavMenu";
 import StickyMenu from "./StickyMenu";
+import dayjs from "@/lib/dayjs";
 
 interface HeaderProps {
   menuItems: any[];
@@ -38,6 +45,7 @@ const Header: React.FC<HeaderProps> = async ({ menuItems }) => {
         id="main-header"
         className="bg-blue-700 max-w-screen sticky top-0 z-40 lg:static"
       >
+        <HeaderInformation />
         <div className="container mx-auto gap-12 flex w-full !py-0">
           <Link href="/" className="hidden shrink-0 items-end xl:flex py-3">
             <img
@@ -192,5 +200,40 @@ const MenuSidebar: React.FC<{ data: any[] }> = ({ data }) => {
         </div>
       </SheetContent>
     </Sheet>
+  );
+};
+
+const HeaderInformation: React.FC = () => {
+  return (
+    <div className="w-full bg-blue-800 h-9">
+      <div className="container !py-0 mx-auto flex items-center justify-between h-full">
+        <div className="flex items-center gap-4">
+          <span className="uppercase text-white text-xsm leading-[160%] tracking-[0%]">
+            {dayjs().format("dddd, D/M/YYYY")}
+          </span>{" "}
+          <span className="text-white/50 font-light text-xsm -mt-0.5">|</span>
+          <span className="uppercase text-white text-xsm leading-[160%] tracking-[0%]">
+            Liên hệ
+          </span>
+        </div>
+        <div className="flex items-center gap-4">
+          <span className="uppercase text-white text-xsm leading-[160%] tracking-[0%]">
+            Theo dõi báo trên
+          </span>
+
+          <div className="flex items-center gap-1.5">
+            <Link href="#" className="size-9 flex items-center justify-center">
+              <IconBrandZalo size={16} />
+            </Link>
+            <Link href="#" className="size-9 flex items-center justify-center">
+              <IconBrandYoutube size={16} className="text-white/90" />
+            </Link>
+            <Link href="#" className="size-9 flex items-center justify-center">
+              <IconBrandFacebook size={16} className="text-white/90" />
+            </Link>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
