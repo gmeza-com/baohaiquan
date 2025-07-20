@@ -30,7 +30,9 @@ const QuangCaoChenGiua = ({ index }: IQuangCaoChenGiuaProps) => {
         setIsError(false);
 
         const response = await axios.get(
-          `/api/widget/quang-cao-chen-${index === -1 ? "cuoi" : `giua-${index}`}`
+          `/api/widget/quang-cao-chen-${
+            index === -1 ? "cuoi" : `giua-${index}`
+          }`
         );
         const data = response.data;
 
@@ -55,12 +57,14 @@ const QuangCaoChenGiua = ({ index }: IQuangCaoChenGiuaProps) => {
   if (!!data?.content && !content) return null;
 
   return (
-    <div
-      className="container mx-auto insert-ads"
-      dangerouslySetInnerHTML={{
-        __html: DOMPurify.sanitize(content as string),
-      }}
-    />
+    <div className="container mx-auto">
+      <div
+        className="insert-ads pb-[4.5rem]"
+        dangerouslySetInnerHTML={{
+          __html: DOMPurify.sanitize(content as string),
+        }}
+      />
+    </div>
   );
 };
 

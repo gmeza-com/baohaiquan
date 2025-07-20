@@ -59,7 +59,7 @@ const HeadlineBlock: React.FC<HeadlineBlockProps> = ({
             ))}
           </div>
         </div>
-        <div className="row-start-1 pb-9 md:col-span-2  lg:col-start-2">
+        <div className="row-start-1 pb-9 lg:pb-0  md:col-span-2  lg:col-start-2">
           <HighlightArticleCarousel posts={mainFeaturedPost} />
         </div>
         <div className="py-9 px-4 border-t border-stroke-light lg:p-0 lg:border-t-0 md:pe-0 md:ps-6">
