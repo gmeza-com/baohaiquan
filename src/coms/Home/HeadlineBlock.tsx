@@ -2,17 +2,21 @@ import DecorTitle from "./DecorTitle";
 import HighlightArticleCarousel from "./HighlightArticleCarousel";
 import ArticleRankItem from "./ArticleRankItem";
 import { ArticleProps, INewestPost } from "@/type/article";
-import Image from "next/image";
 import Link from "next/link";
+import clsx from "clsx";
 
 interface HeadlineBlockProps {
   newestPosts: INewestPost[];
   featuredPosts: ArticleProps[];
+  className?: string;
+  rightBlockClassName?: string;
 }
 
 const HeadlineBlock: React.FC<HeadlineBlockProps> = ({
   newestPosts,
   featuredPosts,
+  className,
+  rightBlockClassName,
 }) => {
   const mainFeaturedPost = featuredPosts?.slice(0, 6);
   const otherFeaturedPosts = featuredPosts?.slice(6);
@@ -20,8 +24,18 @@ const HeadlineBlock: React.FC<HeadlineBlockProps> = ({
 
   return (
     <div className="container mx-auto">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 lg:gap-6 xl:gap-12 lg:pb-10 lg:pt-3 -m-4 md:m-0">
-        <div className="py-9 px-4 lg:p-0 border-t border-stroke-light lg:border-t-0 md:ps-0 md:pe-6">
+      <div
+        className={clsx(
+          "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 lg:gap-6 xl:gap-12 lg:pb-10 lg:pt-3 -m-4 md:m-0",
+          className
+        )}
+      >
+        <div
+          className={clsx(
+            "py-9 px-4 lg:p-0 border-t border-stroke-light lg:border-t-0 md:ps-0 md:pe-6",
+            rightBlockClassName
+          )}
+        >
           <DecorTitle title="tiêu điểm" />
           <div className="flex flex-col gap-3 mt-5">
             <Link

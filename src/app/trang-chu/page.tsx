@@ -22,6 +22,7 @@ import QuangCaoCotBen from "@/coms/Home/QuangCaoCotBen";
 import QuangCaoChenGiua from "@/coms/Home/QuangCaoChenGiua";
 import WidgetService from "@/service/widget";
 import OptionService from "@/service/options";
+import clsx from "clsx";
 
 const HomePage = async () => {
   const [
@@ -81,27 +82,37 @@ const HomePage = async () => {
     })
   );
 
+  const haveMiddleAds1 = publishedWidgets?.some(
+    (item) => item.slug === `quang-cao-chen-giua-${1}`
+  );
+
+  const haveMiddleAds2 = publishedWidgets?.some(
+    (item) => item.slug === `quang-cao-chen-giua-${2}`
+  );
+
   return (
     <div>
       {publishedWidgets?.some((item) => item.slug === "homepage-banner") && (
         <ChuChayTrangChu />
       )}
 
-      <HeadlineBlock newestPosts={newestPosts} featuredPosts={featuredPosts} />
+      <HeadlineBlock
+        className={clsx(haveMiddleAds1 && "pb-0 lg:!pb-0")}
+        rightBlockClassName={clsx(haveMiddleAds1 && "pb-0")}
+        newestPosts={newestPosts}
+        featuredPosts={featuredPosts}
+      />
 
-      {publishedWidgets?.some(
-        (item) => item.slug === `quang-cao-chen-giua-${1}`
-      ) && <QuangCaoChenGiua index={1} />}
+      {haveMiddleAds1 && <QuangCaoChenGiua index={1} />}
 
       {/* Block 1 trong categoryTree */}
       <ShortBox
         categoryTree={categoryTree?.[0]}
         articles={categoriesData?.[0]}
+        innerClassName={clsx(haveMiddleAds2 && "!pb-0")}
       />
 
-      {publishedWidgets?.some(
-        (item) => item.slug === `quang-cao-chen-giua-${2}`
-      ) && <QuangCaoChenGiua index={2} />}
+      {haveMiddleAds2 && <QuangCaoChenGiua index={2} />}
 
       {/* Block 2 trong categoryTree */}
       <DefenseSecurityBox

@@ -22,15 +22,32 @@ import CarouselNavButton from "./CarouselNavButton";
 interface ShortBoxProps {
   categoryTree: CategoryTree;
   articles: ArticleProps[];
+  className?: string;
+  innerClassName?: string;
 }
 
-const ShortBox: React.FC<ShortBoxProps> = ({ categoryTree, articles }) => {
+const ShortBox: React.FC<ShortBoxProps> = ({
+  categoryTree,
+  articles,
+  className,
+  innerClassName,
+}) => {
   const [api, setApi] = React.useState<CarouselApi>();
 
   return (
-    <div className="border-t border-blue-200 md:border-0 pt-5 pb-7 md:py-0">
+    <div
+      className={clsx(
+        "border-t border-blue-200 md:border-0 pt-5 pb-7 md:py-0",
+        className
+      )}
+    >
       <div className="container mx-auto">
-        <div className="md:border-t md:border-blue-200 md:py-5 lg:pt-11 lg:pb-[5.25rem]">
+        <div
+          className={clsx(
+            "md:border-t md:border-blue-200 md:py-5 lg:pt-11 lg:pb-[5.25rem]",
+            innerClassName
+          )}
+        >
           <div className="flex md:items-center justify-between gap-4 md:gap-9 flex-col md:flex-row">
             <DecorTitle
               title={categoryTree?.name ?? ""}

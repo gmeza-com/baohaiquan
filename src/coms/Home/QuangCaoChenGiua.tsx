@@ -59,7 +59,7 @@ const QuangCaoChenGiua = ({ index }: IQuangCaoChenGiuaProps) => {
   return (
     <div className="container mx-auto">
       <div
-        className="insert-ads pb-[4.5rem]"
+        className="insert-ads"
         dangerouslySetInnerHTML={{
           __html: DOMPurify.sanitize(content as string),
         }}
