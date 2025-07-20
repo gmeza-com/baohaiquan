@@ -3,60 +3,74 @@ import clsx from "clsx";
 import Link from "next/link";
 import ExpandableCategory from "./ExpandableCategory";
 import { isOn } from "@/lib/utils";
+import { useMemo } from "react";
 
-const FOOTER_CONTACT_DATA = [
-  {
-    label: "Tổng biên tập",
-    value: "Thượng tá CAO VĂN DÂN",
-    key: "total_editor",
-  },
-  {
-    label: "Phó tổng biên tập",
-    value: "Thượng tá NGUYỄN TRỌNG THIẾT",
-    key: "deputy_editor",
-    className: "md:col-start-1 md:row-start-2 xl:col-start-2",
-  },
-  {
-    label: "Giấy phép số",
-    value: "Giấy phép số259/GP - BTTTT ngày 12-5-2021",
-    key: "license_number",
-  },
-  {
-    label: "Trụ sở chính",
-    value: "Số 3B Trần Hưng Đạo, quận Hồng Bàng, thành phố Hải Phòng",
-    key: "main_office",
-  },
-  {
-    label: "Liên hệ",
-    value: "069815562 - 02253747490\nbhqdt@baohaiquanvietnam.vn",
-    key: "contact",
-  },
-];
-
-// TODO: Add social icons url
-const SOCIAL_ICONS = [
-  {
-    icon: "/icon/zalo-icon.svg",
-    href: "https://zalo.me/069815562",
-    alt: "Zalo",
-  },
-  {
-    icon: "/icon/facebook-icon.svg",
-    href: "https://www.facebook.com/baohaiquanvietnam",
-    alt: "Facebook",
-  },
-  {
-    icon: "/icon/youtube-icon.svg",
-    href: "https://www.youtube.com/channel/UC_00000000000000000000000000000000",
-    alt: "Youtube",
-  },
-];
+interface Options {
+  district: string;
+  province: string;
+  site_address: string;
+  site_email: string;
+  site_phone: string;
+  social_facebook: string;
+  social_youtube: string;
+  social_zalo: string;
+}
 
 interface FooterProps {
   categories: CategoryTree[];
+  options: Options;
 }
 
-const Footer: React.FC<FooterProps> = ({ categories }) => {
+const Footer: React.FC<FooterProps> = ({ categories, options }) => {
+  const socialIcons = useMemo(() => {
+    return [
+      {
+        icon: "/icon/zalo-icon.svg",
+        href: options?.social_zalo,
+        alt: "Zalo",
+      },
+      {
+        icon: "/icon/facebook-icon.svg",
+        href: options?.social_facebook,
+        alt: "Facebook",
+      },
+      {
+        icon: "/icon/youtube-icon.svg",
+        href: options?.social_youtube,
+        alt: "Youtube",
+      },
+    ];
+  }, [options]);
+
+  const FOOTER_CONTACT_DATA = [
+    {
+      label: "Tổng biên tập",
+      value: "Thượng tá CAO VĂN DÂN",
+      key: "total_editor",
+    },
+    {
+      label: "Phó tổng biên tập",
+      value: "Thượng tá NGUYỄN TRỌNG THIẾT",
+      key: "deputy_editor",
+      className: "md:col-start-1 md:row-start-2 xl:col-start-2",
+    },
+    {
+      label: "Giấy phép số",
+      value: "Giấy phép số259/GP - BTTTT ngày 12-5-2021",
+      key: "license_number",
+    },
+    {
+      label: "Trụ sở chính",
+      value: `${options?.site_address}, ${options?.district}, ${options?.province}`,
+      key: "main_office",
+    },
+    {
+      label: "Liên hệ",
+      value: `${options?.site_phone}\n${options?.site_email}`,
+      key: "contact",
+    },
+  ];
+
   return (
     <footer className="bg-blue-50 pt-9 xl:pt-16">
       <div className="container ">
@@ -134,7 +148,10 @@ const Footer: React.FC<FooterProps> = ({ categories }) => {
                 </span>
               </div>
             ))}
-            <SocialIcons className="lg:row-start-2 lg:col-start-4 xl:col-start-5" />
+            <SocialIcons
+              className="lg:row-start-2 lg:col-start-4 xl:col-start-5"
+              data={socialIcons}
+            />
           </div>
         </div>
       </div>
@@ -146,12 +163,13 @@ export default Footer;
 
 interface SocialIconProps {
   className?: string;
+  data: Record<string, string>[];
 }
 
-const SocialIcons: React.FC<SocialIconProps> = ({ className }) => {
+const SocialIcons: React.FC<SocialIconProps> = ({ className, data }) => {
   return (
     <div className={clsx("flex gap-1", className)}>
-      {SOCIAL_ICONS?.map((item, idx) => (
+      {data?.map((item, idx) => (
         <Link
           key={idx}
           href={item.href}

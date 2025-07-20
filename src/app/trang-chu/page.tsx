@@ -48,7 +48,7 @@ const HomePage = async () => {
     CategoryService.getGalleryCategories(),
     PostService.getGalleryCollection(GalleryCategory.HQ_NEWS_PAPER, 1),
     PostService.getGalleryCollection(GalleryCategory.HQ_PODCAST, 8),
-    PostService.getMediaBox(5),
+    PostService.getMediaBox(13),
     WidgetService.getPublishedWidget(),
   ]);
 

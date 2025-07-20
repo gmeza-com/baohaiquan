@@ -170,16 +170,6 @@ body {
   --text-xsm: 0.9375rem;
   --breakpoint-xlg: 75rem;
   --breakpoint-xxl: 82.5rem;
-
-  --animate-marquee: marquee 25s linear infinite;
-  @keyframes marquee {
-    0% {
-      transform: translateX(100%);
-    }
-    100% {
-      transform: translateX(-100%);
-    }
-  }
 }
 
 @theme inline {
@@ -328,6 +318,38 @@ div.article-wrapper p {
 }
 
 /* -- end customize article display ------------------ */
+
+/* Custom scrollbar styling */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #bfd7f0 #edf9ff;
+  padding-right: 12px; /* Tạo khoảng cách bên phải */
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+  margin-right: 8px; /* Di chuyển thanh scroll sang phải */
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  border-radius: 4px;
+  margin-right: 4px; /* Thêm khoảng cách cho track */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #bfd7f0;
+  border-radius: 4px;
+  box-shadow: inset 1px 0 0 rgba(0, 0, 0, 0.1),
+    inset -1px 0 0 rgba(0, 0, 0, 0.1);
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #a6d8f4;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:active {
+  background: #83ccf4;
+}
 
 .menu-up-arrow::after {
   content: "";

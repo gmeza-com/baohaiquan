@@ -76,6 +76,7 @@ const CategoryService = {
         .andWhere("p.published", 3)
         .andWhere("p.published_at", "<=", now)
         .andWhere("p.hide", 0)
+        .andWhere("p.status", 0)
         .andWhere("pl.locale", "vi");
 
       if (excludeFeatured) fetcher = fetcher.andWhere("p.featured", 0);
@@ -146,6 +147,7 @@ const CategoryService = {
 
       return fetcher
         .andWhere("p.hide", 0)
+        .andWhere("p.status", 0)
         .andWhere("pl.locale", "vi")
         .orderBy("p.updated_at", "desc")
         .offset(limitStart)
@@ -201,6 +203,7 @@ const CategoryService = {
         .andWhere("p.published", 3)
         .andWhere("p.published_at", "<=", now)
         .andWhere("p.hide", 0)
+        .andWhere("p.status", 0)
         .andWhere("pl.locale", "vi")
         .orderBy("v.count", "desc")
         .offset(limitStart)

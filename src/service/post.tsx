@@ -48,6 +48,7 @@ const PostService = {
         .where("p.published", 3)
         .andWhere("p.published_at", "<=", now)
         .andWhere("p.hide", 0)
+        .andWhere("p.status", 0)
         .andWhere("pl.locale", "vi")
         .andWhere("pl.slug", slug)
         .first();
@@ -190,6 +191,7 @@ const PostService = {
         .where("p.published", 3)
         .andWhere("p.published_at", "<=", now)
         .andWhere("p.hide", 0)
+        .andWhere("p.status", 0)
         .andWhere("pl.locale", "vi");
 
       // Nếu cần trả về category, thêm join với bảng category
@@ -261,6 +263,7 @@ const PostService = {
         .andWhere("p.featured", 1)
         .andWhere("p.published_at", "<=", now)
         .andWhere("p.hide", 0)
+        .andWhere("p.status", 0)
         .andWhere("pl.locale", "vi")
         .andWhere(function () {
           this.where(function () {
@@ -309,6 +312,7 @@ const PostService = {
         .andWhere("p.published", 3)
         .andWhere("p.published_at", "<=", now)
         .andWhere("p.hide", 0)
+        .andWhere("p.status", 0)
         .andWhere("pl.locale", "vi")
         .andWhere("pc.post_category_id", categoryId)
         .select([
@@ -368,6 +372,7 @@ const PostService = {
         .andWhere("p.published", 3)
         .andWhere("p.published_at", "<=", now)
         .andWhere("p.hide", 0)
+        .andWhere("p.status", 0)
         .andWhere("pl.locale", "vi")
         .select([
           "v.count",
@@ -630,6 +635,7 @@ const PostService = {
           )
           .andWhere("p.published_at", "<=", now)
           .andWhere("p.hide", 0)
+          .andWhere("p.status", 0)
           .andWhere("pl.locale", "vi")
           .andWhere("v.subject_type", "Modules\\News\\Models\\Post")
           .andWhere("pl.slug", "<>", currentPost?.slug)
@@ -685,6 +691,7 @@ const PostService = {
         .andWhere("p.published_at", "<=", now)
         .andWhere("p4.locale", "vi")
         .andWhere("p.hide", 0)
+        .andWhere("p.status", 0)
         .limit(limit * 2);
 
       // Gallery subquery for 'podcast' and 'longform' categories

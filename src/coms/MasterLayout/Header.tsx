@@ -1,19 +1,12 @@
 import { IconList, IconMagnifyingGlass, IconMenu2 } from "@/coms/Icon/light";
 import {
-  IconHome,
+  IconBrandFacebook,
+  IconBrandYoutube,
+  IconBrandZalo,
   IconNewspaper,
   IconTelevisionSimple,
 } from "@/coms/Icon/fill";
 
-import {
-  NavMenu,
-  NavMenuContent,
-  NavMenuItem,
-  NavMenuLink,
-  NavMenuList,
-  NavMenuTrigger,
-  navigationMenuTriggerStyle,
-} from "@/shadcn/ui/nav-menu";
 import Link from "next/link";
 import { headers } from "next/headers";
 import { isOn } from "@/lib/utils";
@@ -34,12 +27,14 @@ import navigateService from "@/lib/router";
 import SearchButton from "./SearchButton";
 import HeadNavMenu from "./HeadNavMenu";
 import StickyMenu from "./StickyMenu";
+import dayjs from "@/lib/dayjs";
 
 interface HeaderProps {
   menuItems: any[];
+  options: Record<string, string>;
 }
 
-const Header: React.FC<HeaderProps> = async ({ menuItems }) => {
+const Header: React.FC<HeaderProps> = async ({ menuItems, options }) => {
   const path = (await headers()).get("x-pathname") || "";
 
   // get the last part of the path
@@ -51,6 +46,7 @@ const Header: React.FC<HeaderProps> = async ({ menuItems }) => {
         id="main-header"
         className="bg-blue-700 max-w-screen sticky top-0 z-40 lg:static"
       >
+        <HeaderInformation options={options} />
         <div className="container mx-auto gap-12 flex w-full !py-0">
           <Link href="/" className="hidden shrink-0 items-end xl:flex py-3">
             <img
@@ -205,5 +201,59 @@ const MenuSidebar: React.FC<{ data: any[] }> = ({ data }) => {
         </div>
       </SheetContent>
     </Sheet>
+  );
+};
+
+interface HeaderInformationProps {
+  options: Record<string, string>;
+}
+
+const HeaderInformation: React.FC<HeaderInformationProps> = ({ options }) => {
+  return (
+    <div className="w-full bg-blue-800 h-9 hidden md:block">
+      <div className="container !py-0 mx-auto flex items-center justify-between h-full">
+        <div className="flex items-center gap-4">
+          <span className="uppercase text-white text-xsm leading-[160%] tracking-[0%]">
+            {dayjs().format("dddd, D/M/YYYY")}
+          </span>{" "}
+          <span className="text-white/50 font-light text-xsm -mt-0.5">|</span>
+          <a
+            href={`mailto:${options?.site_email}`}
+            className="uppercase text-white text-xsm leading-[160%] tracking-[0%]"
+          >
+            Liên hệ
+          </a>
+        </div>
+        <div className="flex items-center gap-4">
+          <span className="uppercase text-white text-xsm leading-[160%] tracking-[0%]">
+            Theo dõi báo trên
+          </span>
+
+          <div className="flex items-center gap-1.5">
+            <Link
+              href={options?.social_zalo}
+              target="_blank"
+              className="size-9 flex items-center justify-center"
+            >
+              <IconBrandZalo size={16} />
+            </Link>
+            <Link
+              href={options?.social_youtube}
+              target="_blank"
+              className="size-9 flex items-center justify-center"
+            >
+              <IconBrandYoutube size={16} className="text-white/90" />
+            </Link>
+            <Link
+              href={options?.social_facebook}
+              target="_blank"
+              className="size-9 flex items-center justify-center"
+            >
+              <IconBrandFacebook size={16} className="text-white/90" />
+            </Link>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };

@@ -5,12 +5,14 @@ import MenuService from "@/service/menu";
 import CategoryService from "@/service/category";
 import { getCategoryTree } from "@/lib/utils";
 import { CategoryTree } from "@/type/category";
+import OptionService from "@/service/options";
 
 interface PrimaryLayoutProps extends PropsWithChildren {}
 
 const PrimaryLayout: React.FC<PrimaryLayoutProps> = async ({ children }) => {
   let menuItems: any[] = [];
   let categoryTree: CategoryTree[] = [];
+  let options: Record<string, string> | null = null;
 
   try {
     // menu items
@@ -18,15 +20,27 @@ const PrimaryLayout: React.FC<PrimaryLayoutProps> = async ({ children }) => {
 
     // categories
     const categories = await CategoryService.getPostCategories();
+    // options
+    options =
+      (await OptionService.getOptions([
+        "site_phone",
+        "site_email",
+        "site_address",
+        "province",
+        "district",
+        "social_zalo",
+        "social_facebook",
+        "social_youtube",
+      ])) ?? null;
 
     categoryTree = getCategoryTree(categories);
   } catch (error) {}
 
   return (
     <>
-      <Header menuItems={menuItems} />
+      <Header menuItems={menuItems} options={options as any} />
       <main>{children}</main>
-      <Footer categories={categoryTree} />
+      <Footer categories={categoryTree} options={options as any} />
     </>
   );
 };
