@@ -56,11 +56,17 @@ export type INewestPost = Pick<
   category?: Pick<CategoryProps, "id" | "slug" | "name">;
 };
 
+export type IPodcastCategory = {
+  name: string;
+  icon: string;
+};
+
 export type IGalleryCollection = Pick<
   ArticleProps,
   "id" | "thumbnail" | "name" | "description" | "slug" | "published_at"
 > & {
   content: string;
+  podcast_category?: IPodcastCategory;
 };
 
 export type IGalleryCollectionWithViewCount = IGalleryCollection & {

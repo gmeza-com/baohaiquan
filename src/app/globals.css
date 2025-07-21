@@ -309,6 +309,14 @@ div.article-wrapper p {
   max-width: 568px;
 }
 
+.drop-cap::first-letter {
+  font-size: 3em; /* làm chữ lớn hơn */
+  font-weight: bold;
+  float: left; /* để nó nằm gọn bên trái */
+  line-height: 1;
+  margin-right: 8px;
+}
+
 /* -- customize insert ads --------------------- */
 
 .insert-ads {
