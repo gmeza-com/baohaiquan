@@ -80,14 +80,14 @@ const TinTucPage = async ({ params }: PageProps) => {
                   <h1 className="text-5xl mt-5 mb-6 font-bold">
                     {stripHtml(post?.name)}
                   </h1>
-                  <p>
+                  {/* <p>
                     <span className="font-semibold">{post.author_name}</span> •{" "}
                     <span className="capitalize opacity-80">
                       {dayjs(post.published_at).format(
                         "dddd, DD/MM/YYYY HH:mm"
                       )}
                     </span>
-                  </p>
+                  </p> */}
                 </>
               )}
             </div>
