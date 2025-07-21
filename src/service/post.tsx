@@ -426,6 +426,13 @@ const PostService = {
         .join("gallery_languages as gl", "gl.gallery_id", "g.id")
         .join("gallery_category as gc", "gc.gallery_id", "g.id")
         .join("gallery_categories as gc2", "gc2.id", "gc.gallery_category_id")
+        .join("gallery_podcast_category as g2", "g2.gallery_id", "g.id")
+        .join("podcast_categories as p", "p.id", "g2.podcast_category_id")
+        .join(
+          "podcast_category_languages as p2",
+          "p2.podcast_category_id",
+          "p.id"
+        )
         .select(
           "g.id",
           "g.thumbnail",
@@ -433,7 +440,9 @@ const PostService = {
           "gl.description",
           "gl.slug",
           "gl.content",
-          "g.published_at"
+          "g.published_at",
+          "p2.name as podcast_category_name",
+          "p.icon as podcast_category_icon"
         )
         .where("gc2.id", categoryId)
         .andWhere("g.published", 1)
@@ -447,6 +456,14 @@ const PostService = {
         content: unserialize(item?.content, {
           "Illuminate\\Support\\Collection": Collection,
         })?.items?.link,
+        ...(item?.podcast_category_name || item?.podcast_category_icon
+          ? {
+              podcast_category: {
+                name: item?.podcast_category_name,
+                icon: item?.podcast_category_icon,
+              },
+            }
+          : {}),
       }));
     } catch (error) {
       console.error("getGalleryTV:", error);

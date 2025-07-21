@@ -11,8 +11,7 @@ import {
   CarouselContent,
   CarouselItem,
 } from "@/shadcn/ui/carousel";
-import NavButton from "./NavButton";
-import { IGalleryCollection } from "@/type/article";
+import { IGalleryCollection, IPodcastCategory } from "@/type/article";
 import { Category } from "@/type/category";
 import Link from "next/link";
 import dynamic from "next/dynamic";
@@ -60,6 +59,7 @@ const PodcastBox: React.FC<PodcastBoxProps> = ({ podcasts = [], category }) => {
                   category?.slug,
                   item?.slug
                 )}
+                podcastCategory={item?.podcast_category as IPodcastCategory}
               />
             ))}
           </div>
@@ -86,6 +86,7 @@ const PodcastBox: React.FC<PodcastBoxProps> = ({ podcasts = [], category }) => {
                       category?.slug,
                       item?.slug
                     )}
+                    podcastCategory={item?.podcast_category as IPodcastCategory}
                   />
                 </CarouselItem>
               ))}
@@ -106,6 +107,7 @@ interface PodcastCardProps {
   image: string;
   audioUrl?: string;
   href: string;
+  podcastCategory: IPodcastCategory;
 }
 
 const PodcastCard: React.FC<PodcastCardProps> = ({
@@ -115,6 +117,7 @@ const PodcastCard: React.FC<PodcastCardProps> = ({
   image,
   audioUrl,
   href,
+  podcastCategory,
 }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [audio, setAudio] = useState<HTMLAudioElement | null>(null);
@@ -154,14 +157,16 @@ const PodcastCard: React.FC<PodcastCardProps> = ({
       )}
     >
       <Link href={href} className="flex-1 overflow-hidden group">
-        <div className="size-12 bg-white flex items-center justify-center rounded-full">
-          <IconHeadphones size={36} className="text-blue-600" />
-        </div>
+        <img
+          className="size-12 object-contain"
+          src={podcastCategory?.icon}
+          alt={podcastCategory?.name}
+        />
         <p className="text-white group-focus:underline leading-[140%] tracking-[-1%] font-bold mt-4 text-[1.375rem] line-clamp-1">
-          {title}
+          {podcastCategory?.name}
         </p>
         <p className="text-white/80 text-xsm font-normal mt-2 leading-[160%] tracking-[0%] line-clamp-4">
-          {description}
+          {title}
         </p>
       </Link>
       <div className="h-40 flex justify-center items-center relative -mx-4">
