@@ -4,3 +4,11 @@ export enum GalleryCategory {
   HQ_NEWS_PAPER = 3,
   HQ_PODCAST = 4,
 }
+
+export enum GalleryCategorySlug {
+  HQ_TV = "truyen-hinh-hai-quan",
+  HQ_VIDEO = "video-bao-hai-quan",
+  HQ_NEWS_PAPER = "bao-in",
+  HQ_PODCAST = "podcast",
+  HQ_LONGFORM = "longform",
+}

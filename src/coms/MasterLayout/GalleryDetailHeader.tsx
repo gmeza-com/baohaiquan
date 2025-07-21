@@ -6,20 +6,29 @@ import { CategoryProps } from "@/type/article";
 import navigateService from "@/lib/router";
 import clsx from "clsx";
 import { Popover, PopoverContent, PopoverTrigger } from "@/shadcn/ui/popover";
+import { GalleryCategorySlug } from "@/data/category";
 
 interface GalleryDetailHeaderProps {
   category: Omit<CategoryProps, "description">;
   postName?: string;
+  mode?: "light" | "dark";
 }
 
 const GalleryDetailHeader = ({
   category,
   postName,
+  mode = "dark",
 }: GalleryDetailHeaderProps) => {
-  const isLongform = category?.slug === "longform";
+  const isLongform = category?.slug === GalleryCategorySlug.HQ_LONGFORM;
 
   return (
-    <header className="bg-gray-950/95 sticky top-0 z-50 backdrop-blur-3xl">
+    <header
+      className={clsx(
+        "sticky top-0 z-50 backdrop-blur-3xl",
+        mode === "dark" && "bg-gray-950/95",
+        mode === "light" && "bg-blue-700"
+      )}
+    >
       <div
         className={clsx(
           "container grid items-center",

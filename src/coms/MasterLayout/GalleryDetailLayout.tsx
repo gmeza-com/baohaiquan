@@ -5,6 +5,7 @@ import GalleryDetailHeader from "./GalleryDetailHeader";
 import { CategoryProps } from "@/type/article";
 import OptionService from "@/service/options";
 import ScrollTopButton from "../common/ScrollTopButton";
+import { GalleryCategorySlug } from "@/data/category";
 
 const GalleryDetailLayout = async ({
   children,
@@ -32,7 +33,18 @@ const GalleryDetailLayout = async ({
 
   return (
     <div className="bg-gray-900">
-      <GalleryDetailHeader category={category} postName={postName} />
+      <GalleryDetailHeader
+        category={category}
+        postName={postName}
+        mode={
+          [
+            GalleryCategorySlug.HQ_PODCAST,
+            GalleryCategorySlug.HQ_LONGFORM,
+          ]?.includes(category?.slug as GalleryCategorySlug)
+            ? "light"
+            : "dark"
+        }
+      />
       <main>{children}</main>
       <Footer categories={categoryTree} options={options as any} />
       <ScrollTopButton />
