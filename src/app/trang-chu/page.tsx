@@ -42,7 +42,7 @@ const HomePage = async () => {
     PostService.getNewestPosts(6),
     PostService.getFeaturedPosts(10),
     PostService.getMostViewedPosts(8),
-    PostService.getNewestPosts(14, true),
+    PostService.getNewestPosts(7, true),
     PostService.getGalleryCollection(GalleryCategory.HQ_TV, 5),
     PostService.getGalleryCollection(GalleryCategory.HQ_VIDEO, 3),
     CategoryService.getPostCategories(),
@@ -86,6 +86,10 @@ const HomePage = async () => {
     (item) => item.slug === `quang-cao-chen-giua-${1}`
   );
 
+  const haveMiddleAds0 = publishedWidgets?.some(
+    (item) => item.slug === `quang-cao-chen-giua-${0}`
+  );
+
   const haveMiddleAds2 = publishedWidgets?.some(
     (item) => item.slug === `quang-cao-chen-giua-${2}`
   );
@@ -95,6 +99,8 @@ const HomePage = async () => {
       {publishedWidgets?.some((item) => item.slug === "homepage-banner") && (
         <ChuChayTrangChu />
       )}
+
+      {haveMiddleAds0 && <QuangCaoChenGiua index={0} />}
 
       <HeadlineBlock
         className={clsx(haveMiddleAds1 && "pb-0 lg:!pb-0")}

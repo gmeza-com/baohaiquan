@@ -6,6 +6,7 @@ import CategoryService from "@/service/category";
 import { getCategoryTree } from "@/lib/utils";
 import { CategoryTree } from "@/type/category";
 import OptionService from "@/service/options";
+import ScrollTopButton from "../common/ScrollTopButton";
 
 interface PrimaryLayoutProps extends PropsWithChildren {}
 
@@ -27,7 +28,7 @@ const PrimaryLayout: React.FC<PrimaryLayoutProps> = async ({ children }) => {
         "site_email",
         "site_address",
         "province",
-        "district",
+        "ward",
         "social_zalo",
         "social_facebook",
         "social_youtube",
@@ -41,6 +42,7 @@ const PrimaryLayout: React.FC<PrimaryLayoutProps> = async ({ children }) => {
       <Header menuItems={menuItems} options={options as any} />
       <main>{children}</main>
       <Footer categories={categoryTree} options={options as any} />
+      <ScrollTopButton />
     </>
   );
 };

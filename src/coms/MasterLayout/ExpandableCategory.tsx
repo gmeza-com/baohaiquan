@@ -20,7 +20,7 @@ const ExpandableCategory: React.FC<ExpandableCategoryProps> = ({
       <div className="flex items-center justify-between gap-2 h-12">
         <Link
           href={`/danh-muc/${category.slug}`}
-          className="font-semibold text-base leading-[150%] tracking-[-1%] text-gray-900"
+          className="font-semibold uppercase text-base leading-[150%] tracking-[-1%] text-gray-900"
         >
           {category.name}
         </Link>
