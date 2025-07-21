@@ -325,6 +325,12 @@ div.article-wrapper p {
   }
 }
 
+.footer-image {
+  & > p {
+    @apply grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4;
+  }
+}
+
 /* -- end customize article display ------------------ */
 
 /* Custom scrollbar styling */
