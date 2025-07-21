@@ -42,7 +42,7 @@ const HomePage = async () => {
     PostService.getNewestPosts(6),
     PostService.getFeaturedPosts(10),
     PostService.getMostViewedPosts(8),
-    PostService.getNewestPosts(14, true),
+    PostService.getNewestPosts(7, true),
     PostService.getGalleryCollection(GalleryCategory.HQ_TV, 5),
     PostService.getGalleryCollection(GalleryCategory.HQ_VIDEO, 3),
     CategoryService.getPostCategories(),

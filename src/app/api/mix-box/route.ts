@@ -7,7 +7,7 @@ export async function GET(request: NextRequest) {
     const [mostViewedPosts, newestPosts, hqNewsPaperContent] =
       await Promise.all([
         PostService.getMostViewedPosts(8),
-        PostService.getNewestPosts(14, true),
+        PostService.getNewestPosts(7, true),
         PostService.getGalleryCollection(GalleryCategory.HQ_NEWS_PAPER, 1),
       ]);
 
