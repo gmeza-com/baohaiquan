@@ -20,7 +20,7 @@ const GalleryDetailLayout = async ({
     "site_email",
     "site_address",
     "province",
-    "district",
+    "ward",
     "social_zalo",
     "social_facebook",
     "social_youtube",

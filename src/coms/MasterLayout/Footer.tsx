@@ -6,8 +6,8 @@ import { isOn } from "@/lib/utils";
 import { useMemo } from "react";
 
 interface Options {
-  district: string;
   province: string;
+  ward: string;
   site_address: string;
   site_email: string;
   site_phone: string;
@@ -61,7 +61,7 @@ const Footer: React.FC<FooterProps> = ({ categories, options }) => {
     },
     {
       label: "Trụ sở chính",
-      value: `${options?.site_address}, ${options?.district}, ${options?.province}`,
+      value: `${options?.site_address}, ${options?.ward}, ${options?.province}`,
       key: "main_office",
     },
     {

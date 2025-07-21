@@ -27,7 +27,7 @@ const PrimaryLayout: React.FC<PrimaryLayoutProps> = async ({ children }) => {
         "site_email",
         "site_address",
         "province",
-        "district",
+        "ward",
         "social_zalo",
         "social_facebook",
         "social_youtube",
