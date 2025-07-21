@@ -89,7 +89,7 @@ const Footer: React.FC<FooterProps> = ({ categories, options }) => {
                 <li key={category.id}>
                   <Link
                     href={`/danh-muc/${category.slug}`}
-                    className="text-lg font-semibold text-gray-900 leading-[150%] tracking-[-1%]"
+                    className="text-lg uppercase font-semibold text-gray-900 leading-[150%] tracking-[-1%]"
                   >
                     {category.name}
                   </Link>
