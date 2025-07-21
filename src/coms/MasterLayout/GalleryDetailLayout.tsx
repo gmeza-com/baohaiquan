@@ -4,6 +4,7 @@ import { getCategoryTree } from "@/lib/utils";
 import GalleryDetailHeader from "./GalleryDetailHeader";
 import { CategoryProps } from "@/type/article";
 import OptionService from "@/service/options";
+import ScrollTopButton from "../common/ScrollTopButton";
 
 const GalleryDetailLayout = async ({
   children,
@@ -34,6 +35,7 @@ const GalleryDetailLayout = async ({
       <GalleryDetailHeader category={category} postName={postName} />
       <main>{children}</main>
       <Footer categories={categoryTree} options={options as any} />
+      <ScrollTopButton />
     </div>
   );
 };
