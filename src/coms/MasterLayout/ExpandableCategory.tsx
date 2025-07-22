@@ -16,7 +16,7 @@ const ExpandableCategory: React.FC<ExpandableCategoryProps> = ({
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
-    <li className="border-b border-blue-200 pb-2">
+    <li className="border-b border-blue-200 pb-2 last:border-b-0">
       <div className="flex items-center justify-between gap-2 h-12">
         <Link
           href={`/danh-muc/${category.slug}`}

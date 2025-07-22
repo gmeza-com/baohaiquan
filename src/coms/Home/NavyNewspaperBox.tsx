@@ -2,20 +2,25 @@ import { IGalleryCollection } from "@/type/article";
 import DecorTitle from "./DecorTitle";
 import dayjs from "dayjs";
 import Link from "next/link";
-import Image from "next/image";
 import navigateService from "@/lib/router";
 
 type NavyNewspaperBoxProps = {
   gallery: IGalleryCollection;
+  title?: React.ReactNode;
 };
 
-const NavyNewspaperBox: React.FC<NavyNewspaperBoxProps> = ({ gallery }) => {
+const NavyNewspaperBox: React.FC<NavyNewspaperBoxProps> = ({
+  gallery,
+  title,
+}) => {
   return (
     <div className="">
-      <DecorTitle
-        title="đọc báo in"
-        link={navigateService.getGalleryCollection("bao-in")}
-      />
+      {title || (
+        <DecorTitle
+          title="đọc báo in"
+          link={navigateService.getGalleryCollection("bao-in")}
+        />
+      )}
       <div className="@container/newspaper-box mt-5">
         <Link
           href={`${navigateService.getGalleryCollection("bao-in")}?newspaper=${

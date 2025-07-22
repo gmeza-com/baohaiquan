@@ -284,13 +284,14 @@ div.article-wrapper {
   padding-bottom: 2rem;
 }
 div.article-wrapper img {
-  max-width: 860px;
   height: auto;
-  width: 860px !important;
+  max-width: 860px !important;
+  width: 100%;
   border-radius: var(--radius);
   background-color: var(--color-gray-200);
-  margin-left: -146px !important;
+
   border: solid 1px var(--color-white);
+  margin: 0 auto;
 }
 
 div.article-wrapper table img {
@@ -307,6 +308,11 @@ div.article-wrapper table img {
 div.article-wrapper p {
   margin: 2rem auto;
   max-width: 568px;
+  &:has(img) {
+    margin: 0;
+    width: 100%;
+    max-width: none;
+  }
 }
 
 .drop-cap::first-letter {
