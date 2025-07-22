@@ -9,7 +9,7 @@ interface MixNewsBoxProps {
 
 const MixNewsBox: React.FC<MixNewsBoxProps> = ({ posts }) => {
   return (
-    <div className="flex flex-col gap-4 divide-y divide-stroke-light">
+    <div className="flex flex-col gap-4 divide-y divide-stroke-light md:pt-4 lg:pt-0">
       {posts.map((item, index) => (
         <MixNewsItem
           key={index}

@@ -37,14 +37,14 @@ const ShortBox: React.FC<ShortBoxProps> = ({
   return (
     <div
       className={clsx(
-        "border-t border-blue-200 md:border-0 pt-5 pb-7 md:py-0",
+        "border-t border-blue-200 md:border-0 pt-5 md:py-0",
         className
       )}
     >
       <div className="container mx-auto">
         <div
           className={clsx(
-            "md:border-t md:border-blue-200 md:py-5 lg:pt-11 lg:pb-[5.25rem]",
+            "md:border-t md:border-blue-200 md:pt-5 lg:pt-11",
             innerClassName
           )}
         >

@@ -26,13 +26,13 @@ const HeadlineBlock: React.FC<HeadlineBlockProps> = ({
     <div className="container mx-auto">
       <div
         className={clsx(
-          "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 lg:gap-6 xl:gap-12 lg:pb-10 lg:pt-3 -m-4 md:m-0",
+          "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 lg:gap-6 xl:gap-12 lg:pt-3 -m-4 md:m-0",
           className
         )}
       >
         <div
           className={clsx(
-            "py-9 px-4 lg:p-0 border-t border-stroke-light lg:border-t-0 md:ps-0 md:pe-6",
+            "pt-9 px-4 lg:p-0 border-t border-stroke-light lg:border-t-0 md:ps-0 md:pe-6",
             rightBlockClassName
           )}
         >
@@ -76,7 +76,7 @@ const HeadlineBlock: React.FC<HeadlineBlockProps> = ({
         <div className="row-start-1 pb-9 lg:pb-0  md:col-span-2  lg:col-start-2">
           <HighlightArticleCarousel posts={mainFeaturedPost} />
         </div>
-        <div className="py-9 px-4 border-t border-stroke-light lg:p-0 lg:border-t-0 md:pe-0 md:ps-6">
+        <div className="pt-9 px-4 border-t border-stroke-light lg:p-0 lg:border-t-0 md:pe-0 md:ps-6">
           <DecorTitle title="Tin mới" />
           <ol className="flex flex-col divide-y divide-stroke-light divide-dashed">
             {newestPosts?.map((item, index) => (

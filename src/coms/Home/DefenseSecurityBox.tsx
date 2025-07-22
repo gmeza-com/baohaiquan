@@ -12,27 +12,30 @@ interface DefenseSecurityBoxProps {
   categoryTree: CategoryTree;
   articles: ArticleProps[];
   hideBorder?: boolean;
+  innerClassName?: string;
 }
 
 const DefenseSecurityBox: React.FC<DefenseSecurityBoxProps> = ({
   categoryTree,
   articles = [],
   hideBorder = false,
+  innerClassName,
 }) => {
   if (articles?.length <= 0) return null;
 
   return (
     <div
       className={clsx(
-        "py-5 md:py-0 ",
+        "pt-5 md:py-0",
         !hideBorder && "border-t border-blue-200 md:border-0"
       )}
     >
       <div className="container mx-auto">
         <div
           className={clsx(
-            "md:py-5 lg:pt-11 lg:pb-[5.25rem]",
-            !hideBorder && "md:border-t md:border-blue-200"
+            "md:pt-5 lg:pt-11 ",
+            !hideBorder && "md:border-t md:border-blue-200",
+            innerClassName
           )}
         >
           <div className="flex md:items-center justify-between gap-4 md:gap-9 flex-col md:flex-row">
