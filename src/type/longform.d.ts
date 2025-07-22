@@ -12,7 +12,8 @@ export interface LongformBlock {
     | ImageBlock
     | HeaderBlock
     | DelimiterBlock
-    | ColumnsBlock;
+    | ColumnsBlock
+    | QuoteBlock;
 }
 
 export interface ParagraphBlock {
@@ -33,6 +34,7 @@ export interface ImageBlock {
   stretched: boolean;
   className?: string;
   size: "small" | "normal" | "large";
+  link?: string;
 }
 
 export interface HeaderBlock {
