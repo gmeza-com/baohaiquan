@@ -18,6 +18,7 @@ export interface LongformBlock {
 export interface ParagraphBlock {
   text: string;
   alignment: "left" | "center" | "right" | "justify";
+  dropcap?: boolean;
 }
 
 export type ImageBlockFile = {
