@@ -35,7 +35,7 @@ const PodcastBox: React.FC<PodcastBoxProps> = ({ podcasts = [], category }) => {
   return (
     <div className="border-t border-blue-200 md:border-0">
       <div className="container mx-auto">
-        <div className="py-5 lg:pt-11 lg:pb-[5.25rem] md:border-t md:border-blue-200">
+        <div className="md:pt-5 lg:pt-11  md:border-t md:border-blue-200">
           <div className="flex justify-between items-center">
             <DecorTitle
               title={category?.name}

@@ -4,7 +4,7 @@ import DecorTitle from "./DecorTitle";
 import { IMediaBox } from "@/type/article";
 import navigateService from "@/lib/router";
 import { useCallback } from "react";
-import Image from "next/image";
+import clsx from "clsx";
 
 const mediaTypes = [
   {
@@ -27,9 +27,10 @@ const mediaTypes = [
 
 interface MediaBoxProps {
   data: IMediaBox[];
+  className?: string;
 }
 
-const MediaBox: React.FC<MediaBoxProps> = ({ data }) => {
+const MediaBox: React.FC<MediaBoxProps> = ({ data, className }) => {
   const firstItem = data?.[0];
   const restItems = data?.slice(1);
 
@@ -45,7 +46,7 @@ const MediaBox: React.FC<MediaBoxProps> = ({ data }) => {
   }, []);
 
   return (
-    <div className="mb-10 lg:mb-24">
+    <div className={clsx("", className)}>
       <div className="container mx-auto">
         <div className="bg-branch-default py-9 px-4 lg:px-7 lg:pt-8 lg:pb-10 md:rounded-3xl -m-4 md:m-0">
           <div className="flex flex-col gap-3 md:flex-row md:items-center md:gap-4 lg:gap-10">

@@ -144,7 +144,6 @@ const HomePage = async () => {
       case "tieu-diem":
         return (
           <HeadlineBlock
-            className={clsx(haveMiddleAds1 && "pb-0 lg:!pb-0")}
             rightBlockClassName={clsx(haveMiddleAds1 && "pb-0")}
             newestPosts={newestPosts}
             featuredPosts={featuredPosts}
@@ -155,7 +154,7 @@ const HomePage = async () => {
       case "tin-doc-nhieu":
         return (
           <div className="container mx-auto">
-            <div className="-m-4 md:m-0 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:gap-12 md:gap-x-6 md:gap-y-16 md:py-5 lg:pt-11 lg:pb-[5.25rem] md:border-t border-blue-200">
+            <div className="-m-4 md:m-0 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:gap-12 md:gap-x-6 md:gap-y-16 lg:pt-11 md:border-t border-blue-200">
               <div className="px-4 pt-9 pb-5 md:p-0 md:sticky lg:top-20 md:top-[5.375rem] md:self-start">
                 <TrendingNewsBox posts={mostViewedPosts} />
               </div>
@@ -164,7 +163,7 @@ const HomePage = async () => {
                   <MixNewsBox posts={newestPosts2} />
                 </div>
               </div>
-              <div className="flex flex-col gap-12 px-4 py-9 md:p-0 border-t border-blue-200 md:border-none md:sticky lg:top-20 md:top-[5.375rem] md:self-start">
+              <div className="flex flex-col gap-12 px-4 pt-9 md:p-0 border-t border-blue-200 md:border-none md:sticky lg:top-20 md:top-[5.375rem] md:self-start">
                 {!!hqNewsPaperContent?.[0] && (
                   <NavyNewspaperBox gallery={hqNewsPaperContent?.[0]} />
                 )}
@@ -183,7 +182,6 @@ const HomePage = async () => {
               <ShortBox
                 categoryTree={categoryTree?.[0]}
                 articles={categoriesData?.[0]}
-                innerClassName={clsx(haveMiddleAds2 && "!pb-0")}
               />
             );
 
@@ -208,9 +206,9 @@ const HomePage = async () => {
         switch (additional) {
           case "hq-media":
             return (
-              <div className="py-5 md:p-0 border-t border-blue-200 md:border-0">
+              <div className="pt-5 md:p-0 border-t border-blue-200 md:border-0">
                 <div className="container mx-auto">
-                  <div className="md:border-t md:border-blue-200 md:py-5  lg:pt-11 lg:pb-[5.25rem]">
+                  <div className="md:border-t md:border-blue-200 md:pt-5 lg:pt-11">
                     <DecorTitle
                       title={hqMediaCategory?.name || "Hải quân Media"}
                       link={navigateService.getGalleryCollection(
@@ -244,16 +242,18 @@ const HomePage = async () => {
             );
           case "hq-tv":
             return (
-              <NavyTVBox
-                className="mb-10"
-                galleries={galleryTV}
-                category={
-                  hqTvCategory ?? {
-                    name: "Truyền hình hải quân",
-                    slug: "truyen-hinh-hai-quan",
+              <div className="py-3">
+                <NavyTVBox
+                  className=""
+                  galleries={galleryTV}
+                  category={
+                    hqTvCategory ?? {
+                      name: "Truyền hình hải quân",
+                      slug: "truyen-hinh-hai-quan",
+                    }
                   }
-                }
-              />
+                />
+              </div>
             );
           default:
             return null;
@@ -282,7 +282,11 @@ const HomePage = async () => {
 
             {publishedWidgets?.some(
               (item) => item.slug === `quang-cao-chen-giua-${index + 1}`
-            ) && <QuangCaoChenGiua index={_index} />}
+            ) ? (
+              <QuangCaoChenGiua index={_index} />
+            ) : (
+              <div className="h-7 lg:h-10 xl:h-12 w-full my-3"></div>
+            )}
           </>
         );
       })}
