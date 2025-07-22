@@ -272,9 +272,7 @@ const HomePage = async () => {
       {haveMiddleAds0 && <QuangCaoChenGiua index={0} />}
 
       {homeLayoutData?.map((item, index) => {
-        const isLast = index === homeLayoutData?.length - 1;
-
-        const _index = isLast ? -1 : index + 1;
+        const _index = index + 1;
 
         return (
           <>
