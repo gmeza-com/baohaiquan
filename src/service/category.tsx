@@ -242,10 +242,10 @@ const CategoryService = {
     }
   },
 
-  getGalleryCategories: async (): Promise<
-    Omit<Category, "parent_id" | "description">[]
-  > => {
-    return await db("gallery_categories as gc")
+  getGalleryCategories: async (
+    ids?: string[]
+  ): Promise<Omit<Category, "parent_id" | "description">[]> => {
+    let query = db("gallery_categories as gc")
       .select("gc.id", "gcl.name", "gcl.slug")
       .join(
         "gallery_category_languages as gcl",
@@ -253,10 +253,17 @@ const CategoryService = {
         "gc.id"
       )
       .where("gc.published", 1);
+
+    // Nếu ids tồn tại và không rỗng thì filter theo danh sách id đó
+    if (ids && ids.length > 0) {
+      query = query.whereIn("gc.id", ids);
+    }
+
+    return await query;
   },
 
-  getPostCategories: async (): Promise<Category[]> => {
-    return await db("post_categories as pcs")
+  getPostCategories: async (ids?: number[]): Promise<Category[]> => {
+    let query = db("post_categories as pcs")
       .select(
         "pcs.id",
         "pcl.name",
@@ -266,6 +273,13 @@ const CategoryService = {
       )
       .join("post_category_languages as pcl", "pcl.post_category_id", "pcs.id")
       .where("pcs.published", 1);
+
+    // Nếu ids tồn tại và không rỗng thì filter theo danh sách id đó
+    if (ids && ids.length > 0) {
+      query = query.whereIn("pcs.id", ids);
+    }
+
+    return await query;
   },
 
   getOtherCateogoryPosts: async (slug: string): Promise<ArticleProps[]> => {

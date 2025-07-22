@@ -1,13 +1,15 @@
 import { cleanSlug, isOn, stripHtml } from "@/lib/utils";
 import PostService from "@/service/post";
 import { ArticleProps, CategoryProps } from "@/type/article";
-import dayjs from "@/lib/dayjs";
 import DOMPurify from "isomorphic-dompurify";
 import { ResolvingMetadata } from "next";
 import ShareList from "@/coms/Article/ShareList";
-import { IconClock } from "@/coms/Icon/light";
 import RelativeArticle from "@/coms/Article/RelativeArticle";
 import MixBox from "@/coms/Article/MixBox";
+import PostDetailRightSide from "@/coms/Article/PostDetailRightSide";
+import MenuService from "@/service/menu";
+import { IMenuItem } from "@/type/menu";
+import dayjs from "@/lib/dayjs";
 
 type PageProps = { params: Promise<{ slug: string }> };
 
@@ -48,12 +50,14 @@ const TinTucPage = async ({ params }: PageProps) => {
   let { slug } = await params;
   let post: ArticleProps | null = null;
   let cat: CategoryProps | null = null;
+  let menu: IMenuItem[] = [];
   try {
     slug = cleanSlug(slug);
     if (!slug) throw new Error("Slug is required");
 
     post = await PostService.getPostFromSlug(slug);
     cat = await PostService.getCategoryOfPost(slug);
+    menu = await MenuService.getMenuItems();
 
     // increment view count
     if (post && post.id) {
@@ -64,8 +68,8 @@ const TinTucPage = async ({ params }: PageProps) => {
   return (
     <div>
       <div className="bg-yellow-50">
-        <div className="container">
-          <div className="mx-auto max-w-[860px]">
+        <div className="container grid gird-cols-1 md:grid-cols-12 xl:grid-cols-4 gap-6 lg:gap-12">
+          <div className="mx-auto w-full overflow-hidden md:col-span-8 xl:col-span-3">
             <div className="max-w-[660px] text-center mx-auto pt-6 pb-12">
               {isOn(cat) && (
                 <a
@@ -80,14 +84,13 @@ const TinTucPage = async ({ params }: PageProps) => {
                   <h1 className="text-5xl mt-5 mb-6 font-bold">
                     {stripHtml(post?.name)}
                   </h1>
-                  {/* <p>
-                    <span className="font-semibold">{post.author_name}</span> •{" "}
+                  <p>
                     <span className="capitalize opacity-80">
                       {dayjs(post.published_at).format(
                         "dddd, DD/MM/YYYY HH:mm"
                       )}
                     </span>
-                  </p> */}
+                  </p>
                 </>
               )}
             </div>
@@ -113,6 +116,8 @@ const TinTucPage = async ({ params }: PageProps) => {
 
             <RelativeArticle slug={slug} catSlug={cat?.slug || ""} />
           </div>
+
+          <PostDetailRightSide menuData={menu} currentCategory={cat?.id || 0} />
         </div>
       </div>
       <MixBox />

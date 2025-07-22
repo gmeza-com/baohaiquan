@@ -1,8 +1,9 @@
 import db from "@/lib/db";
 import { isOn } from "@/lib/utils";
+import { IMenuItem } from "@/type/menu";
 
 const MenuService = {
-  getMenuItems: async () => {
+  getMenuItems: async (): Promise<IMenuItem[]> => {
     try {
       // response items
       let items: any[] = [];
@@ -36,8 +37,18 @@ const MenuService = {
             ? parseInt(el.attributes.url.split("=")[1])
             : null;
 
+          // Lấy galleryCatId nếu url có dạng /gallery/collections?id=1
+          const galleryCatId = el.attributes.url.match(
+            /\/gallery\/collections\?id=(\d+)/
+          )
+            ? parseInt(
+                el.attributes.url.match(/\/gallery\/collections\?id=(\d+)/)[1]
+              )
+            : null;
+
           // bind category id to menu item
           if (catId) el.attributes.category_id = catId;
+          if (galleryCatId) el.attributes.category_id = galleryCatId;
 
           return catId;
         });
@@ -53,11 +64,26 @@ const MenuService = {
           .andWhere("pcl.locale", "vi")
           .andWhere("pc.published", 1);
 
+        const galleryCats = await db("gallery_category_languages as gcl")
+          .join("gallery_categories as gc", "gc.id", "gcl.gallery_category_id")
+          .select("gcl.slug", "gcl.gallery_category_id as id")
+          .whereIn("gallery_category_id", catIds)
+          .andWhere("gcl.locale", "vi")
+          .andWhere("gc.published", 1);
+
+        const categories = [
+          ...cats?.map((item) => ({ ...item, type: "post" })),
+          ...galleryCats?.map((item) => ({ ...item, type: "gallery" })),
+        ];
+
         // bind category slug to menu items
         records = records.map((el) => {
           const catId = el.attributes.category_id;
-          const cat = cats.find((c) => c.id === catId);
-          if (cat) el.attributes.category_slug = cat.slug;
+          const cat = categories.find((c) => c.id === catId);
+          if (cat) {
+            el.attributes.category_slug = cat.slug;
+            el.attributes.category_type = cat.type;
+          }
           return el;
         });
 

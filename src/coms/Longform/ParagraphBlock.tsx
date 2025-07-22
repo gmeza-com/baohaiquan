@@ -9,6 +9,7 @@ const ParagraphBlock: React.FC<ParagraphBlockProps> = ({
   text,
   alignment,
   className,
+  dropcap,
 }) => {
   return (
     <div
@@ -18,6 +19,7 @@ const ParagraphBlock: React.FC<ParagraphBlockProps> = ({
         alignment === "right" && "text-right",
         alignment === "justify" && "text-justify",
         alignment === "left" && "text-left",
+        dropcap && "drop-cap",
         className
       )}
       dangerouslySetInnerHTML={{ __html: text }}

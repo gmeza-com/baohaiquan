@@ -9,7 +9,11 @@ import Link from "next/link";
 
 const LIMIT = 6;
 
-const LinkedWebsiteBox = () => {
+interface LinkedWebsiteBoxProps {
+  title?: React.ReactNode;
+}
+
+const LinkedWebsiteBox: React.FC<LinkedWebsiteBoxProps> = ({ title }) => {
   const [data, setData] = useState<IWidget | null>(null);
   const [loading, setLoading] = useState(false);
   const [isError, setIsError] = useState<boolean>(false);
@@ -67,10 +71,12 @@ const LinkedWebsiteBox = () => {
 
   return (
     <div className="@container/linked-website-box">
-      <DecorTitle
-        title="Liên kết website"
-        textClassName="@max-[250px]/linked-website-box:text-lg"
-      />
+      {title || (
+        <DecorTitle
+          title="Liên kết website"
+          textClassName="@max-[250px]/linked-website-box:text-lg"
+        />
+      )}
       <div className="mt-8">
         {firstWebsite && (
           <Link
