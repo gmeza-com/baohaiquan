@@ -207,7 +207,29 @@ const HomePage = async () => {
       case "gallery":
         switch (additional) {
           case "hq-media":
-            return <MediaBox data={mediaBox} />;
+            return (
+              <div className="py-5 md:p-0 border-t border-blue-200 md:border-0">
+                <div className="container mx-auto">
+                  <div className="md:border-t md:border-blue-200 md:py-5  lg:pt-11 lg:pb-[5.25rem]">
+                    <DecorTitle
+                      title={hqMediaCategory?.name || "Hải quân Media"}
+                      link={navigateService.getGalleryCollection(
+                        hqMediaCategory?.slug ?? ""
+                      )}
+                    />
+                    <div className="mt-8 xl:mt-10 grid grid-cols-1 gap-6 md:grid-cols-5 xl:grid-cols-4 xl:gap-10">
+                      <NavyMediaBox
+                        className="md:col-span-3 xl:col-span-3"
+                        galleries={hqVideo}
+                      />
+                      <div className="md:col-span-2 xl:col-span-1">
+                        <QuangCaoCotBen slug="quang-cao-cot-ben-2" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            );
           case "podcast":
             return (
               <PodcastBox
