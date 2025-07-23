@@ -47,7 +47,7 @@ const Header: React.FC<HeaderProps> = async ({ menuItems, options }) => {
         className="bg-blue-700 max-w-screen sticky top-0 z-40 lg:static"
       >
         <HeaderInformation options={options} />
-        <div className="container mx-auto gap-12 flex w-full !py-0 overflow-hidden">
+        <div className="container mx-auto gap-12 flex w-full !py-0">
           <Link href="/" className="hidden shrink-0 items-end xl:flex py-3">
             <img
               src="/logo.svg"
