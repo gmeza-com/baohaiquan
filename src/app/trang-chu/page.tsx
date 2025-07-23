@@ -133,10 +133,6 @@ const HomePage = async () => {
     (item) => item.slug === `quang-cao-chen-giua-${0}`
   );
 
-  const haveMiddleAds2 = publishedWidgets?.some(
-    (item) => item.slug === `quang-cao-chen-giua-${2}`
-  );
-
   const renderHomeBlock = (item: any) => {
     const { type, id, additional } = item;
 
@@ -189,7 +185,7 @@ const HomePage = async () => {
             return (
               <DefenseSecurityBox
                 categoryTree={
-                  categories.find(
+                  categoryTree.find(
                     (item) => item.id === Number(id)
                   ) as CategoryTree
                 }
