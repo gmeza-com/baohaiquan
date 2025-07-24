@@ -79,13 +79,51 @@ const CategoryService = {
         .andWhere("p.status", 0)
         .andWhere("pl.locale", "vi");
 
-      if (excludeFeatured) fetcher = fetcher.andWhere("p.featured", 0);
+      if (excludeFeatured) {
+        // Lấy bài bình thường + bài featured hết hạn (loại trừ bài featured đang có hiệu lực)
+        fetcher = fetcher.andWhere(function() {
+          this.where("p.featured", 0) // Bài bình thường
+            .orWhere(function() {
+              // Bài featured hết hạn
+              this.where("p.featured", 1)
+                .andWhere(function() {
+                  this.where(function() {
+                    this.whereNotNull("p.featured_started_at")
+                      .andWhere("p.featured_started_at", ">", now);
+                  }).orWhere(function() {
+                    this.whereNotNull("p.featured_ended_at")
+                      .andWhere("p.featured_ended_at", "<", now);
+                  });
+                });
+            });
+        });
+      }
 
       if (excludeIds.length > 0)
         fetcher = fetcher.andHavingNotIn("p.id", excludeIds);
 
-      return await fetcher
-        .orderBy("p.updated_at", "desc")
+      // Sắp xếp để ưu tiên bài featured trong thời gian hợp lệ
+      // Priority 1: Bài featured trong thời gian hợp lệ
+      // Priority 2: Bài featured hết hạn + bài bình thường (coi như nhau)
+      const orderByClause = excludeFeatured 
+        ? "" // Khi excludeFeatured, tất cả đều là bài thường nên không cần sắp xếp đặc biệt
+        : `CASE 
+            WHEN p.featured = 1 
+            AND (p.featured_started_at IS NULL OR p.featured_started_at <= '${now}')
+            AND (p.featured_ended_at IS NULL OR p.featured_ended_at >= '${now}')
+            THEN 1 
+            ELSE 2 
+          END`;
+
+      let query = fetcher;
+      
+      // Chỉ áp dụng orderByRaw khi có orderByClause
+      if (orderByClause) {
+        query = query.orderByRaw(orderByClause);
+      }
+      
+      return await query
+        .orderBy("p.published_at", "desc")
         .offset(limitStart)
         .limit(limit);
     } catch (error) {

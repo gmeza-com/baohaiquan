@@ -249,6 +249,17 @@ const PostService = {
     try {
       const now = dayjs().format(DB_DATE_TIME_FORMAT);
 
+      // Sắp xếp để ưu tiên bài featured trong thời gian hợp lệ
+      // Priority 1: Bài featured trong thời gian hợp lệ
+      // Priority 2: Bài featured hết hạn + bài bình thường (coi như nhau)
+      const orderByClause = `CASE 
+        WHEN p.featured = 1 
+        AND (p.featured_started_at IS NULL OR p.featured_started_at <= '${now}')
+        AND (p.featured_ended_at IS NULL OR p.featured_ended_at >= '${now}')
+        THEN 1 
+        ELSE 2 
+      END`;
+
       const result = await db("posts as p")
         .join("post_languages as pl", "p.id", "pl.post_id")
         .select(
@@ -265,28 +276,8 @@ const PostService = {
         .andWhere("p.hide", 0)
         .andWhere("p.status", 0)
         .andWhere("pl.locale", "vi")
-        .andWhere(function () {
-          this.where(function () {
-            // Current featured posts: started_at <= now AND (ended_at IS NULL OR ended_at >= now)
-            this.where("p.featured_started_at", "<=", now).andWhere(
-              function () {
-                this.whereNull("p.featured_ended_at").orWhere(
-                  "p.featured_ended_at",
-                  ">=",
-                  now
-                );
-              }
-            );
-          }).orWhere(function () {
-            // Expired featured posts: started_at < now AND ended_at < now
-            this.where("p.featured_started_at", "<", now).andWhere(
-              "p.featured_ended_at",
-              "<",
-              now
-            );
-          });
-        })
-        .orderBy("p.featured_started_at", "desc")
+        .orderByRaw(orderByClause)
+        .orderBy("p.published_at", "desc")
         .limit(limit);
 
       return result || [];
@@ -441,6 +432,7 @@ const PostService = {
           "gl.slug",
           "gl.content",
           "g.published_at",
+          "g.featured",
           "p2.name as podcast_category_name",
           "p.icon as podcast_category_icon"
         )
@@ -448,6 +440,7 @@ const PostService = {
         .andWhere("g.published", 1)
         .andWhere("g.published_at", "<=", dayjs().format(DB_DATE_TIME_FORMAT))
         .andWhere("gl.locale", "vi")
+        .orderBy("g.featured", "desc")
         .orderBy("g.published_at", "desc")
         .limit(limit);
 
@@ -694,8 +687,14 @@ const PostService = {
           "p.published_at",
           "p.thumbnail",
           db.raw(
-            `(p.featured = 1 AND ? BETWEEN p.featured_started_at AND p.featured_ended_at) AS is_featured_now`,
-            [now]
+            `CASE 
+              WHEN p.featured = 1 
+              AND (p.featured_started_at IS NULL OR p.featured_started_at <= ?)
+              AND (p.featured_ended_at IS NULL OR p.featured_ended_at >= ?)
+              THEN 1 
+              ELSE 0 
+            END AS is_featured_now`,
+            [now, now]
           ),
           "p5.slug",
           "p5.name",
