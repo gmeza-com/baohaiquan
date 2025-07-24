@@ -63,7 +63,7 @@ export type IPodcastCategory = {
 
 export type IGalleryCollection = Pick<
   ArticleProps,
-  "id" | "thumbnail" | "name" | "description" | "slug" | "published_at"
+  "id" | "thumbnail" | "name" | "description" | "slug" | "published_at" | 'featured'
 > & {
   content: string;
   podcast_category?: IPodcastCategory;

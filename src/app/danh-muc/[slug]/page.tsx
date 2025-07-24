@@ -54,7 +54,7 @@ const DanhMucPage = async ({ params }: PageProps) => {
     // fetch the category information
 
     // Fetch featured articles first
-    features = await CategoryService.getFeaturedsByCategory(slug, false, 0, 8);
+    features = await CategoryService.getPostsByCategory(slug, 0, 8);
 
     // If there are featured articles, exclude their IDs
     excludeIds = features.length > 0 ? features.map((item) => item.id) : [];
