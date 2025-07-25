@@ -7,11 +7,12 @@ import { getCategoryTree } from "@/lib/utils";
 import { CategoryTree } from "@/type/category";
 import OptionService from "@/service/options";
 import ScrollTopButton from "../common/ScrollTopButton";
+import { IMenuItem } from "@/type/menu";
 
 interface PrimaryLayoutProps extends PropsWithChildren {}
 
 const PrimaryLayout: React.FC<PrimaryLayoutProps> = async ({ children }) => {
-  let menuItems: any[] = [];
+  let menuItems: IMenuItem[] = [];
   let categoryTree: CategoryTree[] = [];
   let options: Record<string, string> | null = null;
 

@@ -26,11 +26,11 @@ import {
 import navigateService from "@/lib/router";
 import SearchButton from "./SearchButton";
 import HeadNavMenu from "./HeadNavMenu";
-import StickyMenu from "./StickyMenu";
 import dayjs from "@/lib/dayjs";
+import { IMenuItem } from "@/type/menu";
 
 interface HeaderProps {
-  menuItems: any[];
+  menuItems: IMenuItem[];
   options: Record<string, string>;
 }
 
