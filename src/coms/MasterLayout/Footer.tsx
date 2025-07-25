@@ -48,12 +48,14 @@ const Footer: React.FC<FooterProps> = ({ categories, options }) => {
       label: "Tổng biên tập",
       value: "Thượng tá CAO VĂN DÂN",
       key: "total_editor",
+      valueClassName: "text-xsm",
     },
     {
       label: "Phó tổng biên tập",
       value: "Thượng tá NGUYỄN TRỌNG THIẾT",
       key: "deputy_editor",
       className: "md:col-start-1 md:row-start-2 xl:col-start-2",
+      valueClassName: "text-xsm",
     },
     {
       label: "Giấy phép số",
@@ -125,7 +127,12 @@ const Footer: React.FC<FooterProps> = ({ categories, options }) => {
                         {item.label}
                       </span>
                     </td>
-                    <td className="text-[#5D5D5D] text-[13px] leading-[150%] tracking-[0%] py-2">
+                    <td
+                      className={clsx(
+                        "text-[#5D5D5D] text-[13px] leading-[150%] tracking-[0%] py-2",
+                        item?.valueClassName
+                      )}
+                    >
                       {item.value}
                     </td>
                   </tr>
@@ -146,7 +153,12 @@ const Footer: React.FC<FooterProps> = ({ categories, options }) => {
                   <span className="text-[13px] font-medium leading-[150%] tracking-[-1%] text-gray-900">
                     {item.label}
                   </span>
-                  <span className="text-[#5D5D5D] text-[13px] leading-[150%] tracking-[0%]">
+                  <span
+                    className={clsx(
+                      "text-[#5D5D5D] text-[13px] leading-[150%] tracking-[0%]",
+                      item?.valueClassName
+                    )}
+                  >
                     {item.value}
                   </span>
                 </div>
