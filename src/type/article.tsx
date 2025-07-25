@@ -4,6 +4,7 @@ export type ArticleProps = {
   name: string;
   description: string;
   thumbnail: string;
+  thumbnail_vertical?: string;
   tags: string | null;
   featured: 0 | 1;
   content?: string;
@@ -63,7 +64,13 @@ export type IPodcastCategory = {
 
 export type IGalleryCollection = Pick<
   ArticleProps,
-  "id" | "thumbnail" | "name" | "description" | "slug" | "published_at" | 'featured'
+  | "id"
+  | "thumbnail"
+  | "name"
+  | "description"
+  | "slug"
+  | "published_at"
+  | "featured"
 > & {
   content: string;
   podcast_category?: IPodcastCategory;

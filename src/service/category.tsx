@@ -62,6 +62,7 @@ const CategoryService = {
           "pl.description",
           "pl.tags",
           "p.thumbnail",
+          "p.thumbnail_vertical",
           "p.featured",
           "p.published",
           "p.published_at",

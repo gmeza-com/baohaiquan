@@ -61,7 +61,9 @@ const ShortBox: React.FC<ShortBoxProps> = ({
               <Card
                 key={article?.id}
                 title={article?.name ?? ""}
-                image={article?.thumbnail ?? ""}
+                image={
+                  (article?.thumbnail_vertical || article?.thumbnail) ?? ""
+                }
                 className="basis-[40%] shrink-0"
                 slug={article?.slug ?? ""}
               />
@@ -80,7 +82,9 @@ const ShortBox: React.FC<ShortBoxProps> = ({
                 >
                   <Card
                     title={article?.name ?? ""}
-                    image={article?.thumbnail ?? ""}
+                    image={
+                      (article?.thumbnail_vertical || article?.thumbnail) ?? ""
+                    }
                     slug={article?.slug ?? ""}
                   />
                 </CarouselItem>
