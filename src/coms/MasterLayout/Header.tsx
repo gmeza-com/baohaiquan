@@ -42,11 +42,11 @@ const Header: React.FC<HeaderProps> = async ({ menuItems, options }) => {
 
   return (
     <>
+      <HeaderInformation options={options} />
       <header
         id="main-header"
-        className="bg-blue-700 max-w-screen sticky top-0 z-40 lg:static"
+        className="bg-blue-700 max-w-screen sticky top-0 z-40"
       >
-        <HeaderInformation options={options} />
         <div className="container mx-auto gap-12 flex w-full !py-0">
           <Link href="/" className="hidden shrink-0 items-end xl:flex py-3">
             <img
@@ -108,8 +108,6 @@ const Header: React.FC<HeaderProps> = async ({ menuItems, options }) => {
           </div>
         </div>
       </header>
-
-      <StickyMenu path={path} menuItems={menuItems} slug={slug} />
     </>
   );
 };
