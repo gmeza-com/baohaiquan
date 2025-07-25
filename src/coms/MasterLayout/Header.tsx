@@ -225,9 +225,9 @@ const HeaderInformation: React.FC<HeaderInformationProps> = ({ options }) => {
           </a>
         </div>
         <div className="flex items-center gap-4">
-          <span className="uppercase text-white text-xsm leading-[160%] tracking-[0%]">
+          {/* <span className="uppercase text-white text-xsm leading-[160%] tracking-[0%]">
             Theo dõi báo trên
-          </span>
+          </span> */}
 
           <div className="flex items-center gap-1.5">
             <Link
