@@ -5,6 +5,7 @@ import ExpandableCategory from "./ExpandableCategory";
 import { isOn } from "@/lib/utils";
 import { useMemo } from "react";
 import FooterBanner from "./FooterBanner";
+import { IMenuItem } from "@/type/menu";
 
 interface Options {
   province: string;
@@ -18,7 +19,7 @@ interface Options {
 }
 
 interface FooterProps {
-  categories: CategoryTree[];
+  categories: IMenuItem[];
   options: Options;
 }
 
@@ -90,17 +91,17 @@ const Footer: React.FC<FooterProps> = ({ categories, options }) => {
               categories.map((category) => (
                 <li key={category.id}>
                   <Link
-                    href={`/danh-muc/${category.slug}`}
+                    href={`/danh-muc/${category.attributes.category_slug}`}
                     className="text-lg uppercase font-semibold text-gray-900 leading-[150%] tracking-[-1%]"
                   >
                     {category.name}
                   </Link>
                   <ul className="mt-2 flex flex-col gap-3">
-                    {category?.children?.map((item) => (
+                    {category?.childrens?.map((item) => (
                       <li key={item.id}>
                         <Link
                           className="text-gray-900 text-[15px] leading-[150%] tracking-[0%] font-normal"
-                          href={`/danh-muc/${item.slug}`}
+                          href={`/danh-muc/${item.attributes.category_slug}`}
                         >
                           {item.name}
                         </Link>
