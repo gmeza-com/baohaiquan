@@ -9,7 +9,7 @@ import {
 } from "@/shadcn/ui/nav-menu";
 import Link from "next/link";
 import { IconHome } from "../Icon/fill";
-import { isOn } from "@/lib/utils";
+import { getCategoryHref, isOn } from "@/lib/utils";
 import clsx from "clsx";
 import MoreNavMenuItem from "./MoreNavMenuItem";
 import { IMenuItem } from "@/type/menu";
@@ -62,9 +62,7 @@ const HeadNavMenu: React.FC<HeadNavMenuProps> = ({
               className={isActive?.(item) ? "active" : ""}
             >
               <NavMenuTrigger>
-                <Link href={`/danh-muc/${item.attributes.category_slug}`}>
-                  {item.name}
-                </Link>
+                <Link href={getCategoryHref(item)}>{item.name}</Link>
               </NavMenuTrigger>
               <NavMenuContent className="bg-blue-600 menu-up-arrow">
                 <ul className="min-w-36 flex flex-col gap-1 text-white">
@@ -75,7 +73,7 @@ const HeadNavMenu: React.FC<HeadNavMenuProps> = ({
                         className={isActive?.(child) ? "active" : ""}
                       >
                         <Link
-                          href={`/danh-muc/${child.attributes.category_slug}`}
+                          href={getCategoryHref(child)}
                           className="truncate"
                         >
                           {child.name}
@@ -93,7 +91,7 @@ const HeadNavMenu: React.FC<HeadNavMenuProps> = ({
             >
               <NavMenuLink
                 className={navigationMenuTriggerStyle()}
-                href={`/danh-muc/${item.attributes.category_slug}`}
+                href={getCategoryHref(item)}
               >
                 {item.name}
               </NavMenuLink>

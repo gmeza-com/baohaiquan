@@ -10,7 +10,7 @@ import clsx from "clsx";
 import { IconMenu2 } from "../Icon/light";
 import Link from "next/link";
 import navigateService from "@/lib/router";
-import { useMediaQuery } from "@uidotdev/usehooks";
+import { useState, useEffect } from "react";
 import { IMenuItem } from "@/type/menu";
 import { isOn } from "@/lib/utils";
 import { Popover, PopoverContent, PopoverTrigger } from "@/shadcn/ui/popover";
@@ -21,9 +21,27 @@ interface MoreNavMenuItemProps {
 }
 
 const MoreNavMenuItem: React.FC<MoreNavMenuItemProps> = ({ menuItems }) => {
-  const isSmallThanXl = useMediaQuery("screen and (max-width: 1279px)");
+  const [isSmallThanXl, setIsSmallThanXl] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
 
-  console.log("menuItems", menuItems);
+  useEffect(() => {
+    setIsMounted(true);
+
+    const mediaQuery = window.matchMedia("(max-width: 1279px)");
+    setIsSmallThanXl(mediaQuery.matches);
+
+    const handleChange = (event: MediaQueryListEvent) => {
+      setIsSmallThanXl(event.matches);
+    };
+
+    mediaQuery.addEventListener("change", handleChange);
+    return () => mediaQuery.removeEventListener("change", handleChange);
+  }, []);
+
+  // Prevent hydration mismatch by not rendering until mounted
+  if (!isMounted) {
+    return null;
+  }
 
   if (menuItems?.length <= 0 && !isSmallThanXl) return null;
 
@@ -95,7 +113,7 @@ const MoreNavMenuItem: React.FC<MoreNavMenuItemProps> = ({ menuItems }) => {
                 <NavMenuLink asChild>
                   <Link
                     href={navigateService.getGalleryCollection("bao-in")}
-                    className="truncate"
+                    className="truncate text-right"
                   >
                     Báo In
                   </Link>
@@ -107,7 +125,7 @@ const MoreNavMenuItem: React.FC<MoreNavMenuItemProps> = ({ menuItems }) => {
                     href={navigateService.getGalleryCollection(
                       "truyen-hinh-hai-quan"
                     )}
-                    className="truncate"
+                    className="truncate text-right"
                   >
                     Truyền Hình Hải Quân
                   </Link>

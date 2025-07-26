@@ -3,7 +3,7 @@ import { IconCaretDoubleRight } from "../Icon/light";
 import clsx from "clsx";
 import { useState } from "react";
 import Link from "next/link";
-import navigateService from "@/lib/router";
+import { getCategoryHref } from "@/lib/utils";
 
 interface SiteMenuProps {
   data: IMenuItem[];
@@ -60,18 +60,6 @@ const SiteMenu: React.FC<SiteMenuProps> = ({ data, currentCategoryId }) => {
 };
 
 export default SiteMenu;
-
-const getCategoryHref = (item: IMenuItem) => {
-  if (item?.attributes?.category_type === "post") {
-    return navigateService.getPostCollection(item?.attributes?.category_slug);
-  }
-  if (item?.attributes?.category_type === "gallery") {
-    return navigateService.getGalleryCollection(
-      item?.attributes?.category_slug
-    );
-  }
-  return item?.attributes?.url;
-};
 
 const ExpandableItem = ({
   item,

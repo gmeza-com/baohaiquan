@@ -83,6 +83,8 @@ const MenuService = {
           if (cat) {
             el.attributes.category_slug = cat.slug;
             el.attributes.category_type = cat.type;
+          } else {
+            el.attributes.category_slug = el.attributes.url;
           }
           return el;
         });

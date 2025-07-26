@@ -9,7 +9,7 @@ import {
 
 import Link from "next/link";
 import { headers } from "next/headers";
-import { isOn } from "@/lib/utils";
+import { getCategoryHref, isOn } from "@/lib/utils";
 import {
   Sheet,
   SheetContent,
@@ -145,7 +145,7 @@ const MenuSidebar: React.FC<{ data: any[] }> = ({ data }) => {
                 >
                   <AccordionTrigger>
                     <Link
-                      href={`/danh-muc/${item.attributes.category_slug}`}
+                      href={getCategoryHref(item)}
                       className="truncate no-underline focus-within:text-blue-700"
                     >
                       {item.name}
@@ -156,7 +156,7 @@ const MenuSidebar: React.FC<{ data: any[] }> = ({ data }) => {
                       {item.childrens.map((child: any) => (
                         <li key={child.id}>
                           <Link
-                            href={`/danh-muc/${child.attributes.category_slug}`}
+                            href={getCategoryHref(child)}
                             className="truncate block cursor-pointer py-1 focus-within:text-blue-700"
                           >
                             {child.name}
@@ -170,7 +170,7 @@ const MenuSidebar: React.FC<{ data: any[] }> = ({ data }) => {
                 <div key={item.attributes.category_slug} className="border-b">
                   <Link
                     className="py-4 block font-medium"
-                    href={`/danh-muc/${item.attributes.category_slug}`}
+                    href={getCategoryHref(item)}
                   >
                     {item.name}
                   </Link>

@@ -1,8 +1,10 @@
 import { Category, CategoryTree } from "@/type/category";
+import { IMenuItem } from "@/type/menu";
 import { clsx, type ClassValue } from "clsx";
 import escapeRegExp from "escape-string-regexp";
 import { NextRequest } from "next/server";
 import { twMerge } from "tailwind-merge";
+import navigateService from "./router";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -260,4 +262,16 @@ export function formatRelativeTime(date: Date | string | number): string {
 
 export const cleanTextSearch = (text: string): string => {
   return text.trim();
+};
+
+export const getCategoryHref = (item: IMenuItem) => {
+  if (item?.attributes?.category_type === "post") {
+    return navigateService.getPostCollection(item?.attributes?.category_slug);
+  }
+  if (item?.attributes?.category_type === "gallery") {
+    return navigateService.getGalleryCollection(
+      item?.attributes?.category_slug
+    );
+  }
+  return item?.attributes?.url;
 };
