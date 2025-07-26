@@ -7,8 +7,8 @@ import NavyNewspaperBox from "../Home/NavyNewspaperBox";
 import LinkedWebsiteBox from "../Home/LinkedWebsiteBox";
 import QuangCaoCotBen from "../Home/QuangCaoCotBen";
 import { IGalleryCollection } from "@/type/article";
-import SiteMenu from "./SiteMenu";
 import { IMenuItem } from "@/type/menu";
+import MostViewPostLazyLoad from "./MostViewPostLazyLoad";
 
 interface PostDetailRightSideProps {
   menuData: IMenuItem[];
@@ -48,21 +48,25 @@ const PostDetailRightSide: React.FC<PostDetailRightSideProps> = ({
   }, []);
 
   return (
-    <div className="col-span-1 md:col-span-4 xl:col-span-1 pt-6 flex flex-col gap-10">
-      <div>
-        <DecorTitle title="Tin theo danh mục" textClassName="!text-xl" />
-        <SiteMenu data={menuData} currentCategoryId={currentCategory} />
-      </div>
+    <div className="col-span-1 md:col-span-4 xl:col-span-1 md:pt-6 xl:pt-12 flex flex-col gap-10">
+      <MostViewPostLazyLoad />
 
       {!!newsPaperData?.[0] && (
         <NavyNewspaperBox
           gallery={newsPaperData?.[0]}
-          title={<DecorTitle title="Báo in" textClassName="!text-xl" />}
+          title={<DecorTitle title="Báo in" textClassName="text-gray-900" />}
+          linkClassName="bg-yellow-100"
+          titleClassName="text-gray-900"
+          imgClassName="border-yellow-200"
+          containerClassName="!mt-6 xl:!mt-8"
         />
       )}
 
       <LinkedWebsiteBox
-        title={<DecorTitle title="Liên kết website" textClassName="!text-xl" />}
+        title={
+          <DecorTitle title="Liên kết website" textClassName="text-gray-900" />
+        }
+        contentClassName="!mt-6 xl:!mt-8"
       />
       <QuangCaoCotBen slug="quang-cao-cot-ben-1" />
     </div>

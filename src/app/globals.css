@@ -285,7 +285,7 @@ div.article-wrapper {
 }
 div.article-wrapper img {
   height: auto;
-  max-width: 860px !important;
+  /* max-width: 860px !important; */
   width: 100%;
   border-radius: var(--radius);
   background-color: var(--color-gray-200);
@@ -307,7 +307,7 @@ div.article-wrapper table img {
 
 div.article-wrapper p {
   margin: 2rem auto;
-  max-width: 568px;
+  /* max-width: 568px; */
   &:has(img) {
     margin: 0;
     width: 100%;

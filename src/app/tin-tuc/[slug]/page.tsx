@@ -6,6 +6,7 @@ import { ResolvingMetadata } from "next";
 import ShareList from "@/coms/Article/ShareList";
 import RelativeArticle from "@/coms/Article/RelativeArticle";
 import MixBox from "@/coms/Article/MixBox";
+
 import PostDetailRightSide from "@/coms/Article/PostDetailRightSide";
 import MenuService from "@/service/menu";
 import { IMenuItem } from "@/type/menu";
@@ -103,7 +104,7 @@ const TinTucPage = async ({ params }: PageProps) => {
               />
             )}
 
-            <div className="max-w-[568px] mx-auto py-7">
+            <div className="py-7">
               <div className="flex w-full items-center justify-between p-3 bg-yellow-100 rounded-[0.75rem]">
                 <span className="text-gray-900 font-normal text-lg leading-[150%] tracking-[0%]">
                   Chia sẻ
@@ -119,7 +120,6 @@ const TinTucPage = async ({ params }: PageProps) => {
           <PostDetailRightSide menuData={menu} currentCategory={cat?.id || 0} />
         </div>
       </div>
-      {/* <MixBox /> */}
     </div>
   );
 };

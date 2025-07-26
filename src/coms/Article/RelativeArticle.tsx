@@ -66,7 +66,7 @@ const RelativeArticle: React.FC<RelativeArticleProps> = ({ slug, catSlug }) => {
   };
 
   return (
-    <div className="max-w-[568px] mx-auto mt-6 md:mt-10 pt-7 pb-16 border-t border-yellow-200">
+    <div className="mt-6 md:mt-10 pt-7 pb-16 border-t border-yellow-200">
       <h6 className="uppercase font-playfair-display font-black text-[1.75rem] leading-[140%] tracking-[0%]">
         Bạn có thể quan tâm
       </h6>
