@@ -116,11 +116,10 @@ const TinTucPage = async ({ params }: PageProps) => {
 
             <RelativeArticle slug={slug} catSlug={cat?.slug || ""} />
           </div>
-
           <PostDetailRightSide menuData={menu} currentCategory={cat?.id || 0} />
         </div>
       </div>
-      <MixBox />
+      {/* <MixBox /> */}
     </div>
   );
 };

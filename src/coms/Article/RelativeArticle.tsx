@@ -25,7 +25,7 @@ const RelativeArticle: React.FC<RelativeArticleProps> = ({ slug, catSlug }) => {
         const res = await axios.get(`/api/relative-articles`, {
           params: {
             slug,
-            limit: 4,
+            limit: 6,
           },
         });
 
@@ -44,9 +44,9 @@ const RelativeArticle: React.FC<RelativeArticleProps> = ({ slug, catSlug }) => {
     if (isError) return null;
 
     return (
-      <ul className="grid grid-cols-1 md:grid-cols-2 gap-6 xl:gap-x-6 xl:gap-y-8 mt-6 xl:mt-10">
+      <ul className="grid grid-cols-1 md:grid-cols-3 gap-6 xl:gap-x-6 xl:gap-y-8 mt-6 xl:mt-10">
         {isLoading
-          ? Array.from({ length: 4 }).map((_, index) => (
+          ? Array.from({ length: 6 }).map((_, index) => (
               <li key={`relative-article-${index}`}>
                 <div className="w-full aspect-video bg-gray-200 rounded-md" />
                 <div className="w-full h-8 bg-gray-200 rounded-md mt-2" />
@@ -68,7 +68,7 @@ const RelativeArticle: React.FC<RelativeArticleProps> = ({ slug, catSlug }) => {
   return (
     <div className="max-w-[568px] mx-auto mt-6 md:mt-10 pt-7 pb-16 border-t border-yellow-200">
       <h6 className="uppercase font-playfair-display font-black text-[1.75rem] leading-[140%] tracking-[0%]">
-        Tin liên quan
+        Bạn có thể quan tâm
       </h6>
       {renderContent()}
       <Link
