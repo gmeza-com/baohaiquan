@@ -1,11 +1,11 @@
 import CategoryService from "@/service/category";
 import Footer from "./Footer";
-import { getCategoryTree } from "@/lib/utils";
 import GalleryDetailHeader from "./GalleryDetailHeader";
 import { CategoryProps } from "@/type/article";
 import OptionService from "@/service/options";
 import ScrollTopButton from "../common/ScrollTopButton";
 import { GalleryCategorySlug } from "@/data/category";
+import MenuService from "@/service/menu";
 
 const GalleryDetailLayout = async ({
   children,
@@ -16,7 +16,8 @@ const GalleryDetailLayout = async ({
   category: Omit<CategoryProps, "description">;
   postName?: string;
 }) => {
-  const categories = await CategoryService.getPostCategories();
+  const menuItems = await MenuService.getMenuItems();
+
   const options = await OptionService.getOptions([
     "site_phone",
     "site_email",
@@ -27,9 +28,6 @@ const GalleryDetailLayout = async ({
     "social_facebook",
     "social_youtube",
   ]);
-
-  // Convert to tree structure
-  const categoryTree = getCategoryTree(categories);
 
   return (
     <div className="bg-gray-900">
@@ -46,7 +44,7 @@ const GalleryDetailLayout = async ({
         }
       />
       <main>{children}</main>
-      <Footer categories={categoryTree} options={options as any} />
+      <Footer categories={menuItems} options={options as any} />
       <ScrollTopButton />
     </div>
   );

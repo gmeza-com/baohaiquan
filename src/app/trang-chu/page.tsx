@@ -34,10 +34,6 @@ const parseHomeLayout = (layout: string) => {
     const id = test?.[1];
     const additional = test?.[2];
 
-    console.log("type", type);
-    console.log("id", id);
-    console.log("additional", additional);
-
     return {
       type,
       id,
@@ -45,6 +41,13 @@ const parseHomeLayout = (layout: string) => {
     };
   });
 };
+
+const mediaTypes: number[] = [
+  GalleryCategory.LONGFORM,
+  GalleryCategory.INFOGRAPHIC,
+  GalleryCategory.HQ_PODCAST,
+  GalleryCategory.PHONG_SU_ANH,
+];
 
 const HomePage = async () => {
   const [
@@ -78,14 +81,18 @@ const HomePage = async () => {
   // increase site_view when access to this page
   OptionService.increaseSiteView();
 
-  const [categories, galleryCategories] = await Promise.all([
-    CategoryService.getPostCategories(),
-    CategoryService.getGalleryCategories(
-      homeLayoutData
-        ?.filter((item) => Boolean(item?.id) && item?.type === "gallery")
-        ?.map((item) => item?.id)
-    ),
-  ]);
+  const [categories, galleryCategories, getMediaBoxCategories] =
+    await Promise.all([
+      CategoryService.getPostCategories(),
+      CategoryService.getGalleryCategories(
+        homeLayoutData
+          ?.filter((item) => Boolean(item?.id) && item?.type === "gallery")
+          ?.map((item) => item?.id)
+      ),
+      CategoryService.getGalleryCategories(
+        mediaTypes?.map((item) => String(item))
+      ),
+    ]);
 
   const hqMediaCategory = galleryCategories.find(
     (item) => item.id === GalleryCategory.HQ_VIDEO
@@ -98,6 +105,26 @@ const HomePage = async () => {
   const hqPodcastCategory = galleryCategories.find(
     (item) => item.id === GalleryCategory.HQ_PODCAST
   );
+
+  const longformCategory = getMediaBoxCategories.find(
+    (item) => item.id === GalleryCategory.LONGFORM
+  );
+  const podcastCategory = getMediaBoxCategories.find(
+    (item) => item.id === GalleryCategory.HQ_PODCAST
+  );
+  const infographicCategory = getMediaBoxCategories.find(
+    (item) => item.id === GalleryCategory.INFOGRAPHIC
+  );
+  const phongsuanhCategory = getMediaBoxCategories.find(
+    (item) => item.id === GalleryCategory.PHONG_SU_ANH
+  );
+
+  const mediaCatList = [
+    longformCategory,
+    infographicCategory,
+    podcastCategory,
+    phongsuanhCategory,
+  ];
 
   // Convert to tree structure
   const categoryTree = getCategoryTree(categories as Category[])?.filter(
@@ -146,7 +173,7 @@ const HomePage = async () => {
           />
         );
       case "da-phuong-tien":
-        return <MediaBox data={mediaBox} />;
+        return <MediaBox data={mediaBox} mediaCatList={mediaCatList as any} />;
       case "tin-doc-nhieu":
         return (
           <div className="container mx-auto">

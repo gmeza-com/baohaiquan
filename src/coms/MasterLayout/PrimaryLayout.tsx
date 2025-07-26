@@ -2,25 +2,20 @@ import { PropsWithChildren } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
 import MenuService from "@/service/menu";
-import CategoryService from "@/service/category";
-import { getCategoryTree } from "@/lib/utils";
-import { CategoryTree } from "@/type/category";
 import OptionService from "@/service/options";
 import ScrollTopButton from "../common/ScrollTopButton";
+import { IMenuItem } from "@/type/menu";
 
 interface PrimaryLayoutProps extends PropsWithChildren {}
 
 const PrimaryLayout: React.FC<PrimaryLayoutProps> = async ({ children }) => {
-  let menuItems: any[] = [];
-  let categoryTree: CategoryTree[] = [];
+  let menuItems: IMenuItem[] = [];
   let options: Record<string, string> | null = null;
 
   try {
     // menu items
     menuItems = await MenuService.getMenuItems();
 
-    // categories
-    const categories = await CategoryService.getPostCategories();
     // options
     options =
       (await OptionService.getOptions([
@@ -33,15 +28,13 @@ const PrimaryLayout: React.FC<PrimaryLayoutProps> = async ({ children }) => {
         "social_facebook",
         "social_youtube",
       ])) ?? null;
-
-    categoryTree = getCategoryTree(categories);
   } catch (error) {}
 
   return (
     <>
       <Header menuItems={menuItems} options={options as any} />
       <main>{children}</main>
-      <Footer categories={categoryTree} options={options as any} />
+      <Footer categories={menuItems} options={options as any} />
       <ScrollTopButton />
     </>
   );

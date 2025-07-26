@@ -652,3 +652,25 @@ export const IconBrandFacebook: React.FC<IconSvgProps> = ({
     </defs>
   </svg>
 );
+
+export const IconQuote: React.FC<IconSvgProps> = ({
+  size,
+  width = 24,
+  height = 24,
+  fill = "currentColor",
+  ...props
+}) => (
+  <svg
+    width={size || width}
+    height={size || height}
+    viewBox="0 0 52 52"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}
+  >
+    <path
+      d="M2 29.4286H12.2857L5.42851 43.1428H15.7142L22.5714 29.4286V8.85718H2V29.4286ZM29.4286 8.85718V29.4286H39.7143L32.8571 43.1428H43.1428L50 29.4286V8.85718H29.4286Z"
+      fill={fill}
+    />
+  </svg>
+);
