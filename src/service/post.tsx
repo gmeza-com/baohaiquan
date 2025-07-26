@@ -686,42 +686,8 @@ const PostService = {
     const now = dayjs().format(DB_DATE_TIME_FORMAT);
 
     try {
-      // Posts subquery for 'infographics' and 'phong-su-anh' categories
-      const postsSubquery = db("posts as p")
-        .join("post_category as p2", "p2.post_id", "p.id")
-        .join("post_categories as p3", "p3.id", "p2.post_category_id")
-        .join("post_category_languages as p4", "p4.post_category_id", "p3.id")
-        .join("post_languages as p5", "p5.post_id", "p.id")
-        .select(
-          "p.id",
-          "p.published_at",
-          "p.thumbnail",
-          db.raw(
-            `CASE 
-              WHEN p.featured = 1 
-              AND (p.featured_started_at IS NULL OR p.featured_started_at <= ?)
-              AND (p.featured_ended_at IS NULL OR p.featured_ended_at >= ?)
-              THEN 1 
-              ELSE 0 
-            END AS is_featured_now`,
-            [now, now]
-          ),
-          "p5.slug",
-          "p5.name",
-          "p5.description",
-          "p4.slug as category_slug",
-          "p4.name as category_name"
-        )
-        .whereIn("p4.slug", ["infographics", "phong-su-anh"])
-        .andWhere("p.published", 3)
-        .andWhere("p.published_at", "<=", now)
-        .andWhere("p4.locale", "vi")
-        .andWhere("p.hide", 0)
-        .andWhere("p.status", 0)
-        .limit(limit * 2);
-
       // Gallery subquery for 'podcast' and 'longform' categories
-      const gallerySubquery = db("gallery as g")
+      const gallerySubquery = await db("gallery as g")
         .leftJoin("gallery_category as g2", "g2.gallery_id", "g.id")
         .leftJoin("gallery_categories as g3", "g3.id", "g2.gallery_category_id")
         .leftJoin(
@@ -741,20 +707,20 @@ const PostService = {
           "g4.slug as category_slug",
           "g4.name as category_name"
         )
-        .whereIn("g4.slug", ["podcast", "longform"])
+        .whereIn("g4.id", [
+          GalleryCategory.LONGFORM,
+          GalleryCategory.INFOGRAPHIC,
+          GalleryCategory.HQ_PODCAST,
+          GalleryCategory.PHONG_SU_ANH,
+        ])
         .andWhere("g.published", 1)
         .andWhere("g.published_at", "<=", now)
         .andWhere("g4.locale", "vi")
-        .limit(limit * 2);
-
-      // Union the queries and order by featured status and published date
-      const result = await db
-        .unionAll([postsSubquery, gallerySubquery], true)
         .orderBy("is_featured_now", "desc")
         .orderBy("published_at", "desc")
         .limit(limit);
 
-      return result;
+      return gallerySubquery;
     } catch (error) {
       console.error("getMediaBox:", error);
       return [];
