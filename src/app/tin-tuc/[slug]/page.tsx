@@ -6,6 +6,7 @@ import { ResolvingMetadata } from "next";
 import ShareList from "@/coms/Article/ShareList";
 import RelativeArticle from "@/coms/Article/RelativeArticle";
 import MixBox from "@/coms/Article/MixBox";
+
 import PostDetailRightSide from "@/coms/Article/PostDetailRightSide";
 import MenuService from "@/service/menu";
 import { IMenuItem } from "@/type/menu";
@@ -70,28 +71,27 @@ const TinTucPage = async ({ params }: PageProps) => {
       <div className="bg-yellow-50">
         <div className="container grid gird-cols-1 md:grid-cols-12 xl:grid-cols-4 gap-6 lg:gap-12">
           <div className="mx-auto w-full overflow-hidden md:col-span-8 xl:col-span-3">
-            <div className="max-w-[660px] text-center mx-auto pt-6 pb-12">
-              {isOn(cat) && (
-                <a
-                  href={`/danh-muc/${cat?.slug}`}
-                  className="uppercase text-sm hover:underline"
-                >
-                  {cat?.name}
-                </a>
-              )}
+            <div className="pt-6 pb-12">
+              <div className="flex gap-3 items-center">
+                {isOn(cat) && (
+                  <a
+                    href={`/danh-muc/${cat?.slug}`}
+                    className="uppercase text-sm hover:underline"
+                  >
+                    {cat?.name}
+                  </a>
+                )}
+                |
+                {post && (
+                  <span className="capitalize opacity-80">
+                    {dayjs(post.published_at).format("dddd, DD/MM/YYYY HH:mm")}
+                  </span>
+                )}
+              </div>
               {post && (
-                <>
-                  <h1 className="text-5xl mt-5 mb-6 font-bold">
-                    {stripHtml(post?.name)}
-                  </h1>
-                  <p>
-                    <span className="capitalize opacity-80">
-                      {dayjs(post.published_at).format(
-                        "dddd, DD/MM/YYYY HH:mm"
-                      )}
-                    </span>
-                  </p>
-                </>
+                <h1 className="text-5xl mt-5 mb-6 font-bold">
+                  {stripHtml(post?.name)}
+                </h1>
               )}
             </div>
             {post?.content && (
@@ -103,7 +103,7 @@ const TinTucPage = async ({ params }: PageProps) => {
               />
             )}
 
-            <div className="max-w-[568px] mx-auto py-7">
+            <div className="py-7">
               <div className="flex w-full items-center justify-between p-3 bg-yellow-100 rounded-[0.75rem]">
                 <span className="text-gray-900 font-normal text-lg leading-[150%] tracking-[0%]">
                   Chia sẻ
@@ -116,11 +116,9 @@ const TinTucPage = async ({ params }: PageProps) => {
 
             <RelativeArticle slug={slug} catSlug={cat?.slug || ""} />
           </div>
-
           <PostDetailRightSide menuData={menu} currentCategory={cat?.id || 0} />
         </div>
       </div>
-      <MixBox />
     </div>
   );
 };
