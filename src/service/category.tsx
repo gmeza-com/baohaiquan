@@ -22,6 +22,24 @@ const CategoryService = {
     }
   },
 
+  getSubCategoryIds: async (catId: number): Promise<number[]> => {
+    try {
+      if (!db) throw new Error("Database connection is not initialized");
+
+      if (!catId) throw new Error("Category ID is required");
+
+      return await db("post_categories as pc")
+        .join("post_category_languages as pcl", "pc.id", "pcl.post_category_id")
+        .select("pc.id")
+        .where("pc.parent_id", catId)
+        .andWhere("pc.published", 1)
+        .andWhere("pcl.locale", "vi");
+    } catch (error) {
+      console.error("getSubCategoryIds:", error);
+      return [];
+    }
+  },
+
   /**
    * Fetches articles by category slug, new items first
    * @param slug - The slug of the category
@@ -50,6 +68,9 @@ const CategoryService = {
       const catId = await CategoryService.getCatIdFromSlug(slug);
       if (!catId) throw new Error("Category not found");
 
+      // fetch sub-category IDs if the category has sub-categories
+      const subCatIds = await CategoryService.getSubCategoryIds(catId);
+
       // fetch articles in the category, excluding specified IDs
       let fetcher = db("posts as p")
         .join("post_languages as pl", "p.id", "pl.post_id")
@@ -73,7 +94,7 @@ const CategoryService = {
           "p.user_id as author_id",
           "u.name as author_name"
         )
-        .where("pc.post_category_id", catId)
+        .where("pc.post_category_id", "in", [catId, ...subCatIds])
         .andWhere("p.published", 3)
         .andWhere("p.published_at", "<=", now)
         .andWhere("p.hide", 0)
@@ -82,20 +103,25 @@ const CategoryService = {
 
       if (excludeFeatured) {
         // Lấy bài bình thường + bài featured hết hạn (loại trừ bài featured đang có hiệu lực)
-        fetcher = fetcher.andWhere(function() {
+        fetcher = fetcher.andWhere(function () {
           this.where("p.featured", 0) // Bài bình thường
-            .orWhere(function() {
+            .orWhere(function () {
               // Bài featured hết hạn
-              this.where("p.featured", 1)
-                .andWhere(function() {
-                  this.where(function() {
-                    this.whereNotNull("p.featured_started_at")
-                      .andWhere("p.featured_started_at", ">", now);
-                  }).orWhere(function() {
-                    this.whereNotNull("p.featured_ended_at")
-                      .andWhere("p.featured_ended_at", "<", now);
-                  });
+              this.where("p.featured", 1).andWhere(function () {
+                this.where(function () {
+                  this.whereNotNull("p.featured_started_at").andWhere(
+                    "p.featured_started_at",
+                    ">",
+                    now
+                  );
+                }).orWhere(function () {
+                  this.whereNotNull("p.featured_ended_at").andWhere(
+                    "p.featured_ended_at",
+                    "<",
+                    now
+                  );
                 });
+              });
             });
         });
       }
@@ -106,14 +132,14 @@ const CategoryService = {
       // Sắp xếp để ưu tiên bài featured trong thời gian hợp lệ
       // Priority 1: Bài featured trong thời gian hợp lệ
       // Priority 2: Bài featured hết hạn + bài bình thường (coi như nhau)
-      const orderByClause = excludeFeatured 
+      const orderByClause = excludeFeatured
         ? "" // Khi excludeFeatured, tất cả đều là bài thường nên không cần sắp xếp đặc biệt
-        : `CASE 
-            WHEN p.featured = 1 
+        : `CASE
+            WHEN p.featured = 1
             AND (p.featured_started_at IS NULL OR p.featured_started_at <= '${now}')
             AND (p.featured_ended_at IS NULL OR p.featured_ended_at >= '${now}')
-            THEN 1 
-            ELSE 2 
+            THEN 1
+            ELSE 2
           END`;
 
       let query = fetcher;

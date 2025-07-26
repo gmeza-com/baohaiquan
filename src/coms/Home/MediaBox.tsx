@@ -38,14 +38,14 @@ const MediaBox: React.FC<MediaBoxProps> = ({
             <ul className="flex items-center gap-4 lg:gap-5 divide-x divide-blue-200 overflow-x-auto no-scrollbar">
               {mediaCatList.map((item) => (
                 <li
-                  key={item.id}
+                  key={item?.id}
                   className="text-nowrap pe-4 lg:pe-5 lg:text-lg font-semibold"
                 >
                   <Link
                     href={navigateService.getGalleryCollection(item?.slug)}
                     className="focus:underline text-blue-700"
                   >
-                    {item.name}
+                    {item?.name}
                   </Link>
                 </li>
               ))}
