@@ -33,7 +33,7 @@ const MediaBox: React.FC<MediaBoxProps> = ({
       <div className="container mx-auto">
         <div className="bg-branch-default py-9 px-4 lg:px-7 lg:pt-8 lg:pb-10 md:rounded-3xl -m-4 md:m-0">
           <div className="flex flex-col gap-3 md:flex-row md:items-center md:gap-4 lg:gap-10">
-            <DecorTitle title="Đa phương tiện" />
+            <DecorTitle title="Đa phương tiện" link="/da-phuong-tien" />
 
             <ul className="flex items-center gap-4 lg:gap-5 divide-x divide-blue-200 overflow-x-auto no-scrollbar">
               {mediaCatList.map((item) => (
