@@ -9,6 +9,7 @@ const ChuChayTrangChu = () => {
   const [data, setData] = useState<IWidget | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
   const [position, setPosition] = useState(0);
   const [textWidth, setTextWidth] = useState(0);
   const [containerWidth, setContainerWidth] = useState(0);
@@ -40,18 +41,20 @@ const ChuChayTrangChu = () => {
       return newPosition;
     });
     
-    animationRef.current = requestAnimationFrame(animate);
+    if (typeof requestAnimationFrame !== 'undefined') {
+      animationRef.current = requestAnimationFrame(animate);
+    }
   };
 
   const startAnimation = () => {
-    if (textWidth > 0 && containerWidth > 0) {
+    if (textWidth > 0 && containerWidth > 0 && typeof requestAnimationFrame !== 'undefined') {
       setPosition(containerWidth); // Bắt đầu từ bên phải
       animationRef.current = requestAnimationFrame(animate);
     }
   };
 
   const stopAnimation = () => {
-    if (animationRef.current) {
+    if (animationRef.current && typeof cancelAnimationFrame !== 'undefined') {
       cancelAnimationFrame(animationRef.current);
     }
   };
@@ -60,6 +63,11 @@ const ChuChayTrangChu = () => {
    * useEffect
    * ====================================================================
    */
+
+  // Mount check để tránh hydration mismatch
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -83,21 +91,25 @@ const ChuChayTrangChu = () => {
 
   // Cập nhật kích thước khi content thay đổi
   useEffect(() => {
-    if (content && textRef.current && containerRef.current) {
-      const updateDimensions = () => {
-        const textElement = textRef.current;
-        const containerElement = containerRef.current;
-        
-        if (textElement && containerElement) {
-          setTextWidth(textElement.offsetWidth);
-          setContainerWidth(containerElement.offsetWidth);
-        }
-      };
+    if (!isMounted || !content || !textRef.current || !containerRef.current) {
+      return;
+    }
 
-      // Cập nhật ngay lập tức
-      updateDimensions();
+    const updateDimensions = () => {
+      const textElement = textRef.current;
+      const containerElement = containerRef.current;
       
-      // Thêm listener cho resize
+      if (textElement && containerElement) {
+        setTextWidth(textElement.offsetWidth);
+        setContainerWidth(containerElement.offsetWidth);
+      }
+    };
+
+    // Cập nhật ngay lập tức
+    updateDimensions();
+    
+    // Thêm listener cho resize (chỉ khi browser hỗ trợ)
+    if (typeof ResizeObserver !== 'undefined') {
       const resizeObserver = new ResizeObserver(updateDimensions);
       if (textRef.current) {
         resizeObserver.observe(textRef.current);
@@ -110,18 +122,18 @@ const ChuChayTrangChu = () => {
         resizeObserver.disconnect();
       };
     }
-  }, [content]);
+  }, [content, isMounted]);
 
   // Bắt đầu animation khi có đủ thông tin
   useEffect(() => {
-    if (textWidth > 0 && containerWidth > 0) {
+    if (isMounted && textWidth > 0 && containerWidth > 0) {
       startAnimation();
     }
 
     return () => {
       stopAnimation();
     };
-  }, [textWidth, containerWidth]);
+  }, [textWidth, containerWidth, isMounted]);
 
   // Cleanup animation khi component unmount
   useEffect(() => {
@@ -144,7 +156,9 @@ const ChuChayTrangChu = () => {
       <div 
         ref={containerRef}
         className="w-full relative"
-        style={{ height: textRef.current?.offsetHeight || 'auto' }}
+        style={{ 
+          height: isMounted && textRef.current?.offsetHeight ? `${textRef.current.offsetHeight}px` : 'auto' 
+        }}
       >
         <div
           ref={textRef}

@@ -1,3 +1,4 @@
+import React from "react";
 import DecorTitle from "@/coms/Home/DecorTitle";
 import DefenseSecurityBox from "@/coms/Home/DefenseSecurityBox";
 import HeadlineBlock from "@/coms/Home/HeadlineBlock";
@@ -298,7 +299,7 @@ const HomePage = async () => {
         const _index = index + 1;
 
         return (
-          <>
+          <React.Fragment key={index}>
             {renderHomeBlock(item)}
 
             {publishedWidgets?.some(
@@ -308,7 +309,7 @@ const HomePage = async () => {
             ) : (
               <div className="h-7 lg:h-10 xl:h-12 w-full my-3"></div>
             )}
-          </>
+          </React.Fragment>
         );
       })}
     </div>
