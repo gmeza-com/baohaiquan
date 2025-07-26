@@ -71,28 +71,27 @@ const TinTucPage = async ({ params }: PageProps) => {
       <div className="bg-yellow-50">
         <div className="container grid gird-cols-1 md:grid-cols-12 xl:grid-cols-4 gap-6 lg:gap-12">
           <div className="mx-auto w-full overflow-hidden md:col-span-8 xl:col-span-3">
-            <div className="max-w-[660px] text-center mx-auto pt-6 pb-12">
-              {isOn(cat) && (
-                <a
-                  href={`/danh-muc/${cat?.slug}`}
-                  className="uppercase text-sm hover:underline"
-                >
-                  {cat?.name}
-                </a>
-              )}
+            <div className="pt-6 pb-12">
+              <div className="flex gap-3 items-center">
+                {isOn(cat) && (
+                  <a
+                    href={`/danh-muc/${cat?.slug}`}
+                    className="uppercase text-sm hover:underline"
+                  >
+                    {cat?.name}
+                  </a>
+                )}
+                |
+                {post && (
+                  <span className="capitalize opacity-80">
+                    {dayjs(post.published_at).format("dddd, DD/MM/YYYY HH:mm")}
+                  </span>
+                )}
+              </div>
               {post && (
-                <>
-                  <h1 className="text-5xl mt-5 mb-6 font-bold">
-                    {stripHtml(post?.name)}
-                  </h1>
-                  <p>
-                    <span className="capitalize opacity-80">
-                      {dayjs(post.published_at).format(
-                        "dddd, DD/MM/YYYY HH:mm"
-                      )}
-                    </span>
-                  </p>
-                </>
+                <h1 className="text-5xl mt-5 mb-6 font-bold">
+                  {stripHtml(post?.name)}
+                </h1>
               )}
             </div>
             {post?.content && (
