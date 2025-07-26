@@ -1,24 +1,39 @@
+import clsx from "clsx";
 import Link from "next/link";
 
 interface ArticleRankItemProps {
   number: number;
   title: string;
   slug: string;
+  numberClassName?: string;
+  className?: string;
+  linkClassName?: string;
 }
 
 const ArticleRankItem: React.FC<ArticleRankItemProps> = ({
   number,
   title,
   slug,
+  numberClassName,
+  className,
+  linkClassName,
 }) => {
   return (
-    <li>
+    <li className={clsx(className)}>
       <Link
         href={`/tin-tuc/${slug}`}
-        className="pt-3 pb-4 pe-1 flex items-center gap-7 group"
+        className={clsx(
+          "pt-3 pb-4 pe-1 flex items-center gap-7 group",
+          linkClassName
+        )}
       >
         <span className="font-playfair-display text-7xl -mt-5">
-          <div className="w-8 flex justify-center items-center text-[#A5C5E6]">
+          <div
+            className={clsx(
+              "w-8 flex justify-center items-center text-[#A5C5E6]",
+              numberClassName
+            )}
+          >
             {number}
           </div>
         </span>

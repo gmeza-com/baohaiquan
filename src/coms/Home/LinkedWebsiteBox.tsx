@@ -6,14 +6,19 @@ import { useEffect, useMemo, useState } from "react";
 import { ILinkedWebsite, IWidget } from "@/type/widget";
 import axios from "axios";
 import Link from "next/link";
+import clsx from "clsx";
 
 const LIMIT = 6;
 
 interface LinkedWebsiteBoxProps {
   title?: React.ReactNode;
+  contentClassName?: string;
 }
 
-const LinkedWebsiteBox: React.FC<LinkedWebsiteBoxProps> = ({ title }) => {
+const LinkedWebsiteBox: React.FC<LinkedWebsiteBoxProps> = ({
+  title,
+  contentClassName,
+}) => {
   const [data, setData] = useState<IWidget | null>(null);
   const [loading, setLoading] = useState(false);
   const [isError, setIsError] = useState<boolean>(false);
@@ -77,7 +82,7 @@ const LinkedWebsiteBox: React.FC<LinkedWebsiteBoxProps> = ({ title }) => {
           textClassName="@max-[250px]/linked-website-box:text-lg"
         />
       )}
-      <div className="mt-8">
+      <div className={clsx(contentClassName, "mt-8")}>
         {firstWebsite && (
           <Link
             href={firstWebsite?.url as string}

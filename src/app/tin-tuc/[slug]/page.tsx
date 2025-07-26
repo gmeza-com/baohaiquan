@@ -120,7 +120,6 @@ const TinTucPage = async ({ params }: PageProps) => {
           <PostDetailRightSide menuData={menu} currentCategory={cat?.id || 0} />
         </div>
       </div>
-      <MixBox />
     </div>
   );
 };
