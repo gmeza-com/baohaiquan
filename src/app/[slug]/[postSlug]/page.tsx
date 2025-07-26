@@ -63,14 +63,16 @@ const GalleryDetailPage = async ({ params }: PageProps) => {
 
     if (!cat) throw new Error("Category not found");
 
+    const postId = await PostService.getGalleryIdFromSlug(postSlug, cat?.id);
+
+    // *: increment view count
+    if (postId) {
+      await PostService.increaseViewCount(postId, true);
+    }
+
     post = await PostService.getGalleryFromSlug(postSlug, cat.id);
 
     if (!post) throw new Error("Post not found");
-
-    // *: increment view count
-    if (post && post.id) {
-      await PostService.increaseViewCount(post.id);
-    }
   } catch (error) {
     console.error("GalleryDetailPage:", error);
     notFound();

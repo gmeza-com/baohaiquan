@@ -27,6 +27,7 @@ const PostService = {
       return await db("posts as p")
         .join("post_languages as pl", "p.id", "pl.post_id")
         .join("users as u", "p.user_id", "u.id")
+        .leftJoin("views as v", "v.subject_id", "p.id")
         .select(
           "p.id",
           "pl.slug",
@@ -43,7 +44,11 @@ const PostService = {
           "p.featured_started_at",
           "p.featured_ended_at",
           "p.user_id as author_id",
-          "u.name as author_name"
+          "u.name as author_name",
+          "v.count as view_count",
+          "pl.quote",
+          "pl.note",
+          "p.prefix"
         )
         .where("p.published", 3)
         .andWhere("p.published_at", "<=", now)
@@ -51,9 +56,34 @@ const PostService = {
         .andWhere("p.status", 0)
         .andWhere("pl.locale", "vi")
         .andWhere("pl.slug", slug)
+        .andWhere("v.subject_type", "Modules\\News\\Models\\Post")
         .first();
     } catch (error) {
       console.error("getPostFromSlug:", error);
+      return null;
+    }
+  },
+  getPostIdFromSlug: async (slug: string): Promise<number | null> => {
+    try {
+      slug = cleanSlug(slug);
+      if (!slug) throw new Error("Post slug is required");
+
+      const now = dayjs().format(DB_DATE_TIME_FORMAT);
+
+      const res = await db("posts as p")
+        .join("post_languages as pl", "p.id", "pl.post_id")
+        .select("p.id")
+        .where("p.published", 3)
+        .andWhere("p.published_at", "<=", now)
+        .andWhere("p.hide", 0)
+        .andWhere("p.status", 0)
+        .andWhere("pl.locale", "vi")
+        .andWhere("pl.slug", slug)
+        .first();
+
+      return res?.id || null;
+    } catch (error) {
+      console.error("getPostIdFromSlug:", error);
       return null;
     }
   },
@@ -118,6 +148,34 @@ const PostService = {
     }
   },
 
+  getGalleryIdFromSlug: async (
+    slug: string,
+    catId: number
+  ): Promise<number | null> => {
+    try {
+      slug = cleanSlug(slug);
+      if (!slug) throw new Error("Gallery slug is required");
+
+      const now = dayjs().format(DB_DATE_TIME_FORMAT);
+
+      const result = await db("gallery as g")
+        .join("gallery_languages as gl", "gl.gallery_id", "g.id")
+        .join("gallery_category as gc", "gc.gallery_id", "g.id")
+        .select("g.id")
+        .where("g.published", 1)
+        .andWhere("g.published_at", "<=", now)
+        .andWhere("gl.locale", "vi")
+        .andWhere("gl.slug", slug)
+        .andWhere("gc.gallery_category_id", catId)
+        .first();
+
+      return result?.id || null;
+    } catch (error) {
+      console.error("getGalleryIdFromSlug:", error);
+      return null;
+    }
+  },
+
   getCategoryOfPost: async (slug: string): Promise<CategoryProps | null> => {
     try {
       slug = cleanSlug(slug);
@@ -175,12 +233,42 @@ const PostService = {
     }
   },
 
-  increaseViewCount: async (postId: number): Promise<void> => {
+  increaseViewCount: async (
+    postId: number,
+    isGallery: boolean = false
+  ): Promise<void> => {
     try {
       if (!db) throw new Error("Database connection is not initialized");
       if (!postId) throw new Error("Post ID is required");
 
-      await db("views").where("subject_id", postId).increment("count", 1);
+      // Check if the view row exists
+      const existing = await db("views")
+        .where({
+          subject_id: postId,
+          subject_type: isGallery
+            ? "Modules\\Gallery\\Models\\Gallery"
+            : "Modules\\News\\Models\\Post",
+        })
+        .first();
+
+      if (existing) {
+        await db("views")
+          .where({
+            subject_id: postId,
+            subject_type: isGallery
+              ? "Modules\\Gallery\\Models\\Gallery"
+              : "Modules\\News\\Models\\Post",
+          })
+          .increment("count", 1);
+      } else {
+        await db("views").insert({
+          subject_id: postId,
+          subject_type: isGallery
+            ? "Modules\\Gallery\\Models\\Gallery"
+            : "Modules\\News\\Models\\Post",
+          count: 1,
+        });
+      }
     } catch (error) {
       console.error("increaseViewCount:", error);
     }

@@ -16,6 +16,10 @@ export type ArticleProps = {
   featured_ended_at: string | null;
   author_id: number;
   author_name: string;
+  view_count: number;
+  quote: string | null;
+  note: string | null;
+  prefix: string | null;
 };
 
 // TODO: add type for this

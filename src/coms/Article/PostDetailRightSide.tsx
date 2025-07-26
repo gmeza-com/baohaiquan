@@ -10,10 +10,7 @@ import { IGalleryCollection } from "@/type/article";
 import { IMenuItem } from "@/type/menu";
 import MostViewPostLazyLoad from "./MostViewPostLazyLoad";
 
-interface PostDetailRightSideProps {
-  menuData: IMenuItem[];
-  currentCategory: number;
-}
+interface PostDetailRightSideProps {}
 
 // Hàm đệ quy để convert childrens thành children
 const convertChildrensToChildren = (items: any[]): any[] => {
@@ -30,10 +27,7 @@ const convertChildrensToChildren = (items: any[]): any[] => {
   });
 };
 
-const PostDetailRightSide: React.FC<PostDetailRightSideProps> = ({
-  menuData,
-  currentCategory,
-}) => {
+const PostDetailRightSide: React.FC<PostDetailRightSideProps> = ({}) => {
   const [newsPaperData, setNewsPaperData] = useState<IGalleryCollection[]>([]);
 
   useEffect(() => {
