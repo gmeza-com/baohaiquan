@@ -10,6 +10,7 @@ import VideoDetailView from "@/coms/Gallery/VideoDetailView";
 import AudioDetailsView from "@/coms/Gallery/AudioDetailsView";
 import CategoryService from "@/service/category";
 import LongformDetailView from "@/coms/Gallery/LongformDetailView";
+import ContentDetailView from "@/coms/Gallery/ContentDetailView";
 
 type PageProps = { params: Promise<{ postSlug: string; slug: string }> };
 
@@ -82,6 +83,7 @@ const GalleryDetailPage = async ({ params }: PageProps) => {
       {post?.type === "longform" && (
         <LongformDetailView post={post} cat={cat} />
       )}
+      {post?.type === "content" && <ContentDetailView post={post} cat={cat} />}
     </GalleryDetailLayout>
   );
 };

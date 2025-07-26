@@ -21,7 +21,7 @@ export type ArticleProps = {
 // TODO: add type for this
 export type GalleryContentType = any;
 
-export type GalleryType = "video" | "audio" | "album" | "longform";
+export type GalleryType = "video" | "audio" | "album" | "longform" | "content";
 
 export type GalleryProps = Pick<
   ArticleProps,
@@ -38,6 +38,7 @@ export type GalleryProps = Pick<
   | "author_name"
 > & {
   content: GalleryContentType;
+  post_content: string | null;
   view_count: number;
   type: GalleryType;
 };
@@ -72,7 +73,8 @@ export type IGalleryCollection = Pick<
   | "published_at"
   | "featured"
 > & {
-  content: string;
+  content: string | null;
+  post_content: string | null;
   podcast_category?: IPodcastCategory;
 };
 

@@ -99,6 +99,7 @@ const GalleryCollectionPage = async ({ params, searchParams }: PageProps) => {
             key={item?.id}
             data={item}
             href={navigateService.getGalleryDetails(slug, item?.slug)}
+            isNormal={true}
           />
         );
     }

@@ -88,7 +88,8 @@ const PostService = {
           "v.count as view_count",
           "g.user_id as author_id",
           "u.name as author_name",
-          "g.type"
+          "g.type",
+          "gl.post_content"
         )
         .where("g.published", 1)
         .andWhere("g.published_at", "<=", now)
@@ -100,9 +101,13 @@ const PostService = {
 
       return {
         ...result,
-        content: unserialize(result?.content, {
-          "Illuminate\\Support\\Collection": Collection,
-        })?.items,
+        ...(result?.content
+          ? {
+              content: unserialize(result?.content, {
+                "Illuminate\\Support\\Collection": Collection,
+              })?.items,
+            }
+          : {}),
       };
     } catch (error) {
       console.error("getGalleryFromSlug:", error);
@@ -503,7 +508,8 @@ const PostService = {
           "gl.content",
           "g.published_at",
           "v.count as view_count",
-          "g.type"
+          "g.type",
+          "gl.post_content"
         )
         .where("gc2.id", categoryId)
         .andWhere("g.published", 1)
@@ -516,9 +522,13 @@ const PostService = {
 
       const data = result.map((item) => ({
         ...item,
-        content: unserialize(item?.content, {
-          "Illuminate\\Support\\Collection": Collection,
-        })?.items?.link,
+        ...(item?.content
+          ? {
+              content: unserialize(item?.content, {
+                "Illuminate\\Support\\Collection": Collection,
+              })?.items?.link,
+            }
+          : {}),
       }));
 
       return { data, currentPage: page, total: total };
