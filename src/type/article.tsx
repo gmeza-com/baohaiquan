@@ -39,6 +39,9 @@ export type GalleryProps = Pick<
 > & {
   content: GalleryContentType;
   post_content: string | null;
+  prefix: string | null;
+  note: string | null;
+  quote: string | null;
   view_count: number;
   type: GalleryType;
 };

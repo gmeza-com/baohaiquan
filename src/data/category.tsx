@@ -4,8 +4,8 @@ export enum GalleryCategory {
   HQ_NEWS_PAPER = 3,
   HQ_PODCAST = 4,
   LONGFORM = 5,
-  PHONG_SU_ANH = 7,
-  INFOGRAPHIC = 8
+  PHONG_SU_ANH = 6,
+  INFOGRAPHIC = 7
 }
 
 export enum GalleryCategorySlug {

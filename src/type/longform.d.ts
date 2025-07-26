@@ -55,6 +55,6 @@ export interface ColumnsBlock {
 
 export interface QuoteBlock {
   text: string;
-  alignment: "left" | "center";
-  caption: string;
+  alignment?: "left" | "center";
+  caption?: string;
 }

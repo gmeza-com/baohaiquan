@@ -329,7 +329,7 @@ div.article-wrapper p {
 
 div.longform-wrapper {
   p {
-    @apply px-4 md:px-0 max-w-[568px];
+    @apply px-4 md:px-0 max-w-[568px] text-base lg:text-lg text-gray-900;
 
     margin: 2rem auto;
 
@@ -341,7 +341,7 @@ div.longform-wrapper {
 
   img,
   video {
-    @apply  h-auto rounded bg-gray-200 w-full border border-white;
+    @apply h-auto rounded bg-gray-200 w-full border border-white;
   }
 }
 

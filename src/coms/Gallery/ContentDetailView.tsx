@@ -5,6 +5,7 @@ import { IconClock } from "../Icon/light";
 import vietnamDayjs from "@/lib/dayjs";
 import MostViewArticles from "./MostViewArticles";
 import DOMPurify from "isomorphic-dompurify";
+import QuoteBlock from "../Longform/QuoteBlock";
 
 interface ContentDetailViewProps {
   post: GalleryProps;
@@ -15,8 +16,27 @@ const ContentDetailView: React.FC<ContentDetailViewProps> = ({ post, cat }) => {
   return (
     <div className="bg-white w-full flex flex-col gap-3">
       <div className="w-full max-w-[616px] px-4 md:px-0 md:pt-12 xl:pt-16 pt-10 pb-0 mx-auto">
-        <h1 className="text-center font-bold text-3xl lg:text-4xl xl:text-5xl leading-[125%] tracking-[-1%]">{post?.name}</h1>
+        <h1 className="text-center font-bold text-3xl lg:text-4xl xl:text-5xl leading-[125%] tracking-[-1%]">
+          {post?.name}
+        </h1>
       </div>
+
+      {post?.quote && (
+        <div className="longform-wrapper text-justify">
+          <p>
+            {post?.prefix && (
+              <span className="float-left font-bold me-1.5">
+                {post?.prefix} -
+              </span>
+            )}
+            <span
+              dangerouslySetInnerHTML={{
+                __html: DOMPurify.sanitize(post.quote),
+              }}
+            />
+          </p>
+        </div>
+      )}
 
       {post?.post_content && (
         <div
@@ -26,6 +46,13 @@ const ContentDetailView: React.FC<ContentDetailViewProps> = ({ post, cat }) => {
           }}
         />
       )}
+
+      {post?.note && (
+        <div className="max-w-[960px] mx-auto w-full px-4 xl:px-0 pb-6 lg:pb-10 xl:pb-16">
+          <QuoteBlock text={post?.note} />
+        </div>
+      )}
+
       <div className="max-w-[568px] mx-auto py-7 w-full px-4 md:px-0">
         <div className="flex w-full items-center justify-between p-3 bg-blue-50 rounded-[0.75rem]">
           <span className="text-gray-900 font-normal text-lg leading-[150%] tracking-[0%]">

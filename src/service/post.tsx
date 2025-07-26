@@ -89,7 +89,10 @@ const PostService = {
           "g.user_id as author_id",
           "u.name as author_name",
           "g.type",
-          "gl.post_content"
+          "gl.post_content",
+          "g.prefix",
+          "gl.note",
+          "gl.quote"
         )
         .where("g.published", 1)
         .andWhere("g.published_at", "<=", now)
