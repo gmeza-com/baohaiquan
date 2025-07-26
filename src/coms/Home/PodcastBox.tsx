@@ -54,7 +54,7 @@ const PodcastBox: React.FC<PodcastBoxProps> = ({ podcasts = [], category }) => {
                 title={item.name}
                 description={item.description}
                 image={item.thumbnail}
-                audioUrl={item.content}
+                audioUrl={item.content as string}
                 href={navigateService.getGalleryDetails(
                   category?.slug,
                   item?.slug
@@ -81,7 +81,7 @@ const PodcastBox: React.FC<PodcastBoxProps> = ({ podcasts = [], category }) => {
                     title={item.name}
                     description={item.description}
                     image={item.thumbnail}
-                    audioUrl={item.content}
+                    audioUrl={item.content as string}
                     href={navigateService.getGalleryDetails(
                       category?.slug,
                       item?.slug

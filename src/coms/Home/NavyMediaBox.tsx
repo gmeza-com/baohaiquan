@@ -24,7 +24,7 @@ const NavyMediaBox: React.FC<NavyMediaBoxProps> = ({
     <div className={clsx("@container/navy-media-box", className)}>
       <VideoPlayer
         key={activeGallery?.id}
-        url={activeGallery?.content}
+        url={activeGallery?.content as string}
         thumbnail={activeGallery?.thumbnail}
         className="w-full aspect-video rounded-[6px] object-cover"
         width={972}
