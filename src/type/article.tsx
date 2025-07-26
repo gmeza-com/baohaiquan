@@ -4,6 +4,7 @@ export type ArticleProps = {
   name: string;
   description: string;
   thumbnail: string;
+  thumbnail_vertical?: string;
   tags: string | null;
   featured: 0 | 1;
   content?: string;
@@ -20,7 +21,7 @@ export type ArticleProps = {
 // TODO: add type for this
 export type GalleryContentType = any;
 
-export type GalleryType = "video" | "audio" | "album" | "longform";
+export type GalleryType = "video" | "audio" | "album" | "longform" | "content";
 
 export type GalleryProps = Pick<
   ArticleProps,
@@ -37,6 +38,10 @@ export type GalleryProps = Pick<
   | "author_name"
 > & {
   content: GalleryContentType;
+  post_content: string | null;
+  prefix: string | null;
+  note: string | null;
+  quote: string | null;
   view_count: number;
   type: GalleryType;
 };
@@ -63,9 +68,16 @@ export type IPodcastCategory = {
 
 export type IGalleryCollection = Pick<
   ArticleProps,
-  "id" | "thumbnail" | "name" | "description" | "slug" | "published_at" | 'featured'
+  | "id"
+  | "thumbnail"
+  | "name"
+  | "description"
+  | "slug"
+  | "published_at"
+  | "featured"
 > & {
-  content: string;
+  content: string | null;
+  post_content: string | null;
   podcast_category?: IPodcastCategory;
 };
 

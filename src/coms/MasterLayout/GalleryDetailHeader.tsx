@@ -6,7 +6,7 @@ import { CategoryProps } from "@/type/article";
 import navigateService from "@/lib/router";
 import clsx from "clsx";
 import { Popover, PopoverContent, PopoverTrigger } from "@/shadcn/ui/popover";
-import { GalleryCategorySlug } from "@/data/category";
+import { GalleryCategory } from "@/data/category";
 
 interface GalleryDetailHeaderProps {
   category: Omit<CategoryProps, "description">;
@@ -19,7 +19,9 @@ const GalleryDetailHeader = ({
   postName,
   mode = "dark",
 }: GalleryDetailHeaderProps) => {
-  const isLongform = category?.slug === GalleryCategorySlug.HQ_LONGFORM;
+  const isHeaderWithCategory = [GalleryCategory.LONGFORM]?.includes(
+    category?.id
+  );
 
   return (
     <header
@@ -32,7 +34,7 @@ const GalleryDetailHeader = ({
       <div
         className={clsx(
           "container grid items-center",
-          isLongform
+          isHeaderWithCategory
             ? "lg:grid-cols-[auto_1fr_auto] grid-cols-[auto_1fr] gap-12 overflow-hidden"
             : "grid-cols-[auto_1fr] lg:grid-cols-[1fr_auto_1fr]"
         )}
@@ -46,11 +48,11 @@ const GalleryDetailHeader = ({
             className="h-10 w-auto lg:h-15"
           />
         </Link>
-        {isLongform ? (
+        {isHeaderWithCategory ? (
           <div className="items-center gap-4 overflow-hidden hidden lg:flex">
             <Link
               href={navigateService.getGalleryCollection(category?.slug)}
-              className="text-xl font-bold text-white leading-[140%] tracking-[0%] font-playfair-display"
+              className="text-xl font-bold text-white whitespace-nowrap leading-[140%] tracking-[0%] font-playfair-display"
             >
               {category?.name}
             </Link>

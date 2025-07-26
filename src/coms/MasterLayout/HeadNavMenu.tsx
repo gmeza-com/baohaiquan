@@ -10,12 +10,12 @@ import {
 import Link from "next/link";
 import { IconHome } from "../Icon/fill";
 import { isOn } from "@/lib/utils";
-import { IconMenu2 } from "../Icon/light";
-import navigateService from "@/lib/router";
 import clsx from "clsx";
+import MoreNavMenuItem from "./MoreNavMenuItem";
+import { IMenuItem } from "@/type/menu";
 
 export interface HeadNavMenuProps {
-  menuItems: any[];
+  menuItems: IMenuItem[];
   path: string;
   className?: string;
   preventStretch?: boolean;
@@ -55,7 +55,7 @@ const HeadNavMenu: React.FC<HeadNavMenuProps> = ({
             </Link>
           </NavMenuLink>
         </NavMenuItem>
-        {menuItems.map((item) => {
+        {menuItems?.slice(0, 7).map((item) => {
           return isOn(item.childrens) ? (
             <NavMenuItem
               key={item.id}
@@ -68,7 +68,7 @@ const HeadNavMenu: React.FC<HeadNavMenuProps> = ({
               </NavMenuTrigger>
               <NavMenuContent className="bg-blue-600 menu-up-arrow">
                 <ul className="min-w-36 flex flex-col gap-1 text-white">
-                  {item.childrens.map((child: any) => (
+                  {(item.childrens || []).map((child: any) => (
                     <li key={child.id}>
                       <NavMenuLink
                         asChild
@@ -101,42 +101,7 @@ const HeadNavMenu: React.FC<HeadNavMenuProps> = ({
           );
         })}
 
-        <NavMenuItem
-          className={clsx(
-            "hidden lg:block ",
-            preventStretch ? "" : "xl:hidden"
-          )}
-        >
-          <NavMenuTrigger className="flex cursor-pointer">
-            <IconMenu2 width={20} height={26} className="inline-flex" />
-          </NavMenuTrigger>
-          <NavMenuContent className="bg-blue-600 menu-up-arrow right-0 left-auto min-w-44">
-            <ul className="flex flex-col gap-1 text-white">
-              <li>
-                <NavMenuLink asChild>
-                  <Link
-                    href={navigateService.getGalleryCollection("bao-in")}
-                    className="truncate"
-                  >
-                    Báo In
-                  </Link>
-                </NavMenuLink>
-              </li>
-              <li>
-                <NavMenuLink asChild>
-                  <Link
-                    href={navigateService.getGalleryCollection(
-                      "truyen-hinh-hai-quan"
-                    )}
-                    className="truncate"
-                  >
-                    Truyền Hình Hải Quân
-                  </Link>
-                </NavMenuLink>
-              </li>
-            </ul>
-          </NavMenuContent>
-        </NavMenuItem>
+        <MoreNavMenuItem menuItems={menuItems?.slice(7)} />
       </NavMenuList>
     </NavMenu>
   );

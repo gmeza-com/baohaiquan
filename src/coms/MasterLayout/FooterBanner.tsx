@@ -49,13 +49,15 @@ const FooterBanner: React.FC = () => {
   if (!!data?.content && !content) return null;
 
   return (
-    <div className="container mx-auto">
-      <div
-        className="footer-image"
-        dangerouslySetInnerHTML={{
-          __html: DOMPurify.sanitize(content as string),
-        }}
-      />
+    <div className="w-full bg-white">
+      <div className="container mx-auto">
+        <div
+          className="footer-image"
+          dangerouslySetInnerHTML={{
+            __html: DOMPurify.sanitize(content as string),
+          }}
+        />
+      </div>
     </div>
   );
 };

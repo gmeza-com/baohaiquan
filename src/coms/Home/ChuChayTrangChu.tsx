@@ -17,7 +17,7 @@ const ChuChayTrangChu = () => {
   const animationRef = useRef<number | undefined>(undefined);
   
   // Cấu hình animation
-  const SPEED = 0.7; // px/frame - có thể điều chỉnh tốc độ
+  const SPEED = 1.2; // px/frame - có thể điều chỉnh tốc độ
 
   const content = useMemo(() => {
     return data?.content?.["vi"];

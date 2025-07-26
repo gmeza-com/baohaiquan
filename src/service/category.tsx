@@ -62,6 +62,7 @@ const CategoryService = {
           "pl.description",
           "pl.tags",
           "p.thumbnail",
+          "p.thumbnail_vertical",
           "p.featured",
           "p.published",
           "p.published_at",
@@ -116,12 +117,11 @@ const CategoryService = {
           END`;
 
       let query = fetcher;
-      
       // Chỉ áp dụng orderByRaw khi có orderByClause
       if (orderByClause) {
         query = query.orderByRaw(orderByClause);
       }
-      
+
       return await query
         .orderBy("p.published_at", "desc")
         .offset(limitStart)
@@ -370,7 +370,8 @@ const CategoryService = {
   },
 
   getGalleryCategory: async (
-    slug: string
+    slug: string,
+    isFilterById: boolean = false
   ): Promise<Omit<CategoryProps, "description"> | null> => {
     try {
       if (!db) throw new Error("Database connection is not initialized");
@@ -386,7 +387,7 @@ const CategoryService = {
           "gc.id"
         )
         .select("gc.id", "gcl.slug", "gcl.name", "gc.thumbnail")
-        .where("gcl.slug", slug)
+        .where(isFilterById ? "gc.id" : "gcl.slug", slug)
         .andWhere("gcl.locale", "vi")
         .first();
 

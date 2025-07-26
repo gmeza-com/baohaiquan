@@ -46,7 +46,11 @@ const LongformDetailView = ({ post, cat }: LongformDetailViewProps) => {
       case "columns":
         return <ColumnsBlock key={block.id} {...block.data} />;
       case "quote":
-        return <QuoteBlock key={block.id} {...block.data} />;
+        return (
+          <div key={block.id} className="py-4 max-w-[568px] mx-auto">
+            <QuoteBlock {...block.data} />
+          </div>
+        );
       default:
         return null;
     }

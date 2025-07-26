@@ -5,6 +5,7 @@ import ExpandableCategory from "./ExpandableCategory";
 import { isOn } from "@/lib/utils";
 import { useMemo } from "react";
 import FooterBanner from "./FooterBanner";
+import { IMenuItem } from "@/type/menu";
 
 interface Options {
   province: string;
@@ -18,7 +19,7 @@ interface Options {
 }
 
 interface FooterProps {
-  categories: CategoryTree[];
+  categories: IMenuItem[];
   options: Options;
 }
 
@@ -48,12 +49,14 @@ const Footer: React.FC<FooterProps> = ({ categories, options }) => {
       label: "Tổng biên tập",
       value: "Thượng tá CAO VĂN DÂN",
       key: "total_editor",
+      valueClassName: "text-xsm",
     },
     {
       label: "Phó tổng biên tập",
       value: "Thượng tá NGUYỄN TRỌNG THIẾT",
       key: "deputy_editor",
       className: "md:col-start-1 md:row-start-2 xl:col-start-2",
+      valueClassName: "text-xsm",
     },
     {
       label: "Giấy phép số",
@@ -88,17 +91,17 @@ const Footer: React.FC<FooterProps> = ({ categories, options }) => {
               categories.map((category) => (
                 <li key={category.id}>
                   <Link
-                    href={`/danh-muc/${category.slug}`}
+                    href={`/danh-muc/${category.attributes.category_slug}`}
                     className="text-lg uppercase font-semibold text-gray-900 leading-[150%] tracking-[-1%]"
                   >
                     {category.name}
                   </Link>
                   <ul className="mt-2 flex flex-col gap-3">
-                    {category?.children?.map((item) => (
+                    {category?.childrens?.map((item) => (
                       <li key={item.id}>
                         <Link
                           className="text-gray-900 text-[15px] leading-[150%] tracking-[0%] font-normal"
-                          href={`/danh-muc/${item.slug}`}
+                          href={`/danh-muc/${item.attributes.category_slug}`}
                         >
                           {item.name}
                         </Link>
@@ -125,7 +128,12 @@ const Footer: React.FC<FooterProps> = ({ categories, options }) => {
                         {item.label}
                       </span>
                     </td>
-                    <td className="text-[#5D5D5D] text-[13px] leading-[150%] tracking-[0%] py-2">
+                    <td
+                      className={clsx(
+                        "text-[#5D5D5D] text-[13px] leading-[150%] tracking-[0%] py-2",
+                        item?.valueClassName
+                      )}
+                    >
                       {item.value}
                     </td>
                   </tr>
@@ -146,7 +154,12 @@ const Footer: React.FC<FooterProps> = ({ categories, options }) => {
                   <span className="text-[13px] font-medium leading-[150%] tracking-[-1%] text-gray-900">
                     {item.label}
                   </span>
-                  <span className="text-[#5D5D5D] text-[13px] leading-[150%] tracking-[0%]">
+                  <span
+                    className={clsx(
+                      "text-[#5D5D5D] text-[13px] leading-[150%] tracking-[0%]",
+                      item?.valueClassName
+                    )}
+                  >
                     {item.value}
                   </span>
                 </div>

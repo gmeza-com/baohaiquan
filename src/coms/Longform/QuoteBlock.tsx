@@ -1,5 +1,6 @@
 import type { QuoteBlock } from "@/type/longform";
 import clsx from "clsx";
+import { IconQuote } from "../Icon/fill";
 
 interface QuoteBlockProps extends QuoteBlock {
   className?: string;
@@ -7,20 +8,21 @@ interface QuoteBlockProps extends QuoteBlock {
 
 const QuoteBlock: React.FC<QuoteBlockProps> = ({
   text,
-  alignment,
+  alignment = "left",
   caption,
   className,
 }) => {
   return (
     <div
       className={clsx(
-        "py-4 w-full max-w-[568px] mx-auto",
+        "w-full bg-yellow-100 p-4 xl:pt-7 xl:px-10 xl:pb-12 rounded-3xl",
         className
       )}
     >
+      <IconQuote size={52} className="text-[#DCD7CB]" />
       <blockquote
         className={clsx(
-          "relative border-l-4 border-gray-300 pl-6 italic text-xl text-gray-700 leading-[160%] tracking-[0%]",
+          "relative italic text-base lg:text-xl xl:text-[1.375rem] text-gray-700 leading-[160%] tracking-[0%] mt-5",
           alignment === "center" && "text-center border-l-0 pl-0",
           alignment === "left" && "text-left"
         )}

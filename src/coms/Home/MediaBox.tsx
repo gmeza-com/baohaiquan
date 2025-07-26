@@ -5,44 +5,27 @@ import { IMediaBox } from "@/type/article";
 import navigateService from "@/lib/router";
 import { useCallback } from "react";
 import clsx from "clsx";
-
-const mediaTypes = [
-  {
-    title: "Longform",
-    href: "/longform",
-  },
-  {
-    title: "Infographic",
-    href: "/danh-muc/infographics",
-  },
-  {
-    title: "Podcast",
-    href: "/podcast",
-  },
-  {
-    title: "Phóng sự ảnh",
-    href: "/danh-muc/phong-su-anh",
-  },
-];
+import { Category } from "@/type/category";
 
 interface MediaBoxProps {
   data: IMediaBox[];
   className?: string;
+  mediaCatList: Omit<Category, "description" | "parent_id">[];
 }
 
-const MediaBox: React.FC<MediaBoxProps> = ({ data, className }) => {
+const MediaBox: React.FC<MediaBoxProps> = ({
+  data,
+  className,
+  mediaCatList,
+}) => {
   const firstItem = data?.[0];
   const restItems = data?.slice(1);
 
   const getHref = useCallback((article: IMediaBox) => {
-    if (["podcast", "longform"]?.includes(article?.category_slug)) {
-      return navigateService.getGalleryDetails(
-        article?.category_slug,
-        article?.slug
-      );
-    }
-
-    return navigateService.getPostDetails(article?.slug);
+    return navigateService.getGalleryDetails(
+      article?.category_slug,
+      article?.slug
+    );
   }, []);
 
   return (
@@ -50,19 +33,19 @@ const MediaBox: React.FC<MediaBoxProps> = ({ data, className }) => {
       <div className="container mx-auto">
         <div className="bg-branch-default py-9 px-4 lg:px-7 lg:pt-8 lg:pb-10 md:rounded-3xl -m-4 md:m-0">
           <div className="flex flex-col gap-3 md:flex-row md:items-center md:gap-4 lg:gap-10">
-            <DecorTitle title="Đa phương tiện" />
+            <DecorTitle title="Đa phương tiện" link="/da-phuong-tien" />
 
             <ul className="flex items-center gap-4 lg:gap-5 divide-x divide-blue-200 overflow-x-auto no-scrollbar">
-              {mediaTypes.map((item) => (
+              {mediaCatList.map((item) => (
                 <li
-                  key={item.title}
+                  key={item.id}
                   className="text-nowrap pe-4 lg:pe-5 lg:text-lg font-semibold"
                 >
                   <Link
-                    href={item.href}
+                    href={navigateService.getGalleryCollection(item?.slug)}
                     className="focus:underline text-blue-700"
                   >
-                    {item.title}
+                    {item.name}
                   </Link>
                 </li>
               ))}
