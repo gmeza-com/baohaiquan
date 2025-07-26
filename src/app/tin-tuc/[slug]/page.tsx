@@ -13,7 +13,7 @@ import RelativeArticle from "@/coms/Article/RelativeArticle";
 import PostDetailRightSide from "@/coms/Article/PostDetailRightSide";
 
 import dayjs from "@/lib/dayjs";
-import { IconEye } from "@/coms/Icon/light";
+import { IconEye, IconMailBox } from "@/coms/Icon/light";
 import Link from "next/link";
 import navigateService from "@/lib/router";
 import { notoSerif } from "@/app/font";
@@ -154,6 +154,21 @@ const TinTucPage = async ({ params }: PageProps) => {
                   />
                 </div>
               )}
+
+              <div className="flex flex-col items-center gap-2 pt-7 pb-14 border-y border-yellow-200">
+                <IconMailBox size={48} />
+                <p className="text-center">
+                  Bài viết, video, hình ảnh đóng góp cho chuyên mục vui lòng gửi
+                  về
+                  <br />
+                  <a
+                    href="mailto:bhqdt@baohaiquanvietnam.vn"
+                    className="underline font-bold"
+                  >
+                    bhqdt@baohaiquanvietnam.vn
+                  </a>
+                </p>
+              </div>
             </div>
 
             <div className="py-7 max-w-[720px] mx-auto">
